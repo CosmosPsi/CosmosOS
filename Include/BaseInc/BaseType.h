@@ -21,7 +21,7 @@ typedef unsigned long UInt;
 //CPU标志寄存器类型
 typedef U64 CPUFlg;
 //地址类型
-typedef unsigned long Adrr;
+typedef unsigned long Addr;
 //布尔类型
 typedef SInt Bool;
 //字符串类型
