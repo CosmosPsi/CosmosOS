@@ -53,7 +53,7 @@ void HalFlagsCli(CPUFlg* cpuflg)
     HalRestoreFlagsCli(cpuflg);
 }
 
-void HalSPinLockInit(SPinLock *init)
+void SPinLockInit(SPinLock *init)
 {
     init->Lock = 0;
     return;
