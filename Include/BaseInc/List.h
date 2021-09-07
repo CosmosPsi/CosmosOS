@@ -111,7 +111,7 @@ KLINE Bool ListIsEmptyCareful(const List *head)
 
 #define ListForEach(pos, head) for (pos = (head)->Next; pos != (head); pos = pos->Next)
 
-#define ListForEachHeadDell(pos, head) for (pos = (head)->Next; pos != (head); pos = (head)->Next)
+#define ListForEachDeleteOneList(pos, head) for (pos = (head)->Next; pos != (head); pos = (head)->Next)
 
 #define ListEntry(ptr, type, member) \
 	((type *)((char *)(ptr) - (unsigned long)(&((type *)0)->member)))
