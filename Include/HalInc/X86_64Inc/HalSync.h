@@ -12,18 +12,18 @@ typedef struct SPINLOCK
 	 volatile U32 Lock;
 }SPinLock;
 
-void HalHalt();
-void HalCliHalt();
-void HalStiHalt();
-void HalSti();
-void HalCli();
-void HalStiFlags(CPUFlg* cpuflg);
-void HalCliFlags(CPUFlg* cpuflg);
-void HalFlagsSti(CPUFlg* cpuflg);
-void HalFlagsCli(CPUFlg* cpuflg);
-void SPinLockInit(SPinLock *init);
-void HalSPinLock(SPinLock *lock);
-void HalUnSPinLock(SPinLock *lock);
-void HalSPinLockSaveFlagsCli(SPinLock *lock, CPUFlg *cpuflg);
-void HalUnSPinLockRestoreFlagsSti(SPinLock *lock, CPUFlg *cpuflg);
+public void HalHalt();
+public void HalCliHalt();
+public void HalStiHalt();
+public void HalSti();
+public void HalCli();
+public void HalStiFlags(CPUFlg* cpuflg);
+public void HalCliFlags(CPUFlg* cpuflg);
+public void HalFlagsSti(CPUFlg* cpuflg);
+public void HalFlagsCli(CPUFlg* cpuflg);
+public void SPinLockInit(SPinLock *init);
+public void HalSPinLock(SPinLock *lock);
+public void HalUnSPinLock(SPinLock *lock);
+public void HalSPinLockSaveFlagsCli(SPinLock *lock, CPUFlg *cpuflg);
+public void HalUnSPinLockRestoreFlagsSti(SPinLock *lock, CPUFlg *cpuflg);
 #endif

@@ -7,59 +7,59 @@
 #include "HalCPU.h"
 #include "HalSync.h"
 
-void HalHalt()
+public void HalHalt()
 {
     HALT();
 }
 
-void HalCliHalt()
+public void HalCliHalt()
 {
     CLIHALT();
 }
 
-void HalStiHalt()
+public void HalStiHalt()
 {
     STIHALT();
 }
 
-void HalSti()
+public void HalSti()
 {
     STI();
 }
 
-void HalCli()
+public void HalCli()
 {
     CLI();
 }
 
 
-void HalStiFlags(CPUFlg* cpuflg)
+public void HalStiFlags(CPUFlg* cpuflg)
 {
     HalRestoreFlagsSti(cpuflg);
 }
 
-void HalCliFlags(CPUFlg* cpuflg)
+public void HalCliFlags(CPUFlg* cpuflg)
 {
     HalSaveFlagsCli(cpuflg);
 }
 
-void HalFlagsSti(CPUFlg* cpuflg)
+public void HalFlagsSti(CPUFlg* cpuflg)
 {
     HalSaveFlagsSti(cpuflg);
 }
 
-void HalFlagsCli(CPUFlg* cpuflg)
+public void HalFlagsCli(CPUFlg* cpuflg)
 {
     HalRestoreFlagsCli(cpuflg);
 }
 
-void SPinLockInit(SPinLock *init)
+public void SPinLockInit(SPinLock *init)
 {
     init->Lock = 0;
     return;
 }
 
-void HalSPinLock(SPinLock *lock)
+public void HalSPinLock(SPinLock *lock)
 {
     __asm__ __volatile__(
         "1:         \n"
@@ -79,7 +79,7 @@ void HalSPinLock(SPinLock *lock)
     return;
 }
 
-void HalUnSPinLock(SPinLock *lock)
+public void HalUnSPinLock(SPinLock *lock)
 {
     __asm__ __volatile__(
         "movl   $0, %0\n"
@@ -88,7 +88,7 @@ void HalUnSPinLock(SPinLock *lock)
     return;
 }
 
-void HalSPinLockSaveFlagsCli(SPinLock *lock, CPUFlg *cpuflg)
+public void HalSPinLockSaveFlagsCli(SPinLock *lock, CPUFlg *cpuflg)
 {
     __asm__ __volatile__(
         "pushfq             \n\t"
@@ -112,7 +112,7 @@ void HalSPinLockSaveFlagsCli(SPinLock *lock, CPUFlg *cpuflg)
     return;
 }
 
-void HalUnSPinLockRestoreFlagsSti(SPinLock *lock, CPUFlg *cpuflg)
+public void HalUnSPinLockRestoreFlagsSti(SPinLock *lock, CPUFlg *cpuflg)
 {
     __asm__ __volatile__(
         "movl   $0, %0\n\t"

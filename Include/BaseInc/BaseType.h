@@ -36,7 +36,7 @@ typedef void* Buff;
 typedef unsigned long Size;
 
 #define KLINE static inline
-#define PUBLIC
+#define public
 #define private	static
 #define EXTERN extern
 #define KEXTERN extern
