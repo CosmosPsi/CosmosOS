@@ -11,7 +11,7 @@
 #include "HalInterface.h"
 #include "KrlMmManage.h"
 
-private void CR3Init(CR3* init)
+public void CR3Init(CR3* init)
 {
     if(NULL == init)
     {
@@ -21,7 +21,7 @@ private void CR3Init(CR3* init)
     return;
 }
 
-void MMUInit(MMU* init)
+public void MMUInit(MMU* init)
 {
     if(NULL == init)
     {
@@ -797,6 +797,92 @@ private SDireArr* MMUTranslationSDire(MMU* mmulocked, TDireArr* tdirearr, Addr v
 	return sdirearr;
 }
 
+private Addr MMUFindPMSADAddress(MDireArr* mdirearr, Addr vaddr)
+{
+	UInt mindex;
+	MDire dire;
+	if(NULL == mdirearr)
+	{
+		return NULL;
+	}
+
+	mindex = MDireIndex(vaddr);
+
+	dire = mdirearr->MDEArr[mindex];
+
+	if(MMUPMSADIsHave(&dire) == FALSE)
+	{
+		return NULL;
+	}
+
+	return MMUPMSADRetPAddr(&dire);
+}
+
+
+private MDireArr* MMUFindMDireArr(IDireArr* idirearr, Addr vaddr)
+{
+	UInt iindex;
+	IDire dire;
+	if(NULL == idirearr)
+	{
+		return NULL;
+	}
+
+	iindex = IDireIndex(vaddr);
+
+	dire = idirearr->IDEArr[iindex];
+
+	if(MDireIsHave(&dire) == FALSE)
+	{
+		return NULL;
+	}
+
+	return IDireRetMDireArr(&dire);
+}
+
+
+private IDireArr* MMUFindIDireArr(SDireArr* sdirearr, Addr vaddr)
+{
+	UInt sindex;
+	SDire dire;
+	if(NULL == sdirearr)
+	{
+		return NULL;
+	}
+
+	sindex = SDireIndex(vaddr);
+
+	dire = sdirearr->SDEArr[sindex];
+
+	if(IDireIsHave(&dire) == FALSE)
+	{
+		return NULL;
+	}
+
+	return SDireRetIDireArr(&dire);
+}
+
+private SDireArr* MMUFindSDireArr(TDireArr* tdirearr, Addr vaddr)
+{
+	UInt tindex;
+	TDire dire;
+	if(NULL == tdirearr)
+	{
+		return NULL;
+	}
+
+	tindex = TDireIndex(vaddr);
+
+	dire = tdirearr->TDEArr[tindex];
+
+	if(SDireIsHave(&dire) == FALSE)
+	{
+		return NULL;
+	}
+
+	return TDireRetSDireArr(&dire);
+}
+
 public void HalMMULoad(MMU* mmu)
 {
 	if(NULL == mmu)
@@ -818,12 +904,88 @@ out:
 	return;
 }
 
-public void HalMMURefresh()
+private void HalMMUInnerRefresh(MMU* mmulocked)
 {
 	CR3 cr3;
-	cr3.Entry = (U64)HalReadCR3();
-	HalWriteCR3(cr3.Entry);
+	if(NULL == mmulocked)
+	{
+		cr3.Entry = (U64)HalReadCR3();
+		HalWriteCR3(cr3.Entry);
+		return;
+	}
+	if(NULL == mmulocked->TDireArrPtr || 0 != (((U64)(mmulocked->TDireArrPtr)) & 0xfff))
+	{
+		return;
+	}
+
+	mmulocked->CR3.Entry = HalVAddrToPAddr((Addr)mmulocked->TDireArrPtr);
+	HalWriteCR3((UInt)(mmulocked->CR3.Entry));
 	return;
+}
+
+
+
+public void HalMMURefresh(MMU* mmu)
+{
+	CR3 cr3;
+	if(NULL == mmu)
+	{
+		cr3.Entry = (U64)HalReadCR3();
+		HalWriteCR3(cr3.Entry);
+		return;
+	}
+	HalMMULoad(mmu);
+	return;
+}
+
+private Addr HalUnMMUTranslationCore(MMU* mmu, Addr vaddr)
+{
+	Addr retadr;
+	SDireArr* sdirearr;
+	IDireArr* idirearr;
+	MDireArr* mdirearr;
+	HalSPinLock(&mmu->Lock);
+	sdirearr = MMUFindSDireArr(mmu->TDireArrPtr, vaddr);
+	if(NULL == sdirearr)
+	{
+		retadr = NULL;
+		goto outLabel;
+	}
+
+	idirearr = MMUFindIDireArr(sdirearr, vaddr);
+	if(NULL == idirearr)
+	{
+		retadr = NULL;
+		goto ERRLabelSDireArr;
+	}
+
+	mdirearr = MMUFindMDireArr(idirearr, vaddr);
+	if(NULL == mdirearr)
+	{
+		retadr = NULL;
+		goto ERRLabelIDireArr; 
+	}
+	
+	retadr = MMUUnTranslationPMSAD(mmu, mdirearr, vaddr);
+
+	MMUUnTranslationMDire(mmu, idirearr, NULL, vaddr);
+ERRLabelIDireArr:
+	MMUUnTranslationIDire(mmu, sdirearr, NULL, vaddr);
+ERRLabelSDireArr:
+	MMUUnTranslationSDire(mmu, mmu->TDireArrPtr, NULL, vaddr);
+outLabel:
+	HalMMUInnerRefresh(mmu);	
+	HalUnSPinLock(&mmu->Lock);
+	return retadr;
+}
+
+public Addr HalUnMMUTranslation(MMU* mmu, Addr vaddr)
+{
+	if(NULL == mmu)
+	{
+		return EPARAM;
+	}
+	return HalUnMMUTranslationCore(mmu, vaddr);
 }
 
 private Bool HalMMUTranslationCore(MMU* mmu, Addr vaddr, Addr paddr, U64 flags)
@@ -871,7 +1033,7 @@ private Bool HalMMUTranslationCore(MMU* mmu, Addr vaddr, Addr paddr, U64 flags)
 	if(TRUE == rets)
 	{
 		rets = TRUE;
-		HalMMURefresh();
+		HalMMUInnerRefresh(mmu);
 		goto out;
 	}
 
