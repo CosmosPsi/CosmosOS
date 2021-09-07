@@ -292,5 +292,12 @@ private Addr HalUnMMUTranslationCore(MMU* mmu, Addr vaddr);
 public Addr HalUnMMUTranslation(MMU* mmu, Addr vaddr);
 private Bool HalMMUTranslationCore(MMU* mmu, Addr vaddr, Addr paddr, U64 flags);
 public Bool HalMMUTranslation(MMU* mmu, Addr vaddr, Addr paddr, U64 flags);
-
+private Bool MMUCleanMDireArrAllPMSAD(MMU* mmulocked);
+private Bool MMUCleanIDireArrAllPMSAD(MMU* mmulocked);
+private Bool MMUCleanSDireArrAllPMSAD(MMU* mmulocked);
+private Bool MMUCleanTDireArrAllPMSAD(MMU* mmulocked);
+public Bool HalMMUClean();
+public Bool HalMMUEnable();
+public Bool HalMMUDisable();
+public Bool HalMMUInit();
 #endif

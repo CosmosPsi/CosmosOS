@@ -949,7 +949,7 @@ private Addr HalUnMMUTranslationCore(MMU* mmu, Addr vaddr)
 	if(NULL == sdirearr)
 	{
 		retadr = NULL;
-		goto outLabel;
+		goto OUTLabel;
 	}
 
 	idirearr = MMUFindIDireArr(sdirearr, vaddr);
@@ -973,7 +973,7 @@ ERRLabelIDireArr:
 	MMUUnTranslationIDire(mmu, sdirearr, NULL, vaddr);
 ERRLabelSDireArr:
 	MMUUnTranslationSDire(mmu, mmu->TDireArrPtr, NULL, vaddr);
-outLabel:
+OUtLabel:
 	HalMMUInnerRefresh(mmu);	
 	HalUnSPinLock(&mmu->Lock);
 	return retadr;
@@ -1058,4 +1058,164 @@ public Bool HalMMUTranslation(MMU* mmu, Addr vaddr, Addr paddr, U64 flags)
 		return NULL;
 	}
 	return HalMMUTranslationCore(mmu, vaddr, paddr, flags);
+}
+
+
+private Bool MMUCleanMDireArrAllPMSAD(MMU* mmulocked)
+{
+	List* pos;
+	PMSAD* msad = NULL;
+	if(NULL == mmulocked)
+	{
+		return FALSE;
+	}
+	ListForEachDeleteOneList(pos, &mmulocked->MDirHead)
+	{
+		msad = ListEntry(pos, PMSAD, md_list);
+		ListDel(&msad->Lists);
+		if(HalExPPutKrlOnePMSAD(msad) == FALSE)
+		{
+			system_error("mmu_clean_mdirearrmsas");
+			return FALSE;
+		}
+		mmulocked->MDirMsaNR--;
+	}
+	return TRUE;
+}
+
+private Bool MMUCleanIDireArrAllPMSAD(MMU* mmulocked)
+{
+	List* pos;
+	PMSAD* msad = NULL;
+	if(NULL == mmulocked)
+	{
+		return FALSE;
+	}
+	ListForEachDeleteOneList(pos, &mmulocked->IDirHead)
+	{
+		msad = ListEntry(pos, PMSAD, Lists);
+		ListDel(&msad->Lists);
+		if(HalExPPutKrlOnePMSAD(msad) == FALSE)
+		{
+			system_error("mmu_clean_idirearrmsas");
+			return FALSE;
+		}
+		mmulocked->IDirMsaNR--;
+	}
+	return TRUE;
+}
+
+private Bool MMUCleanSDireArrAllPMSAD(MMU* mmulocked)
+{
+	List* pos;
+	PMSAD* msad = NULL;
+	if(NULL == mmulocked)
+	{
+		return FALSE;
+	}
+	ListForEachDeleteOneList(pos, &mmulocked->SDirHead)
+	{
+		msad = ListEntry(pos, PMSAD, Lists);
+		ListDel(&msad->Lists);
+		if(HalExPPutKrlOnePMSAD(msad) == FALSE)
+		{
+			system_error("MMUCleanSDireArrAllPMSAD");
+			return FALSE;
+		}
+		mmulocked->SDirMsaNR--;
+	}
+	return TRUE;
+}
+
+private Bool MMUCleanTDireArrAllPMSAD(MMU* mmulocked)
+{
+	List* pos;
+	PMSAD* msad = NULL;
+	if(NULL == mmulocked)
+	{
+		return FALSE;
+	}
+	ListForEachDeleteOneList(pos, &mmulocked->TDirHead)
+	{
+		msad = ListEntry(pos, PMSAD, Lists);
+		ListDel(&msad->Lists);
+		if(HalExPPutKrlOnePMSAD(msad) == FALSE)
+		{
+			system_error("MMUCleanTDireArrAllPMSAD");
+			return FALSE;
+		}
+		mmulocked->TDirMsaNR--;
+	}
+	return TRUE;
+}
+
+public Bool HalMMUClean()
+{
+	Bool  rets = FALSE;
+	Addr pcr3 = NULL, vcr3 = NULL;
+	CR3 cr3;
+	if(NULL == mmu)
+	{
+		return FALSE;
+	}
+
+	HalSPinlock(&mmu->Lock);
+
+	cr3.Entry = (U64)HalReadCR3();
+
+	pcr3 = (Addr)(cr3.Flags.Plm4a << 12);
+	vcr3 = HalPAddrToVAddr(pcr3);
+
+	if(vcr3 == (Addr)(mmu->TDireArrPtr))
+	{
+		rets = FALSE;
+		goto OUTLabel;
+	}
+
+	if(MMUCleanMDireArrAllPMSAD(mmu) == FALSE)
+	{
+		rets = FALSE;
+		goto OUTLabel;
+	}
+
+	if(MMUCleanIDireArrAllPMSAD(mmu) == FALSE)
+	{
+		rets = FALSE;
+		goto OUTLabel;
+	}
+
+	if(MMUCleanSDireArrAllPMSAD(mmu) == FALSE)
+	{
+		rets = FALSE;
+		goto OUTLabel;
+	}
+
+	if(MMUCleanTDireArrAllPMSAD(mmu) == FALSE)
+	{
+		rets = FALSE;
+		goto OUTLabel;
+	}
+
+	rets = TRUE;
+
+OUTLabel:	
+	HalUnSPinLock(&mmu->Lock);
+	return rets;	
+}
+
+public Bool HalMMUEnable()
+{
+	//x86_64下没法单纯的开启MMU
+	return TRUE;
+}
+
+public Bool HalMMUDisable()
+{
+	//x86_64下没法单纯的关闭MMU
+	return FALSE;
+}
+
+public Bool HalMMUInit()
+{
+	return HalMMUEnable();
 }
