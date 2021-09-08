@@ -1,5 +1,5 @@
 /**********************************************************
-        MMU头文件halmmu.h
+        MMU头文件HalMMU.h
 ***********************************************************
                 彭东
 **********************************************************/
@@ -297,6 +297,7 @@ private Bool MMUCleanIDireArrAllPMSAD(MMU* mmulocked);
 private Bool MMUCleanSDireArrAllPMSAD(MMU* mmulocked);
 private Bool MMUCleanTDireArrAllPMSAD(MMU* mmulocked);
 public Bool HalMMUClean();
+public Bool HalMMUInitExecutorTDireArr(MMU* mmu);
 public Bool HalMMUEnable();
 public Bool HalMMUDisable();
 public Bool HalMMUInit();

@@ -1,5 +1,5 @@
 /**********************************************************
-		内存mmu文件halmmu.c
+		内存mmu文件HalMMU.c
 ***********************************************************
 				彭东
 **********************************************************/
@@ -1201,6 +1201,36 @@ public Bool HalMMUClean()
 OUTLabel:	
 	HalUnSPinLock(&mmu->Lock);
 	return rets;	
+}
+
+public Bool HalMMUInitExecutorTDireArr(MMU* mmu)
+{
+	Bool rets = FALSE;
+	Addr vcr3 = NULL;
+	if(NULL == mmu)
+	{
+		return FALSE;
+	}
+	HalSPinLock(&mmu->Lock);
+
+	if(MMUNewTDireArr(mmu) == NULL)
+	{
+		rets = FALSE;
+		goto OUTLable;
+	}
+
+	vcr3 = HalPAddrToVAddr(kmachbsp.mb_pml4padr);
+
+	HalMemCopy((void*)vcr3, (void*)mmu->TDireArrPtr, sizeof(TDireArr));
+	
+	mmu->Cr3.Entry = (U64)HalVAddrToPAddr((Addr)mmu->TDireArrPtr);
+	mmu->TDireArrPtr->TDEArr[0].TEntry = 0;
+	
+	rets = TRUE;
+
+OUTLable:
+	HalUnSPinLock(&mmu->Lock);
+	return rets;
 }
 
 public Bool HalMMUEnable()
