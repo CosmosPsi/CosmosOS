@@ -57,7 +57,6 @@ KLINE void HalOutU8NOP(const U16 port, const U8 val)
 KLINE U8 HalInU8(const U16 port)
 {
     U8 tmp;
-    /* GCC can optimize here if constant */
     __asm__ __volatile__("inb %1, %0\n"
                          : "=a"(tmp)
                          : "dN"(port));
@@ -120,7 +119,7 @@ KLINE void HalWriteMsr(const U32 reg, const U64 val)
         : "a"((U32)val), "d"((U32)(val >> 32)), "c"(reg));
 }
 
-KLINE void HalMemCopy(void *src, void *dest, UInt count)
+KLINE void HalMemCopy(void* src, void* dest, UInt count)
 {
 
     U8 *ss = src, *sd = dest;
@@ -131,7 +130,7 @@ KLINE void HalMemCopy(void *src, void *dest, UInt count)
     return;
 }
 
-KLINE SInt HalM2MCopy(void *sadr, void *dadr, SInt len)
+KLINE SInt HalM2MCopy(void* sadr, void* dadr, SInt len)
 {
     if (NULL == sadr || NULL == dadr || 1 > len)
     {
@@ -335,5 +334,5 @@ KLINE void HalWriteCR3(UInt val)
 
 public Addr HalVAddrToPAddr(Addr kvaddr);
 public Addr HalPAddrToVAddr(Addr kpaddr);
-
+public Bool HalCPUInit();
 #endif

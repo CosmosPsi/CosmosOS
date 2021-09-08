@@ -25,3 +25,8 @@ public Addr HalPAddrToVAddr(Addr kpaddr)
     }
     return kpaddr + KRNL_MAP_VIRTADDRESS_START;
 }
+
+public Bool HalCPUInit()
+{
+    return TRUE;
+}
