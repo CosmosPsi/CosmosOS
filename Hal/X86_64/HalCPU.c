@@ -128,46 +128,46 @@ private Bool CPUInitIDT()
 {
     for(UInt i = 0; i < IDTMAX; i++)
     {
-        SetOneGateDesc(&IDTable.GateDescArr[i], DA_386IGate, NULL, PRIVILEGE_KRNL)
+        SetOneGateDesc(&IDTable.GateDescArr[i], DA_386IGate, HalExCOSDefaultFaultHandle, PRIVILEGE_KRNL)
     }
     
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_DIVIDE, DA_386IGate, exc_divide_error, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_DIVIDE, DA_386IGate, HalExCDivideError, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_DEBUG, DA_386IGate, exc_single_step_exception, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_DEBUG, DA_386IGate, HalExCSingleStepException, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_NMI, DA_386IGate, exc_nmi, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_NMI, DA_386IGate, HalExCNMI, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_BREAKPOINT, DA_386IGate, exc_breakpoint_exception, PRIVILEGE_USER);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_BREAKPOINT, DA_386IGate, HalExCBreakpointException, PRIVILEGE_USER);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_OVERFLOW, DA_386IGate, exc_overflow, PRIVILEGE_USER);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_OVERFLOW, DA_386IGate, HalExCOverflow, PRIVILEGE_USER);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_BOUNDS, DA_386IGate, exc_bounds_check, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_BOUNDS, DA_386IGate, HalExCBoundsCheck, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_INVAL_OP, DA_386IGate, exc_inval_opcode, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_INVAL_OP, DA_386IGate, HalExCInvalOPCode, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_COPROC_NOT, DA_386IGate, exc_copr_not_available, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_COPROC_NOT, DA_386IGate, HalExCCoprNotAvailable, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_DOUBLE_FAULT, DA_386IGate, exc_double_fault, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_DOUBLE_FAULT, DA_386IGate, HalExCDoubleFault, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_COPROC_SEG, DA_386IGate, exc_copr_seg_overrun, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_COPROC_SEG, DA_386IGate, HalExCCoprSegOverrun, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_INVAL_TSS, DA_386IGate, exc_inval_tss, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_INVAL_TSS, DA_386IGate, HalExCInvalTSS, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_SEG_NOT, DA_386IGate, exc_segment_not_present, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_SEG_NOT, DA_386IGate, HalExCSegmentNotPresent, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_STACK_FAULT, DA_386IGate, exc_stack_exception, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_STACK_FAULT, DA_386IGate, HalExCStackException, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_PROTECTION, DA_386IGate, exc_general_protection, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_PROTECTION, DA_386IGate, HalExCGeneralProtection, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_PAGE_FAULT, DA_386IGate, exc_page_fault, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_PAGE_FAULT, DA_386IGate, HalExCPageFault, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_COPROC_ERR, DA_386IGate, exc_copr_error, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_COPROC_ERR, DA_386IGate, HalExCCoprError, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_ALIGN_CHEK, DA_386IGate, exc_alignment_check, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_ALIGN_CHEK, DA_386IGate, HalExCAlignmentCheck, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_MACHI_CHEK, DA_386IGate, exc_machine_check, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_MACHI_CHEK, DA_386IGate, HalExCMachineCheck, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_SIMD_FAULT, DA_386IGate, exc_simd_fault, PRIVILEGE_KRNL);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_SIMD_FAULT, DA_386IGate, HalExCSimdFault, PRIVILEGE_KRNL);
 
     SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_IRQ0 + 0], DA_386IGate, HalExIHWINT00, PRIVILEGE_KRNL);
 
