@@ -121,6 +121,7 @@ private void CPULoadTr(U16 trindx)
         :
         : "r"(trindx)
         : "memory");
+    return;    
 }
 
 
