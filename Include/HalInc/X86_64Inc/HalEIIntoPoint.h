@@ -243,7 +243,7 @@ global HalASMRetFromUserMode
 
 
 
-%macro  EXI_SCALL  0
+%macro  EXSAPICALL  0
 	
 	push rbx
 	push rcx
