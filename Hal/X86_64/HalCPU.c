@@ -138,7 +138,7 @@ private Bool CPUInitIDT()
 
     SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_NMI, DA_386IGate, HalExCNMI, PRIVILEGE_KRNL);
 
-    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_BREAKPOINT, DA_386IGate, HalExCBreakpointException, PRIVILEGE_USER);
+    SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_BREAKPOINT, DA_386IGate, HalExCBreakPointException, PRIVILEGE_USER);
 
     SetOneGateDesc(&IDTable.GateDescArr[INT_VECTOR_OVERFLOW, DA_386IGate, HalExCOverflow, PRIVILEGE_USER);
 

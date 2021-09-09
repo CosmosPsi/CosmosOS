@@ -9,7 +9,7 @@
 void HalExCDivideError();
 void HalExCSingleStepException();
 void HalExCNMI();
-void HalExCBreakpointException();
+void HalExCBreakPointException();
 void HalExCOverflow();
 void HalExCBoundsCheck();
 void HalExCInvalOPCode();
