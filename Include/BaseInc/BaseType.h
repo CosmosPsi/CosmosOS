@@ -35,6 +35,7 @@ typedef void* Buff;
 //大小类型
 typedef unsigned long Size;
 
+typedef SInt DrvStus;
 #define KLINE static inline
 #define public
 #define private	static

@@ -9,6 +9,7 @@
 #include "HalMMU.h"
 #include "HalCache.h"
 #include "HalIPC.h"
+#include "HalInterrupt.h"
 #include "KrlInit.h"
 
 private Bool HalBootInit()
@@ -16,6 +17,7 @@ private Bool HalBootInit()
 	HalCPUInit();
 	HalMMUInit();
 	HalCacheInit();
+    HalInterruptInit();
 	HalIPCInit();
 	return TRUE;
 }
