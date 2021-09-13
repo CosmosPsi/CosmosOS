@@ -5,6 +5,7 @@
 **********************************************************/
 #include "BaseType.h"
 #include "HalBoot.h"
+#include "HalFirmware.h"
 #include "HalCPU.h"
 #include "HalMMU.h"
 #include "HalCache.h"
@@ -14,6 +15,7 @@
 
 private Bool HalBootInit()
 {
+    HalFirmwareInit();    
 	HalCPUInit();
 	HalMMUInit();
 	HalCacheInit();
