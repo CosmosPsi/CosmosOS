@@ -316,5 +316,5 @@ private SInt VBESetXYOffset(void* ghpdev, UInt xoff, UInt yoff);
 private SInt VBEGetXY(void* ghpdev, UInt* rx, UInt* ry);
 private SInt VBEGetVWH(void* ghpdev, UInt* rvwt, UInt* rvhi);
 private SInt VBEGetXYOffset(void* ghpdev, UInt* rxoff, UInt* ryoff);
-
+public Bool HalFirmwareInit();
 #endif 

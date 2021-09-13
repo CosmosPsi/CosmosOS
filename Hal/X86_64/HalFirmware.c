@@ -7,7 +7,7 @@
 #include "HalFirmware.h"
 #include "HalSync.h"
 #include "HalCPU.h"
-
+#include "KrlLog.h"
 
 
 const char* CosmosVersion = "Cosmos\n内核版本:00.01\n彭东 @ 构建于 "__DATE__
@@ -838,4 +838,10 @@ private SInt VBEGetXYOffset(void* ghpdev, UInt* rxoff, UInt* ryoff)
 {
 
     return -1;
+}
+
+public Bool HalFirmwareInit()
+{
+    BootVideoDeviceInit();
+    return;
 }
