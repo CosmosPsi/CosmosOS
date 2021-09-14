@@ -498,6 +498,7 @@ KLINE void HalWriteCR3(UInt val)
     return;
 }
 
+public void __attribute__((optnone)) HalDead(UInt count);
 public Addr HalVAddrToPAddr(Addr kvaddr);
 public Addr HalPAddrToVAddr(Addr kpaddr);
 private Bool SetOneGateDesc(GateDesc* gate, U8 type, IDTHandler handler, U8 privilege);

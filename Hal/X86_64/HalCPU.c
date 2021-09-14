@@ -13,6 +13,34 @@ DefinedCPUArchData(TSS, TSSTable);
 DefinedCPUArchData(GDTPTR, GDTablePtr);
 DefinedCPUArchData(IDTPTR, IDTablePtr);
 
+public void __attribute__((optnone)) HalDead(UInt count)
+{
+    if(0 == count)
+    {
+        HALT();
+    }
+
+    for(UInt i = 0; i < count; i++)
+    {
+        for(UInt j = 0; j < count; j++)
+        {
+            for(UInt k = 0; k < count; k++)
+            {
+                for(UInt l = 0; l < count; l++)
+                {
+                    for(UInt m = 0; m < count; m++)
+                    {
+                        for(UInt n = 0; n < count; n++)
+                        {
+                            ;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return;
+}
 public Addr HalVAddrToPAddr(Addr kvaddr)
 {
     if (kvaddr < KRNL_MAP_VIRTADDRESS_START || kvaddr > KRNL_MAP_VIRTADDRESS_END)
