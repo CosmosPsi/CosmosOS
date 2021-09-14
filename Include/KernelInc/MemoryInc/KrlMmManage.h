@@ -1,5 +1,5 @@
 /**********************************************************
-        物理内存管理文件KrlMmManage.h
+        物理内存管理头文件KrlMmManage.h
 ***********************************************************
                 彭东
 **********************************************************/
@@ -40,6 +40,31 @@
 #define  PAF_RV2_VAL (0)
 #define  PAF_INIT_PADRS (0)
 
+#define MA_TYPE_INIT 0
+#define MA_TYPE_HWAD 1
+#define MA_TYPE_KRNL 2
+#define MA_TYPE_PROC 3
+#define MA_TYPE_SHAR 4
+#define MEMAREA_MAX 4
+#define MA_HWAD_LSTART 0
+#define MA_HWAD_LSZ 0x2000000
+#define MA_HWAD_LEND (MA_HWAD_LSTART+MA_HWAD_LSZ-1)
+#define MA_KRNL_LSTART 0x2000000
+#define MA_KRNL_LSZ (0x400000000-0x2000000)
+#define MA_KRNL_LEND (MA_KRNL_LSTART+MA_KRNL_LSZ-1)
+#define MA_PROC_LSTART 0x400000000
+#define MA_PROC_LSZ (0xffffffffffffffff-0x400000000)
+#define MA_PROC_LEND (MA_PROC_LSTART+MA_PROC_LSZ)
+
+#define PABH_STUS_INIT 0
+#define PABH_STUS_ONEM 1
+#define PABH_STUS_DIVP 2
+#define PABH_STUS_DIVM 3
+
+#define MSPLMER_ARR_LMAX 52
+#define MSPLMER_ARR_BMAX 11
+#define MSPLMER_ARR_OMAX 9
+
 //PMSAD标志
 typedef struct PMSADFLAGS
 {
@@ -76,6 +101,142 @@ typedef struct PMSAD
 	void* BlockLink;//8
 }__attribute__((packed)) PMSAD;//16+24
 
+typedef struct MLOCK
+{
+    SPinLock Locks;
+    //SEM
+}MLock;
+
+//Physical memory space area
+typedef struct PHYMSPACEAREA
+{
+    U32 Type;
+    U32 SubType;
+    U32 DevType;
+    U32 Flags;
+    U32 Status;
+    U64 Start;
+    U64 Size;
+    U64 End;
+    U64 ResvMemStart;
+    U64 ResvMemEnd;
+    void* Pri;
+    void* Ext;
+}PHYMSPaceArea;
+
+//Physical Address Block Head List 
+typedef struct PABHLIST
+{
+	MLock Lock;
+	U32  Status;
+	UInt Order;
+	UInt InOrderPmsadNR;
+	UInt FreePmsadNR;
+	UInt PmsadNR;
+	UInt AllocCount;
+	UInt FreeCount;
+	List FreeLists;
+	List AllocLists;
+	List OveLists;
+}PABHList;
+
+//Memory Splitting and Merging
+
+typedef struct MSPLITMER
+{
+	MLock Lock;
+	U32  Status;
+	UInt MaxSMNR;
+	UInt PhySMNR;
+	UInt PreSMNR;
+	UInt SPlitNR;
+	UInt MerNR;
+	PABHList PAddrBlockArr[MSPLMER_ARR_LMAX];
+	PABHList OnePAddrBlock;
+}MSPlitMer;
+
+
+//0x400000000  0x40000000
+//Memory Area
+typedef struct MAREA
+{
+	List Lists;
+	MLock Lock;
+	UInt Status;
+	UInt Flags;
+	UInt Type;
+	UInt MaxPMSAD;
+	UInt AllocPMSAD;
+	UInt FreePMSAD;
+	UInt ResvPMSAD;
+	UInt HorizLine;
+	Addr LogicStart;
+	Addr LogicEnd;
+	UInt LogicSZ;
+	Addr EffectStart;
+	Addr EffectEnd;
+	UInt EffectSZ;
+	List AllPMSADLists;
+	UInt AllPMSADNR;
+	MSPlitMer MSPLMerData;
+	void* Priv;
+	void* Ext;
+	/*
+	*这个结构至少占用一个页面，当然
+	*也可以是多个连续的的页面，但是
+	*该结构从第一个页面的首地址开始
+	*存放，后面的空间用于存放实现分
+	*配算法的数据结构，这样每个区可
+	*方便的实现不同的分配策略，或者
+	*有天你觉得我的分配算法是渣渣，
+	*完全可以替换mafuncobjs_t结构
+	*中的指针，指向你的函数。
+	*/
+}MArea;
+
+
+
+/*
+Memory Node
+内存节点
+*/
+typedef struct MNode
+{
+    List Lists;
+	MLock Lock;
+	UInt Status;
+	UInt Flags;
+    UInt NodeID;
+    UInt CPUID;
+    Addr NodeMemAddrStart;
+    Addr NodeMemAddrEnd;
+    U64 NodeMemSize;
+    Addr NodeMemResvAddrStart;
+    Addr NodeMemResvAddrEnd;
+    U64 NodeMemResvSize;
+    MArea MAreaArr[MEMAREA_MAX];
+}MNode;
+
+typedef struct GMEMMANAGE
+{
+	MLock Lock;
+	U64 Status;
+	U64 Flags;
+	U64 MemroySZ;
+	U64 MaxPMSAD;
+	U64 FreePMSAD;
+	U64 AllocPMSAD;
+	U64 ResvPMSAD;
+	PHYMSPaceArea* PAreaStart;
+	U64 PAreaNR;
+	MNode* MNodeStart;
+	U64 MNodeNR;
+	void* privp;
+	void* extp;
+}GMemManage;
+
+
+
 KLINE Addr PMSADRetPAddr(PMSAD* msad)
 {
     if(NULL == msad)
@@ -94,5 +255,14 @@ KLINE Addr PMSADRetVAddr(PMSAD* msad)
     return HalPAddrToVAddr(PMSADRetPAddr(msad));
 }
 
-
+private void MLockInit(MLock* init);
+private void PHYMSPaceAreaInit(PHYMSPaceArea* init);
+private void PABHListInit(PABHList* init);
+private void MSPlitMerInit(MSPlitMer* init);
+private void MAreaInit(MArea* init);
+private void MNodeInit(MNode* init);
+private void GMemManageInit(GMemManage* init);
+public void KrlMmLocked(MLock* lock);
+public void KrlMmUnLock(MLock* lock);
+public Bool KrlMmManageInit();
 #endif
