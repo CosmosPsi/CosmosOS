@@ -281,7 +281,7 @@ private U32 Utf8ToUnicode(UTF8* utf, int* retuib);
 private U8* GetCharsInfo(DefGraph* kghp, U32 unicode, int* retchwx, int* retchhx, int* retlinb);
 public void PutPixOneChar(DefGraph* kghp, U32 unicode, Pixl pix);
 public void DRXPutPixOneChar(DefGraph* kghp, U32 unicode, Pixl pix);
-public void StringWrite(DefGraph* kghp, Char* buf);
+public void HalDefStringWrite(Char* buf);
 private void BGAWriteReg(U16 index, U16 data);
 private U16 BGAReadReg(U16 index);
 private Size BGARead(void* ghpdev, void* outp, Size rdsz);

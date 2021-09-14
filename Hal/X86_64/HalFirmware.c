@@ -511,12 +511,14 @@ public void DRXPutPixOneChar(DefGraph* kghp, U32 unicode, Pixl pix)
     return;
 }
 
-public void StringWrite(DefGraph* kghp, Char* buf)
+public void HalDefStringWrite(Char* buf)
 {
     int chinx = 0;
     int chretnext = 0;
     U32 uc = 0;
+    DefGraph* kghp = &kdftgh;
     Pixl pix = kghp->DefFontPX;
+    IF_NULL_RETURN(buf);
     while (buf[chinx] != 0)
     {
         uc = Utf8ToUnicode((UTF8* )(&buf[chinx]), &chretnext);
