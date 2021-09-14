@@ -17,6 +17,7 @@ private Char* FmtStrCopy(Char* buf, Char* str);
 private void FmtCore(Char* buf, const Char* fmt, VAList args);
 public void KrlPrint(const Char* fmt, ...);
 public void KrlLog(UInt level, const Char* fmt, ...);
+public void KrlErrorCrashDead(const Char* fmt, ...);
 public Bool KrlLogInit();
 
 #endif

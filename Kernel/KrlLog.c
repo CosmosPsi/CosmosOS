@@ -4,6 +4,7 @@
                 彭东 
 ****************************************************************/
 #include "BaseType.h"
+#include "HalCPU.h"
 #include "HalSync.h"
 #include "HalFirmware.h"
 #include "KrlLog.h"
@@ -84,7 +85,7 @@ public void KrlPrint(const Char* fmt, ...)
 	HalCliFlags(&cpuflg);
 	VA_START(ap, fmt);
 	FmtCore(buf, fmt, ap);
-	StringWrite(&kdftgh, buf);
+	HalDefStringWrite(buf);
 	VA_END(ap);
 	HalStiFlags(&cpuflg);
 	return;
@@ -102,9 +103,24 @@ public void KrlLog(UInt level, const Char* fmt, ...)
 	HalCliFlags(&cpuflg);
 	VA_START(ap, fmt);
 	FmtCore(buf, fmt, ap);
-	StringWrite(&kdftgh, buf);
+	HalDefStringWrite(buf);
 	VA_END(ap);
 	HalStiFlags(&cpuflg);
+    return;
+}
+
+public void KrlErrorCrashDead(const Char* fmt, ...)
+{
+    CPUFlg cpuflg;
+	Char buf[512];
+	VAList ap;
+	HalCliFlags(&cpuflg);
+	VA_START(ap, fmt);
+	FmtCore(buf, fmt, ap);
+	HalDefStringWrite(buf);
+	VA_END(ap);
+	HalStiFlags(&cpuflg);
+    HalDead(0);
     return;
 }
 
