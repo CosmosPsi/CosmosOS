@@ -48,6 +48,8 @@ typedef SInt DrvStus;
 #define ALIGN(x, a)     (((x) + (a) - 1) & ~((a) - 1))
 
 #define IF_NULL_RETURN(ptr) if(NULL == ptr){return;}
+#define IF_NULL_DEAD(ptr) if(NULL == ptr){KrlErrorCrashDead("OBJ PTR IS NULL!!");}
+
 #define INIT_OBJOFPTR_ZERO(ptr) HalMemSet((void*)ptr, 0, sizeof(typeof(*ptr)))
 
 #endif
