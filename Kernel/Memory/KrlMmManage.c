@@ -4,6 +4,7 @@
                 彭东
 **********************************************************/
 #include "BaseType.h"
+#include "List.h"
 #include "HalSync.h"
 #include "HalCPU.h"
 #include "KrlMmManage.h"
@@ -19,6 +20,15 @@ private void PHYMSPaceAreaInit(PHYMSPaceArea* init)
 {
     IF_NULL_RETURN(init);
     INIT_OBJOFPTR_ZERO(init);
+    return;
+}
+
+private void PMSADInit(PMSAD* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ListInit(&init->Lists);
+    SPinLockInit(&init->Lock);
     return;
 }
 
@@ -93,6 +103,22 @@ public void KrlMmUnLock(MLock* lock)
     HalUnSPinLock(&lock->Locks);
     return;
 }
+
+public Bool KrlMmPHYMSPaceAreaInit()
+{
+    return TRUE;
+}
+
+public Bool KrlMmMAreaInit()
+{
+    return TRUE;
+}
+
+public Bool KrlMmMNodeInit()
+{
+    return TRUE;
+}
+
 
 public Bool KrlMmManageInit()
 {
