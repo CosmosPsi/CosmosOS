@@ -108,6 +108,7 @@ typedef struct MLOCK
 }MLock;
 
 //Physical memory space area
+//物理内存空间区域
 typedef struct PHYMSPACEAREA
 {
     U32 Type;
@@ -125,6 +126,7 @@ typedef struct PHYMSPACEAREA
 }PHYMSPaceArea;
 
 //Physical Address Block Head List 
+//物理地址块头链
 typedef struct PABHLIST
 {
 	MLock Lock;
@@ -141,7 +143,7 @@ typedef struct PABHLIST
 }PABHList;
 
 //Memory Splitting and Merging
-
+//内存拆分合并结构
 typedef struct MSPLITMER
 {
 	MLock Lock;
@@ -158,6 +160,7 @@ typedef struct MSPLITMER
 
 //0x400000000  0x40000000
 //Memory Area
+//物理内存区
 typedef struct MAREA
 {
 	List Lists;
@@ -216,7 +219,8 @@ typedef struct MNode
     U64 NodeMemResvSize;
     MArea MAreaArr[MEMAREA_MAX];
 }MNode;
-
+//Global Memory Manage
+//全局内存管理
 typedef struct GMEMMANAGE
 {
 	MLock Lock;
