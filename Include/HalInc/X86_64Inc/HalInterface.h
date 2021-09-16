@@ -5,7 +5,7 @@
 **********************************************************/
 #ifndef _HALINTERFACEHEAD
 #define _HALINTERFACEHEAD
-PMSAD* HalExPGetKrlOnePMSAD();
-Bool HalExPPutKrlOnePMSAD(PMSAD* msad);
-
+public PMSAD* HalExPGetKrlOnePMSAD();
+public Bool HalExPPutKrlOnePMSAD(PMSAD* msad);
+public MachStartInfo* HalExPGetMachStartInfoAddr();
 #endif

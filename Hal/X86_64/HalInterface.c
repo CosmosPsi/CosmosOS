@@ -6,7 +6,8 @@
 **********************************************************/
 #include "BaseType.h"
 #include "KrlMmManage.h"
-
+#include "HalBoot.h"
+#include "HalInterface.h"
 public PMSAD* HalExPGetKrlOnePMSAD()
 {
     return NULL;
@@ -15,4 +16,9 @@ public PMSAD* HalExPGetKrlOnePMSAD()
 public Bool HalExPPutKrlOnePMSAD(PMSAD* msad)
 {
     return FALSE;
+}
+
+public MachStartInfo* HalExPGetMachStartInfoAddr()
+{
+    return HalGetMachStartInfoAddr()
 }
