@@ -88,12 +88,15 @@ typedef struct MACHSTARTINFO
     U64   E820PAddr;
     U64   E820NR;
     U64   E820SZ;
+    U64   E820Curr;
     U64   PMSPaceAreaPAddr;
     U64   PMSPaceAreaNR;
     U64   PMSPaceAreaSZ;
+    U64   PMSPaceAreaCurr;
     U64   MNodePAddr;
     U64   MNodeNR;
     U64   MNodeSZ;
+    U64   MNodeCurr;
     U64   TDireArrPAddr;
     U64   SubDireLen;
     U64   MAPPhyMemSZ;
