@@ -8,4 +8,5 @@
 public PMSAD* HalExPGetKrlOnePMSAD();
 public Bool HalExPPutKrlOnePMSAD(PMSAD* msad);
 public MachStartInfo* HalExPGetMachStartInfoAddr();
+public Addr HalExPBootAllocMem(Size size);
 #endif

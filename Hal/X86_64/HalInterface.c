@@ -22,3 +22,8 @@ public MachStartInfo* HalExPGetMachStartInfoAddr()
 {
     return HalGetMachStartInfoAddr();
 }
+
+public Addr HalExPBootAllocMem(Size size)
+{
+    return HalBootAllocMem(size);
+}
