@@ -20,5 +20,5 @@ public Bool HalExPPutKrlOnePMSAD(PMSAD* msad)
 
 public MachStartInfo* HalExPGetMachStartInfoAddr()
 {
-    return HalGetMachStartInfoAddr()
+    return HalGetMachStartInfoAddr();
 }
