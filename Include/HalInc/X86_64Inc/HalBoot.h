@@ -150,6 +150,7 @@ typedef struct KIMAGEINFO
     U64 Rescv;
 }KImageInfo;
 public MachStartInfo* HalGetMachStartInfoAddr();
+public Addr HalBootAllocMem(Size size);
 private Bool HalBootInit();
 public void HalBootStart();
 #endif
