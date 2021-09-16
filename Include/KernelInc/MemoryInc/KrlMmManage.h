@@ -65,6 +65,16 @@
 #define MSPLMER_ARR_BMAX 11
 #define MSPLMER_ARR_OMAX 9
 
+#define PMSA_T_OSAPUSERRAM 1
+#define PMSA_T_RESERVRAM 2
+#define PMSA_T_HWUSERRAM 8
+#define PMSA_T_ARACONRAM 0xf
+#define PMSA_T_BUGRAM 0xff
+#define PMSA_F_X86_32 (1<<0)
+#define PMSA_F_X86_64 (1<<1)
+#define PMSA_F_ARM_32 (1<<2)
+#define PMSA_F_ARM_64 (1<<3)
+#define PMSA_F_HAL_MASK 0xff
 //PMSAD标志
 typedef struct PMSADFLAGS
 {
@@ -268,5 +278,11 @@ private void MNodeInit(MNode* init);
 private void GMemManageInit(GMemManage* init);
 public void KrlMmLocked(MLock* lock);
 public void KrlMmUnLock(MLock* lock);
+private Bool NewOnePHYMSPaceArea(E820Map* e820, PHYMSPaceArea* area);
+private void PHYMSPaceAreaSwap(PHYMSPaceArea *s, PHYMSPaceArea *d);
+private void PHYMSPaceAreaSort(PHYMSPaceArea* area, U64 nr);
+public Bool KrlMmPHYMSPaceAreaInit();
+public Bool KrlMmMAreaInit();
+public Bool KrlMmMNodeInit();
 public Bool KrlMmManageInit();
 #endif

@@ -7,6 +7,8 @@
 #include "List.h"
 #include "HalSync.h"
 #include "HalCPU.h"
+#include "HalBoot.h"
+#include "HalInterface.h"
 #include "KrlMmManage.h"
 
 private void MLockInit(MLock* init)
@@ -104,8 +106,99 @@ public void KrlMmUnLock(MLock* lock)
     return;
 }
 
+private Bool NewOnePHYMSPaceArea(E820Map* e820, PHYMSPaceArea* area)
+{
+    U32 type = 0, subtype = 0;
+    IF_NULL_RETURN_FALSE(e820);
+    IF_NULL_RETURN_FALSE(area);
+    
+    PHYMSPaceAreaInit(area);
+    
+    switch (e820->Type)
+    {
+    case RAM_USABLE:
+        type = PMSA_T_OSAPUSERRAM;
+        subtype = RAM_USABLE;
+        break;
+    case RAM_RESERV:
+        type = PMSA_T_RESERVRAM;
+        subtype = RAM_RESERV;
+        break;
+    case RAM_ACPIREC:
+        type = PMSA_T_HWUSERRAM;
+        subtype = RAM_ACPIREC;
+        break;
+    case RAM_ACPINVS:
+        type = PMSA_T_HWUSERRAM;
+        subtype = RAM_ACPINVS;
+        break;
+    case RAM_AREACON:
+        type = PMSA_T_BUGRAM;
+        subtype = RAM_AREACON;
+        break;
+    default:
+        break;
+    }
+    if (0 == type)
+    {
+        return FALSE;
+    }
+
+    area->Type = type;
+    area->SubType = subtype;
+    area->Flags = PMSA_F_X86_64;
+    area->Start = e820->Addr;
+    area->Size = e820->Size;
+    area->End = e820->Addr + e820->Size - 1;
+    return TRUE;
+}
+
+private void PHYMSPaceAreaSwap(PHYMSPaceArea *s, PHYMSPaceArea *d)
+{
+    PHYMSPaceArea tmp;
+    PHYMSPaceAreaInit(&tmp);
+    HalMemCopy(s, &tmp, sizeof(PHYMSPaceArea));
+    HalMemCopy(d, s, sizeof(PHYMSPaceArea));
+    HalMemCopy(&tmp, d, sizeof(PHYMSPaceArea));
+    return;
+}
+
+private void PHYMSPaceAreaSort(PHYMSPaceArea* area, U64 nr)
+{
+    U64 i, j, k = nr - 1;
+    for(j = 0; j < k; j++)
+    {
+        for(i = 0; i < k - j; i++)
+        {
+            if(area[i].Start > area[i + 1].Start)
+            {
+                PHYMSPaceAreaSwap(&area[i], &area[i + 1]);
+            }
+        }
+    }
+    return;
+}
+
 public Bool KrlMmPHYMSPaceAreaInit()
 {
+    PHYMSPaceArea* area = NULL;
+    E820Map* e820 = NULL;
+    MachStartInfo* msinfo = NULL;
+    U64 areanr= 0;
+    msinfo = HalExPGetMachStartInfoAddr();
+    IF_NULL_DEAD(msinfo);
+    area = HalExPBootAllocMem((Size)(msinfo->E820NR * sizeof(PHYMSPaceArea)));
+    IF_NULL_RETURN_FALSE(area);
+    for ( ;e820 != NULL; areanr++)
+    {
+        e820 = HalExPBootGetNextE820();
+        NewOnePHYMSPaceArea(e820, &area[areanr]);
+    }
+    PHYMSPaceAreaSort(area, areanr);
+    msinfo->PMSPaceAreaPAddr = HalVAddrToPAddr((Addr)area);
+    msinfo->PMSPaceAreaNR = areanr;
+    msinfo->PMSPaceAreaCurr = 0;
+    msinfo->PMSPaceAreaSZ = areanr * (U64)(sizeof(PHYMSPaceArea));
     return TRUE;
 }
 
@@ -122,5 +215,6 @@ public Bool KrlMmMNodeInit()
 
 public Bool KrlMmManageInit()
 {
+    KrlMmPHYMSPaceAreaInit();
     return TRUE;
 }
