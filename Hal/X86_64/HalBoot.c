@@ -13,6 +13,11 @@
 #include "HalInterrupt.h"
 #include "KrlInit.h"
 
+public MachStartInfo* HalGetMachStartInfoAddr()
+{
+    return (MachStartInfo*)HalPAddrToVAddr((Addr)MSI_PADR);
+}
+
 private Bool HalBootInit()
 {
     HalFirmwareInit();    
