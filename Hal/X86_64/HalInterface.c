@@ -27,3 +27,8 @@ public Addr HalExPBootAllocMem(Size size)
 {
     return HalBootAllocMem(size);
 }
+
+public E820Map* HalExPBootGetNextE820()
+{
+    return HalBootGetNextE820();
+}
