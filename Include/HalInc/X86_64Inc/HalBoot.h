@@ -154,6 +154,7 @@ typedef struct KIMAGEINFO
 }KImageInfo;
 public MachStartInfo* HalGetMachStartInfoAddr();
 public Addr HalBootAllocMem(Size size);
+public E820Map* HalBootGetNextE820();
 private Bool HalBootInit();
 public void HalBootStart();
 #endif

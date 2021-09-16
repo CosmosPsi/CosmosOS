@@ -39,6 +39,26 @@ public Addr HalBootAllocMem(Size size)
     return HalPAddrToVAddr(ret);
 }
 
+public E820Map* HalBootGetNextE820()
+{
+    MachStartInfo* msinfo = NULL;
+    E820Map* ret = NULL; 
+    E820Map* start = NULL; 
+    
+    msinfo = HalExPGetMachStartInfoAddr();
+    IF_NULL_DEAD(msinfo);
+
+    start = (E820Map*)HalPAddrToVAddr((Addr)msinfo->E820PAddr);
+    if(NULL == start ||  msinfo->E820Curr >= msinfo->E820NR)
+    {
+        return NULL;
+    }
+    
+    ret = &start[msinfo->E820Curr];
+    msinfo->E820Curr++;
+    return ret;
+}
+
 private Bool HalBootInit()
 {
     HalFirmwareInit();    
