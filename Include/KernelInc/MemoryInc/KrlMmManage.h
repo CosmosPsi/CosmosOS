@@ -75,6 +75,11 @@
 #define PMSA_F_ARM_32 (1<<2)
 #define PMSA_F_ARM_64 (1<<3)
 #define PMSA_F_HAL_MASK 0xff
+
+#define DefinedMEMData(vartype,varname) __attribute__((section(".mem.data"))) vartype varname
+
+#define PMSADDIRE_MAX (1 << 18)
+#define PMSADDIRE_INDEX_BITS (30)
 //PMSAD标志
 typedef struct PMSADFLAGS
 {
@@ -207,6 +212,21 @@ typedef struct MAREA
 	*/
 }MArea;
 
+//PMSAD 目录项
+typedef struct PMSADDIRE
+{
+    union
+    {
+        PMSAD* DireStart;
+        U64 Entry;
+    }__attribute__((packed));
+}__attribute__((packed)) PMSADDire;
+
+//PMSAD 目录数组
+typedef struct PMSADDIREARR
+{
+    PMSADDire PMSADEArr[PMSADDIRE_MAX];
+}PMSADDireArr;
 
 
 /*
@@ -228,6 +248,7 @@ typedef struct MNode
     Addr NodeMemResvAddrEnd;
     U64 NodeMemResvSize;
     MArea MAreaArr[MEMAREA_MAX];
+    PMSADDireArr PMSADDir;
 }MNode;
 //Global Memory Manage
 //全局内存管理
@@ -267,6 +288,44 @@ KLINE Addr PMSADRetVAddr(PMSAD* msad)
         return NULL;
     }	
     return HalPAddrToVAddr(PMSADRetPAddr(msad));
+}
+
+
+KLINE GMemManage* KrlMmGetGMemManageAddr()
+{
+    return &GMemManageData;
+}
+
+KLINE UInt PMASDDireIndex(U64 phyaddr)
+{
+    return (UInt)(phyaddr >> PMSADDIRE_INDEX_BITS);
+}
+
+KLINE MNode* PHYAddrRetMNode(U64 phyaddr)
+{
+    GMemManage* gmm = NULL;
+    MNode* node = NULL;
+    gmm = KrlMmGetGMemManageAddr();
+    for(U64 i = 0; i < gmm->MNodeNR; i++)
+    {
+        node = &gmm->MNodeStart[i];
+        if(phyaddr < node->NodeMemAddrEnd && phyaddr > node->NodeMemAddrStart)
+        {
+            return node;
+        }
+    }
+    return NULL; 
+}
+
+KLINE PMSADDire* PHYAddrRetPMSADDire(U64 phyaddr)
+{
+    PMSADDire* dire = NULL;
+    MNode* node = NULL;
+    UInt index = PMSADDIRE_MAX; 
+    node = PHYAddrRetMNode(phyaddr);
+    IF_NULL_RETURN_NULL(node);
+    index = PMASDDireIndex(phyaddr);
+    return &(node->PMSADDir.PMSADEArr[index]);
 }
 
 private void MLockInit(MLock* init);

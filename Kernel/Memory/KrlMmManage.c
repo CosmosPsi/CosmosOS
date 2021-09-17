@@ -11,6 +11,8 @@
 #include "HalInterface.h"
 #include "KrlMmManage.h"
 
+DefinedMEMData(GMemManage, GMemManageData);
+
 private void MLockInit(MLock* init)
 {
     IF_NULL_RETURN(init);
@@ -247,6 +249,7 @@ public Bool KrlMmMNodeInit()
 
 public Bool KrlMmManageInit()
 {
+    GMemManageInit(&GMemManageData);
     KrlMmPHYMSPaceAreaInit();
     KrlMmMNodeInit();
     return TRUE;
