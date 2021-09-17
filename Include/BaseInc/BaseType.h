@@ -50,6 +50,7 @@ typedef SInt DrvStus;
 #define IF_NULL_RETURN(ptr) if(NULL == ptr){return;}
 #define IF_NULL_RETURN_FALSE(ptr) if(NULL == ptr){return FALSE;}
 #define IF_NULL_RETURN_NULL(ptr) if(NULL == ptr){return NULL;}
+#define IF_NULL_RETURN_ZERO(ptr) if(NULL == ptr){return 0;}
 #define IF_NULL_DEAD(ptr) if(NULL == ptr){KrlErrorCrashDead("OBJ PTR IS NULL!!");}
 
 #define INIT_OBJOFPTR_ZERO(ptr) HalMemSet((void*)ptr, 0, sizeof(typeof(*ptr)))
