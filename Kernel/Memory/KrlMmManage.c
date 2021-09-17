@@ -207,8 +207,40 @@ public Bool KrlMmMAreaInit()
     return TRUE;
 }
 
+private Bool DefaultMNodeInit()
+{
+    MNode* node = NULL;
+    MachStartInfo* msinfo = NULL;
+    
+    msinfo = HalExPGetMachStartInfoAddr();
+    IF_NULL_DEAD(msinfo);
+    
+    node = (MNode*)HalExPBootAllocMem((Size)(sizeof(MNode)));
+    IF_NULL_DEAD(node);
+    
+    MNodeInit(node);
+    node->MAreaArr[MA_TYPE_HWAD].Type = MA_TYPE_HWAD;
+    node->MAreaArr[MA_TYPE_HWAD].LogicStart = MA_HWAD_LSTART;
+    node->MAreaArr[MA_TYPE_HWAD].LogicEnd = MA_HWAD_LEND;
+    node->MAreaArr[MA_TYPE_HWAD].LogicSZ = MA_HWAD_LSZ;
+    
+    node->MAreaArr[MA_TYPE_KRNL].Type = MA_TYPE_KRNL;
+    node->MAreaArr[MA_TYPE_KRNL].LogicStart = MA_KRNL_LSTART;
+    node->MAreaArr[MA_TYPE_KRNL].LogicEnd = MA_KRNL_LEND;
+    node->MAreaArr[MA_TYPE_KRNL].LogicSZ = MA_KRNL_LSZ;
+
+    node->MAreaArr[MA_TYPE_PROC].Type = MA_TYPE_PROC;
+    node->MAreaArr[MA_TYPE_PROC].LogicStart = MA_PROC_LSTART;
+    node->MAreaArr[MA_TYPE_PROC].LogicEnd = MA_PROC_LEND;
+    node->MAreaArr[MA_TYPE_PROC].LogicSZ = MA_PROC_LSZ;
+    
+    node->MAreaArr[MA_TYPE_SHAR].Type = MA_TYPE_SHAR;
+    return TRUE;
+}
+
 public Bool KrlMmMNodeInit()
 {
+    DefaultMNodeInit();
     return TRUE;
 }
 
@@ -216,5 +248,6 @@ public Bool KrlMmMNodeInit()
 public Bool KrlMmManageInit()
 {
     KrlMmPHYMSPaceAreaInit();
+    KrlMmMNodeInit();
     return TRUE;
 }

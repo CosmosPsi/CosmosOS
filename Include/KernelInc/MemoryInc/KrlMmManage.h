@@ -45,7 +45,7 @@
 #define MA_TYPE_KRNL 2
 #define MA_TYPE_PROC 3
 #define MA_TYPE_SHAR 4
-#define MEMAREA_MAX 4
+#define MEMAREA_MAX 5
 #define MA_HWAD_LSTART 0
 #define MA_HWAD_LSZ 0x2000000
 #define MA_HWAD_LEND (MA_HWAD_LSTART+MA_HWAD_LSZ-1)
@@ -283,6 +283,7 @@ private void PHYMSPaceAreaSwap(PHYMSPaceArea *s, PHYMSPaceArea *d);
 private void PHYMSPaceAreaSort(PHYMSPaceArea* area, U64 nr);
 public Bool KrlMmPHYMSPaceAreaInit();
 public Bool KrlMmMAreaInit();
+private Bool DefaultMNodeInit();
 public Bool KrlMmMNodeInit();
 public Bool KrlMmManageInit();
 #endif
