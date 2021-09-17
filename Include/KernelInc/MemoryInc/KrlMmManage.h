@@ -296,7 +296,7 @@ KLINE GMemManage* KrlMmGetGMemManageAddr()
     return &GMemManageData;
 }
 
-KLINE UInt PMASDDireIndex(U64 phyaddr)
+KLINE UInt PMSADDireIndex(U64 phyaddr)
 {
     return (UInt)(phyaddr >> PMSADDIRE_INDEX_BITS);
 }
@@ -324,8 +324,18 @@ KLINE PMSADDire* PHYAddrRetPMSADDire(U64 phyaddr)
     UInt index = PMSADDIRE_MAX; 
     node = PHYAddrRetMNode(phyaddr);
     IF_NULL_RETURN_NULL(node);
-    index = PMASDDireIndex(phyaddr);
+    index = PMSADDireIndex(phyaddr);
     return &(node->PMSADDir.PMSADEArr[index]);
+}
+
+KLINE Bool PMSADDireIsHave(PMSADDire* dire)
+{
+    IF_NULL_DEAD(dire);
+    if(0 < dire->Entry)
+    {
+        return TRUE;
+    }
+    return FALSE;
 }
 
 private void MLockInit(MLock* init);
