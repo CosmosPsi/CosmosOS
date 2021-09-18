@@ -80,6 +80,7 @@
 
 #define PMSADDIRE_MAX (1 << 18)
 #define PMSADDIRE_INDEX_BITS (30)
+#define PMSADDIRE_SIZE (1 << PMSADDIRE_INDEX_BITS)
 //PMSAD标志
 typedef struct PMSADFLAGS
 {
@@ -243,6 +244,8 @@ typedef struct MNode
     UInt CPUID;
     Addr NodeMemAddrStart;
     Addr NodeMemAddrEnd;
+    PHYMSPaceArea* PMSAreaPtr;
+    U64 PMSAreaNR;
     U64 NodeMemSize;
     Addr NodeMemResvAddrStart;
     Addr NodeMemResvAddrEnd;
@@ -299,6 +302,11 @@ KLINE GMemManage* KrlMmGetGMemManageAddr()
 KLINE UInt PMSADDireIndex(U64 phyaddr)
 {
     return (UInt)(phyaddr >> PMSADDIRE_INDEX_BITS);
+}
+
+KLINE UInt PMSADIndex(U64 phyaddr)
+{
+    return (UInt)((phyaddr & (PMSADDIRE_SIZE -1)) >> PAGPHYADR_SZLSHBIT);
 }
 
 KLINE MNode* PHYAddrRetMNode(U64 phyaddr)

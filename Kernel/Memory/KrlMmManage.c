@@ -181,14 +181,189 @@ private void PHYMSPaceAreaSort(PHYMSPaceArea* area, U64 nr)
     return;
 }
 
+private Bool SetPMSADInMNodeMAreaInfo(MNode* node, PMSAD* msad)
+{
+    Addr paddr = 0;   
+    IF_NULL_RETURN_FALSE(node);
+    IF_NULL_RETURN_FALSE(msad);
+
+    paddr = PMSADRetPAddr(msad);
+
+	for(U64 i = 0; i < MEMAREA_MAX; i++)
+    {
+        if((node->MAreaArr[i].LogicStart <= paddr) && (paddr < node->MAreaArr[i].LogicEnd))
+        {
+            switch (node->MAreaArr[i].Type)
+            {
+            case MA_TYPE_HWAD:
+            {
+                msad->CountFlags.AreaTypeBit = MF_MARTY_HWD;
+                return TRUE;
+            }
+            case MA_TYPE_KRNL:
+            {
+                msad->CountFlags.AreaTypeBit = MF_MARTY_KRL;
+                return TRUE;
+            }
+            case MA_TYPE_PROC:
+            {
+                msad->CountFlags.AreaTypeBit = MF_MARTY_PRC;
+                return TRUE;
+            }
+            case MA_TYPE_SHAR:
+            {
+                msad->CountFlags.AreaTypeBit = MF_MARTY_SHD;
+                return TRUE;
+            }
+            default:
+            {
+                return FALSE;
+            }
+            }
+        }   
+	}
+    return FALSE;
+}
+
+private PMSAD* NewOnePMSAD(MNode* node, PHYMSPaceArea* area, PMSADDire* dire, U64 paddr)
+{
+    PhyAddrFlags* tmp = NULL;
+    PMSAD* msadstart = NULL;
+    UInt index = 0; 
+    IF_NULL_RETURN_NULL(node);
+    IF_NULL_RETURN_NULL(area);
+    IF_NULL_RETURN_NULL(dire);
+
+    msadstart = dire->DireStart;
+    IF_NULL_RETURN_NULL(msadstart);
+    
+    index = PMSADIndex(paddr);
+    
+    PMSADInit(&msadstart[index]);
+    PhyAddrFlags* tmp = (PhyAddrFlags*)(&paddr);
+	msadstart[index].PhyAddr.PAddrBit = tmp->PAddrBit;
+    
+    SetPMSADInMNodeMAreaInfo(node, &msadstart[index]);
+    return &msadstart[index];
+}
+
+private UInt PMSADInitOnPHYMSPaceArea(MNode* node, PMSADDire* dire, PHYMSPaceArea* area, U64 start, U64 end)
+{
+    UInt count = 0;
+    PMSAD* pstart = NULL;
+    IF_NULL_RETURN_ZERO(node);
+    IF_NULL_RETURN_ZERO(dire);
+    IF_NULL_RETURN_ZERO(area);
+    for(U64 paddr = area->Start; (paddr + (MSA_SIZE - 1)) < area->End; paddr += MSA_SIZE)
+    {
+        if((start <= paddr) && (paddr < end))
+        {
+            NewOnePMSAD(node, area, dire, paddr);
+            count++;
+        }
+        
+    }
+    return count;
+}
+
+private PMSAD* PMSADDireIsNeedAllocMemory(U64 start, U64 end)
+{
+    PHYMSPaceArea* pmsarea = NULL;
+    GMemManage* gmm = NULL;
+    
+    gmm = KrlMmGetGMemManageAddr();
+    IF_NULL_RETURN_NULL(gmm);
+
+    pmsarea = gmm->PAreaStart;
+    for(U64 i = 0; i < gmm->PAreaNR; i++)
+    {
+        if(PMSA_T_OSAPUSERRAM == pmsarea[i].Type)
+        {
+            for(U64 paddr = pmsarea[i]->Start; (paddr + (MSA_SIZE - 1)) < pmsarea[i]->End; paddr += MSA_SIZE)
+            {
+                if((start <= paddr) && (paddr < end))
+                {
+                    return HalExPBootAllocMem((Size)((PMSADDIRE_SIZE >> PAGPHYADR_SZLSHBIT) * sizeof(PMSAD)));
+                }
+            }
+        }
+    }
+    return NULL;
+}
+
+private Bool PMSADInitOnMNode(MNode* node)
+{
+    PHYMSPaceArea* pmsarea = NULL;
+    GMemManage* gmm = NULL;
+    PMSADDire* dire = NULL;
+    PMSAD* msad = NULL;
+    U64 addrstart = 0;
+    U64 addrend = 0;
+    UInt msadnr = 0;
+
+    IF_NULL_RETURN_FALSE(node);
+    gmm = KrlMmGetGMemManageAddr();
+    IF_NULL_DEAD(gmm);
+     
+    pmsarea = gmm->PAreaStart;
+    for(U64 d = 0; d < PMSADDIRE_MAX; d++)
+    {
+        dire = &node->PMSADDir.PMSADEArr[d];
+        addrstart = d * PMSADDIRE_SIZE;
+        addrend = addrstart + PMSADDIRE_SIZE;
+
+        msad = PMSADDireIsNeedAllocMemory(addrstart, addrend);
+        if(NULL == msad)
+        {
+            continue;
+        }
+
+        dire->DireStart = msad;
+        
+        for(U64 i = 0; i < gmm->PAreaNR; i++)
+        {
+            if(PMSA_T_OSAPUSERRAM == pmsarea[i].Type)
+            {
+                msadnr += PMSADInitOnPHYMSPaceArea(node, dire, &pmsarea[i], addrstart, addrend);
+            }
+        }
+    }
+    return TRUE;
+}
+
+public Bool KrlMmPMSADInit()
+{
+    PHYMSPaceArea* pmsarea = NULL;
+    GMemManage* gmm = NULL;
+    MNode* node = NULL;
+    UInt msadnr = 0;
+
+    gmm = KrlMmGetGMemManageAddr();
+    IF_NULL_DEAD(gmm);
+    
+    node = gmm->MNodeStart;
+    for(U64 i = 0; i < gmm->MNodeNR; i++)
+    {
+        PMSADInitOnMNode(&node[i]);
+    }
+    
+    return TRUE;
+}
+
 public Bool KrlMmPHYMSPaceAreaInit()
 {
     PHYMSPaceArea* area = NULL;
     E820Map* e820 = NULL;
+    GMemManage* gmm = NULL;
     MachStartInfo* msinfo = NULL;
     U64 areanr= 0;
+
     msinfo = HalExPGetMachStartInfoAddr();
     IF_NULL_DEAD(msinfo);
+    
+    gmm = KrlMmGetGMemManageAddr();
+    IF_NULL_DEAD(gmm);
+
     area = HalExPBootAllocMem((Size)(msinfo->E820NR * sizeof(PHYMSPaceArea)));
     IF_NULL_RETURN_FALSE(area);
     for ( ;e820 != NULL; areanr++)
@@ -201,6 +376,8 @@ public Bool KrlMmPHYMSPaceAreaInit()
     msinfo->PMSPaceAreaNR = areanr;
     msinfo->PMSPaceAreaCurr = 0;
     msinfo->PMSPaceAreaSZ = areanr * (U64)(sizeof(PHYMSPaceArea));
+    gmm->PAreaStart = area;
+    gmm->PAreaNR = areanr; 
     return TRUE;
 }
 
@@ -213,10 +390,14 @@ private Bool DefaultMNodeInit()
 {
     MNode* node = NULL;
     MachStartInfo* msinfo = NULL;
-    
+    GMemManage* gmm = NULL;
+
     msinfo = HalExPGetMachStartInfoAddr();
     IF_NULL_DEAD(msinfo);
     
+    gmm = KrlMmGetGMemManageAddr();
+    IF_NULL_DEAD(gmm);
+
     node = (MNode*)HalExPBootAllocMem((Size)(sizeof(MNode)));
     IF_NULL_DEAD(node);
     
@@ -237,6 +418,13 @@ private Bool DefaultMNodeInit()
     node->MAreaArr[MA_TYPE_PROC].LogicSZ = MA_PROC_LSZ;
     
     node->MAreaArr[MA_TYPE_SHAR].Type = MA_TYPE_SHAR;
+
+    node->PMSAreaPtr = gmm->PAreaStart;
+    node->PMSAreaNR = gmm->PAreaNR;
+
+    gmm->MNodeStart = node;
+    gmm->MNodeNR = 1;
+
     return TRUE;
 }
 
@@ -252,5 +440,6 @@ public Bool KrlMmManageInit()
     GMemManageInit(&GMemManageData);
     KrlMmPHYMSPaceAreaInit();
     KrlMmMNodeInit();
+    KrlMmPMSADInit();
     return TRUE;
 }
