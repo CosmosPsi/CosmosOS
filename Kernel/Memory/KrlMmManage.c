@@ -258,10 +258,12 @@ private UInt PMSADInitOnPHYMSPaceArea(MNode* node, PMSADDire* dire, PHYMSPaceAre
     {
         if((start <= paddr) && (paddr < end))
         {
-            NewOnePMSAD(node, area, dire, paddr);
-            count++;
+            pstart = NewOnePMSAD(node, area, dire, paddr);
+            if(NULL != pstart)
+            {
+                count++;
+            }
         }
-        
     }
     return count;
 }

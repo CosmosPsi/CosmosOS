@@ -348,6 +348,7 @@ KLINE Bool PMSADDireIsHave(PMSADDire* dire)
 
 private void MLockInit(MLock* init);
 private void PHYMSPaceAreaInit(PHYMSPaceArea* init);
+private void PMSADInit(PMSAD* init);
 private void PABHListInit(PABHList* init);
 private void MSPlitMerInit(MSPlitMer* init);
 private void MAreaInit(MArea* init);
@@ -358,6 +359,12 @@ public void KrlMmUnLock(MLock* lock);
 private Bool NewOnePHYMSPaceArea(E820Map* e820, PHYMSPaceArea* area);
 private void PHYMSPaceAreaSwap(PHYMSPaceArea *s, PHYMSPaceArea *d);
 private void PHYMSPaceAreaSort(PHYMSPaceArea* area, U64 nr);
+private Bool SetPMSADInMNodeMAreaInfo(MNode* node, PMSAD* msad);
+private PMSAD* NewOnePMSAD(MNode* node, PHYMSPaceArea* area, PMSADDire* dire, U64 paddr);
+private UInt PMSADInitOnPHYMSPaceArea(MNode* node, PMSADDire* dire, PHYMSPaceArea* area, U64 start, U64 end);
+private PMSAD* PMSADDireIsNeedAllocMemory(U64 start, U64 end);
+private Bool PMSADInitOnMNode(MNode* node);
+public Bool KrlMmPMSADInit();
 public Bool KrlMmPHYMSPaceAreaInit();
 public Bool KrlMmMAreaInit();
 private Bool DefaultMNodeInit();
