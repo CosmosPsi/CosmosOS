@@ -191,7 +191,7 @@ private Bool SetPMSADInMNodeMAreaInfo(MNode* node, PMSAD* msad)
 
 	for(U64 i = 0; i < MEMAREA_MAX; i++)
     {
-        if((node->MAreaArr[i].LogicStart <= paddr) && (paddr < node->MAreaArr[i].LogicEnd))
+        if((node->MAreaArr[i].LogicStart <= paddr) && ((paddr + MSAD_SIZE) < node->MAreaArr[i].LogicEnd))
         {
             switch (node->MAreaArr[i].Type)
             {
@@ -423,8 +423,40 @@ public Bool KrlMmPHYMSPaceAreaInit()
     return TRUE;
 }
 
+private Bool OneMAreaInitOnMNode(MNode* node, MArea* area)
+{
+    IF_NULL_RETURN_FALSE(node);
+    IF_NULL_RETURN_FALSE(area);
+
+}
+
+private Bool MAreaInitOnMNode(MNode* node)
+{
+    MArea* area = NULL;
+    IF_NULL_RETURN_FALSE(node);
+    area = node->MAreaArr;
+    for(UInt i = 0; i < MEMAREA_MAX; i++)
+    {
+        OneMAreaInitOnMNode(node, &area[i]);
+    }
+    return TRUE;
+}
+
 public Bool KrlMmMAreaInit()
 {
+    MNode* node = NULL;
+    MachStartInfo* msinfo = NULL;
+    GMemManage* gmm = NULL;
+    gmm = KrlMmGetGMemManageAddr();
+    IF_NULL_DEAD(gmm);
+
+    node = gmm->MNodeStart;
+    IF_NULL_RETURN_FALSE(node);
+    
+    for(UInt i = 0; i < gmm->MNodeNR; i++)
+    {
+        MAreaInitOnMNode(&node[i]);    
+    }
     return TRUE;
 }
 
