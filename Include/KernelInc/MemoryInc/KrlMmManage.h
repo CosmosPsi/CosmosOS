@@ -6,9 +6,11 @@
 #ifndef _KRLMMMANAGEHEAD
 #define _KRLMMMANAGEHEAD
 
-#define PAGPHYADR_SZLSHBIT (12)
+#define MSAD_PADR_SLBITS (12)
 #define MSAD_PAGE_MAX (8)
-#define MSA_SIZE (1 << PAGPHYADR_SZLSHBIT)
+#define MSAD_SIZE (1 << MSAD_PADR_SLBITS)
+#define MSAD_ALIGN(n) ALIGN(n, MSAD_SIZE)
+#define MSAD_MASK (~(MSAD_SIZE-1))
 
 #define MF_OLKTY_INIT (0)
 #define MF_OLKTY_ODER (1)
@@ -281,7 +283,7 @@ KLINE Addr PMSADRetPAddr(PMSAD* msad)
     {
         return NULL;
     }
-    return (msad->PhyAddr.PAddrBit << PAGPHYADR_SZLSHBIT);
+    return (msad->PhyAddr.PAddrBit << MSAD_PADR_SLBITS);
 }
 
 KLINE Addr PMSADRetVAddr(PMSAD* msad)
@@ -293,6 +295,63 @@ KLINE Addr PMSADRetVAddr(PMSAD* msad)
     return HalPAddrToVAddr(PMSADRetPAddr(msad));
 }
 
+KLINE Bool PMSADIsFree(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    if(MF_MOCTY_FREE != msad->CountFlags.OccupancyTypeBit ||
+		0 != msad->CountFlags.RefCountBit || PAF_NO_ALLOC != msad->PhyAddr.AllocBit)
+	{
+		return FALSE;
+	}
+    return TRUE;
+}
+
+KLINE void SetPMSADOccupancyType(PMSAD* msad, U32 occupancytype)
+{
+    IF_NULL_DEAD(msad);
+    if(MF_MOCTY_USER < occupancytype)
+    {
+        return;
+    }
+    msad->CountFlags.OccupancyTypeBit = occupancytype;
+    return;
+}
+
+KLINE void SetPMSADAllocBit(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    msad->PhyAddr.AllocBit = PAF_ALLOC;
+    return;
+}
+
+KLINE void ClearPMSADAllocBit(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    msad->PhyAddr.AllocBit = 0;
+    return;
+}
+
+KLINE void GetPMSAD(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    if(MF_UINDX_MAX <= msad->CountFlags.RefCountBit)
+    {
+        return;
+    }
+    msad->CountFlags.RefCountBit++;
+    return;
+}
+
+KLINE void PutPMSAD(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    if(1 > msad->CountFlags.RefCountBit)
+    {
+        return;
+    }
+    msad->CountFlags.RefCountBit--;
+    return;
+}
 
 KLINE GMemManage* KrlMmGetGMemManageAddr()
 {
@@ -306,7 +365,7 @@ KLINE UInt PMSADDireIndex(U64 phyaddr)
 
 KLINE UInt PMSADIndex(U64 phyaddr)
 {
-    return (UInt)((phyaddr & (PMSADDIRE_SIZE -1)) >> PAGPHYADR_SZLSHBIT);
+    return (UInt)((phyaddr & (PMSADDIRE_SIZE -1)) >> MSAD_PADR_SLBITS);
 }
 
 KLINE MNode* PHYAddrRetMNode(U64 phyaddr)
@@ -334,6 +393,14 @@ KLINE PMSADDire* PHYAddrRetPMSADDire(U64 phyaddr)
     IF_NULL_RETURN_NULL(node);
     index = PMSADDireIndex(phyaddr);
     return &(node->PMSADDir.PMSADEArr[index]);
+}
+
+KLINE PMSAD* PHYAddrRetPMSAD(U64 phyaddr)
+{
+    PMSADDire* dire = NULL;
+    dire = PHYAddrRetPMSADDire(phyaddr);
+    IF_NULL_RETURN_NULL(dire);
+    return &dire->DireStart[PMSADIndex(phyaddr)];
 }
 
 KLINE Bool PMSADDireIsHave(PMSADDire* dire)
