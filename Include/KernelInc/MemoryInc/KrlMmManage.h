@@ -431,6 +431,8 @@ private PMSAD* NewOnePMSAD(MNode* node, PHYMSPaceArea* area, PMSADDire* dire, U6
 private UInt PMSADInitOnPHYMSPaceArea(MNode* node, PMSADDire* dire, PHYMSPaceArea* area, U64 start, U64 end);
 private PMSAD* PMSADDireIsNeedAllocMemory(U64 start, U64 end);
 private Bool PMSADInitOnMNode(MNode* node);
+private Bool ScanOccupancyPMSADOnAddr(Addr start, Addr end);
+public Bool KrlMmScanOccupancyPMSAD();
 public Bool KrlMmPMSADInit();
 public Bool KrlMmPHYMSPaceAreaInit();
 public Bool KrlMmMAreaInit();
