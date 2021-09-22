@@ -254,7 +254,7 @@ private UInt PMSADInitOnPHYMSPaceArea(MNode* node, PMSADDire* dire, PHYMSPaceAre
     IF_NULL_RETURN_ZERO(node);
     IF_NULL_RETURN_ZERO(dire);
     IF_NULL_RETURN_ZERO(area);
-    for(U64 paddr = area->Start; (paddr + (MSA_SIZE - 1)) < area->End; paddr += MSA_SIZE)
+    for(U64 paddr = area->Start; (paddr + (MSAD_SIZE - 1)) < area->End; paddr += MSAD_SIZE)
     {
         if((start <= paddr) && (paddr < end))
         {
@@ -281,11 +281,11 @@ private PMSAD* PMSADDireIsNeedAllocMemory(U64 start, U64 end)
     {
         if(PMSA_T_OSAPUSERRAM == pmsarea[i].Type)
         {
-            for(U64 paddr = pmsarea[i]->Start; (paddr + (MSA_SIZE - 1)) < pmsarea[i]->End; paddr += MSA_SIZE)
+            for(U64 paddr = pmsarea[i]->Start; (paddr + (MSAD_SIZE - 1)) < pmsarea[i]->End; paddr += MSAD_SIZE)
             {
                 if((start <= paddr) && (paddr < end))
                 {
-                    return HalExPBootAllocMem((Size)((PMSADDIRE_SIZE >> PAGPHYADR_SZLSHBIT) * sizeof(PMSAD)));
+                    return HalExPBootAllocMem((Size)((PMSADDIRE_SIZE >> MSAD_PADR_SLBITS) * sizeof(PMSAD)));
                 }
             }
         }
@@ -330,6 +330,46 @@ private Bool PMSADInitOnMNode(MNode* node)
             }
         }
     }
+    return TRUE;
+}
+
+private Bool ScanOccupancyPMSADOnAddr(Addr start, Addr end)
+{
+    Addr tmpstart = 0;
+    Addr tmpend = 0;
+    MNode* node = NULL;
+    PMSADDire* dire = NULL;
+    PMSAD* msad = NULL;
+
+    tmpstart = (start & MSAD_MASK);
+    tmpend = MSAD_ALIGN(end);
+
+    for(Addr paddr = tmpstart; paddr < tmpend; paddr += MSAD_SIZE)
+    {
+        msad = PHYAddrRetPMSAD(paddr);
+        IF_NULL_RETURN_FALSE(msad);
+        if(PMSADIsFree(msad) == TRUE)
+        {
+            SetPMSADOccupancyType(msad, MF_MOCTY_KRNL);
+            GetPMSAD(msad);
+            SetPMSADAllocBit(msad);
+        }
+
+    }
+    return TRUE;
+}
+
+public Bool KrlMmScanOccupancyPMSAD()
+{
+    MachStartInfo* msinfo = NULL;
+    msinfo = HalExPGetMachStartInfoAddr();
+    IF_NULL_RETURN_FALSE(msinfo);
+
+    ScanOccupancyPMSADOnAddr(0, 0x1000 - 1);
+    ScanOccupancyPMSADOnAddr((Addr)(msinfo->KrlInitStack & MSAD_MASK), (Addr)msinfo->KrlInitStack);
+    ScanOccupancyPMSADOnAddr((Addr)(msinfo->krlCoreFilePAddr), (Addr)(msinfo->krlCoreFilePAddr + msinfo->krlCoreFileSZ));
+    // ScanOccupancyPMSADOnAddr((Addr)(msinfo->KrlImgFilePAddr), (Addr)(msinfo->KrlImgFilePAddr + msinfo->KrlImgFileSZ));
+    ScanOccupancyPMSADOnAddr((Addr)msinfo->BrkCurrAddr, (Addr)msinfo->BrkCurrAddr);
     return TRUE;
 }
 
@@ -443,5 +483,6 @@ public Bool KrlMmManageInit()
     KrlMmPHYMSPaceAreaInit();
     KrlMmMNodeInit();
     KrlMmPMSADInit();
+    KrlMmScanOccupancyPMSAD();
     return TRUE;
 }
