@@ -240,7 +240,7 @@ private PMSAD* NewOnePMSAD(MNode* node, PHYMSPaceArea* area, PMSADDire* dire, U6
     index = PMSADIndex(paddr);
     
     PMSADInit(&msadstart[index]);
-    PhyAddrFlags* tmp = (PhyAddrFlags*)(&paddr);
+    tmp = (PhyAddrFlags*)(&paddr);
 	msadstart[index].PhyAddr.PAddrBit = tmp->PAddrBit;
     
     SetPMSADInMNodeMAreaInfo(node, &msadstart[index]);
