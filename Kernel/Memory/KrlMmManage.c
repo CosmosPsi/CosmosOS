@@ -423,11 +423,165 @@ public Bool KrlMmPHYMSPaceAreaInit()
     return TRUE;
 }
 
+private UInt ScanContinuousAddrPMSADsLen(PMSAD* start, PMSAD* end)
+{
+    PMSAD* msad = NULL;
+    UInt count = 1;
+    if(start == end)
+    {
+        return 1;
+    }
+    msad = start + 1;
+    while(msad <= end)
+    {
+        if(PMSADIsAdjacent(msad - 1, msad) == FALSE)
+        {
+            return count;
+        }
+        count++;
+        msad++;
+    }
+    return count;
+}
+
+private UInt ScanContinuousAddrPMSADs(MNode* node, MArea* area, PMSAD* start, PMSAD* end)
+{
+    PMSAD* msad = NULL;
+    UInt count = 0;
+    UInt sum = 0;
+    msad = start;
+    while(msad <= end)
+    {
+        count = ScanContinuousAddrPMSADsLen(msad, end);
+        if(0 < count)
+        {
+            //
+            msad += count;            
+        }
+        else
+        {
+            msad++;
+        }
+    }
+    return sum;
+}
+
+private UInt ScanContinuousFreePMSADsLen(PMSAD* start, PMSAD* end)
+{
+    PMSAD* msad = NULL;
+    UInt count = 0;
+    msad = start;
+    while(msad <= end)
+    {
+        if(PMSADIsFree(msad) == FALSE)
+        {
+            return count;
+        }
+        count++;
+        msad++;
+    }
+    return count;
+}
+
+private UInt ScanContinuousFreePMSADs(MNode* node, MArea* area, PMSAD* start, PMSAD* end)
+{
+    PMSAD* msad = NULL;
+    UInt count = 0;
+    UInt sum = 0;
+    msad = start;
+    while(msad <= end)
+    {
+        count = ScanContinuousFreePMSADsLen(msad, end);
+        if(0 < count)
+        {
+            sum += ScanContinuousAddrPMSADs(node, area, msad, &msad[count - 1]);
+            msad += count;            
+        }
+        else
+        {
+            msad++;
+        }
+    }
+    return sum;
+}
+
+private UInt ScanSameAreaTypePMSADsLen(PMSAD* start, PMSAD* end, UInt areatype)
+{
+    PMSAD* msad = NULL;
+    UInt count = 0;
+    msad = start;
+    while(msad <= end)
+    {
+        if(PMSADIsEQAreaType(msad, areatype) == FALSE)
+        {
+            return count;
+        }
+        count++;
+        msad++;
+    }
+    return count;
+}
+
+private UInt ScanSameAreaTypePMSADs(MNode* node, MArea* area, PMSAD* start, PMSAD* end)
+{
+    PMSAD* msad = NULL;
+    UInt count = 0;
+    UInt sum = 0;
+    UInt typecount = 0;
+    UInt areatype = 0;
+    
+    areatype = area->Type;
+
+    msad = start;
+
+    while(msad <= end)
+    {
+        count = ScanSameAreaTypePMSADsLen(msad, end, areatype);
+        if(0 < count)
+        {
+            sum += ScanContinuousFreePMSADs(node, area, msad, &msad[count - 1]);
+            msad += count;            
+        }
+        else
+        {
+            msad++;
+        }
+    }
+
+    return sum;
+}
+
+private UInt PMSADBlockInitOnPMSADDire(MNode* node, MArea* area, PMSADDire* dire)
+{
+    SInt count = 0;
+    SInt maxcount = 0;
+    PMSAD* scanend = NULL;
+    PMSAD* next = NULL;
+    PMSAD* start = NULL;
+    PMSAD* end = NULL;
+
+    IF_NULL_RETURN_ZERO(node);
+    IF_NULL_RETURN_ZERO(area);
+    IF_NULL_RETURN_ZERO(dire);
+    IF_NULL_RETURN_ZERO(dire->DireStart);
+
+    start = dire->DireStart;
+    end = &start[(PMSADDIRE_PMSAD_NR - 1)];
+    return ScanSameAreaTypePMSADs(node, area, start, end);
+}
+
 private Bool OneMAreaInitOnMNode(MNode* node, MArea* area)
 {
+    PMSADDire* dire = NULL;
     IF_NULL_RETURN_FALSE(node);
     IF_NULL_RETURN_FALSE(area);
 
+    dire = node->PMSADDir.PMSADEArr;
+    for(UInt i = 0; i < PMSADDIRE_MAX; i++)
+    {
+       PMSADBlockInitOnPMSADDire(node, area, &dire[i]);
+    }
+    return TRUE;
 }
 
 private Bool MAreaInitOnMNode(MNode* node)
