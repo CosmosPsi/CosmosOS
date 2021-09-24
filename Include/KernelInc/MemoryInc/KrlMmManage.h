@@ -325,6 +325,18 @@ KLINE Bool PMSADIsFree(PMSAD* msad)
     return TRUE;
 }
 
+KLINE Bool PMSADIsFreeAlsoAdjacent(PMSAD* curr, PMSAD* next)
+{
+    if((PMSADIsFree(curr) == TRUE) && (PMSADIsFree(next) == TRUE))
+    {
+        if(PMSADIsAdjacent(curr, next) == TRUE)
+        {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
 KLINE void SetPMSADOccupancyType(PMSAD* msad, U32 occupancytype)
 {
     IF_NULL_DEAD(msad);
