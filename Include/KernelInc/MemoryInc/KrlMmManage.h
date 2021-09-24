@@ -83,6 +83,7 @@
 #define PMSADDIRE_MAX (1 << 18)
 #define PMSADDIRE_INDEX_BITS (30)
 #define PMSADDIRE_SIZE (1 << PMSADDIRE_INDEX_BITS)
+#define PMSADDIRE_PMSAD_NR (PMSADDIRE_SIZE >> MSAD_PADR_SLBITS)
 //PMSAD标志
 typedef struct PMSADFLAGS
 {
@@ -293,6 +294,24 @@ KLINE Addr PMSADRetVAddr(PMSAD* msad)
         return NULL;
     }	
     return HalPAddrToVAddr(PMSADRetPAddr(msad));
+}
+
+KLINE Bool PMSADIsAdjacent(PMSAD* curr, PMSAD* next)
+{
+    Addr curraddr = 0;
+    Addr nextaddr = 0;
+
+    if((curr + 1) != next)
+    {
+        return FALSE;
+    }
+    curraddr = PMSADRetPAddr(curr);
+    nextaddr = PMSADRetPAddr(next);
+    if((nextaddr - curraddr) != MSAD_SIZE)
+    {
+        return FALSE;
+    }
+    return TRUE;
 }
 
 KLINE Bool PMSADIsFree(PMSAD* msad)
