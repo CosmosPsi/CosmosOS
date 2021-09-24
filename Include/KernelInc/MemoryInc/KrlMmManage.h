@@ -337,6 +337,18 @@ KLINE Bool PMSADIsFreeAlsoAdjacent(PMSAD* curr, PMSAD* next)
     return FALSE;
 }
 
+KLINE Bool PMSADIsEQAreaType(PMSAD* msad, UInt areatype)
+{
+    UInt type = 0;
+    IF_NULL_DEAD(msad);
+    type = (UInt)(msad->CountFlags.AreaTypeBit);
+    if(type == areatype)
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
+
 KLINE void SetPMSADOccupancyType(PMSAD* msad, U32 occupancytype)
 {
     IF_NULL_DEAD(msad);
