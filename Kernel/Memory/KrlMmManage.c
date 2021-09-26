@@ -110,6 +110,30 @@ public Bool KrlMmUPAddGMMAllocMaxFreeNR(UInt allocnr, UInt maxnr, UInt freenr)
     return TRUE;
 }
 
+public Bool KrlMmUPSubGMMAllocMaxFreeNR(UInt allocnr, UInt maxnr, UInt freenr)
+{
+    GMemManage* gmm = NULL;
+    gmm = KrlMmGetGMemManageAddr();
+    IF_NULL_RETURN_FALSE(gmm);
+    
+    KrlMmLocked(&gmm->Lock);
+    if((U64)allocnr <= gmm->AllocPMSAD)
+    {
+        gmm->AllocPMSAD -= allocnr;
+    }
+    if((U64)maxnr <= gmm->MaxPMSAD)
+    {
+        gmm->MaxPMSAD -= (U64)maxnr;
+    }
+    if((U64)freenr <= gmm->FreePMSAD)
+    {
+        gmm->FreePMSAD -= (U64)freenr
+    }
+    gmm->MemroySZ = (U64)(gmm->MaxPMSAD << MSAD_PADR_SLBITS);
+    KrlMmUnLock(&gmm->Lock);
+    return TRUE;
+}
+
 public void KrlMmLocked(MLock* lock)
 {
     IF_NULL_DEAD(lock);
