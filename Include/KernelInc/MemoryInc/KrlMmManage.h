@@ -503,6 +503,7 @@ private Bool ScanOccupancyPMSADOnAddr(Addr start, Addr end);
 public Bool KrlMmScanOccupancyPMSAD();
 public Bool KrlMmPMSADInit();
 public Bool KrlMmPHYMSPaceAreaInit();
+private SInt RetOrderInPMSADsNR(PMSAD* start, PMSAD* end);
 private UInt ScanContinuousAddrPMSADsLen(PMSAD* start, PMSAD* end);
 private UInt ScanContinuousAddrPMSADs(MNode* node, MArea* area, PMSAD* start, PMSAD* end);
 private UInt ScanContinuousFreePMSADsLen(PMSAD* start, PMSAD* end);

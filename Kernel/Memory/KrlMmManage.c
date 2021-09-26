@@ -9,6 +9,7 @@
 #include "HalCPU.h"
 #include "HalBoot.h"
 #include "HalInterface.h"
+#include "KrlLog.h"
 #include "KrlMmManage.h"
 
 DefinedMEMData(GMemManage, GMemManageData);
@@ -423,6 +424,31 @@ public Bool KrlMmPHYMSPaceAreaInit()
     return TRUE;
 }
 
+private SInt RetOrderInPMSADsNR(PMSAD* start, PMSAD* end)
+{
+    UInt msadnr = 0;
+    SInt order = -1;
+    if(NULL == start || NULL == end)
+    {
+        return -1;
+    }
+    if(start > end)
+    {
+        return -1;
+    }
+
+    msadnr = (end - start) + 1;
+    
+    for(UInt i = 0; i < MSPLMER_ARR_LMAX; i++)
+    {
+        if((1 << i) <= msadnr)
+        {
+            order++;
+        }
+    }
+    return order;
+} 
+
 private UInt ScanContinuousAddrPMSADsLen(PMSAD* start, PMSAD* end)
 {
     PMSAD* msad = NULL;
@@ -455,7 +481,7 @@ private UInt ScanContinuousAddrPMSADs(MNode* node, MArea* area, PMSAD* start, PM
         count = ScanContinuousAddrPMSADsLen(msad, end);
         if(0 < count)
         {
-            //
+            sum += ScanOrderPMSADsAddInPABHList(node, area, msad, end);
             msad += count;            
         }
         else
@@ -527,11 +553,9 @@ private UInt ScanSameAreaTypePMSADs(MNode* node, MArea* area, PMSAD* start, PMSA
     PMSAD* msad = NULL;
     UInt count = 0;
     UInt sum = 0;
-    UInt typecount = 0;
     UInt areatype = 0;
     
     areatype = area->Type;
-
     msad = start;
 
     while(msad <= end)
@@ -553,10 +577,6 @@ private UInt ScanSameAreaTypePMSADs(MNode* node, MArea* area, PMSAD* start, PMSA
 
 private UInt PMSADBlockInitOnPMSADDire(MNode* node, MArea* area, PMSADDire* dire)
 {
-    SInt count = 0;
-    SInt maxcount = 0;
-    PMSAD* scanend = NULL;
-    PMSAD* next = NULL;
     PMSAD* start = NULL;
     PMSAD* end = NULL;
 
