@@ -471,6 +471,16 @@ KLINE PMSAD* PHYAddrRetPMSAD(U64 phyaddr)
     return &dire->DireStart[PMSADIndex(phyaddr)];
 }
 
+KLINE MNode* PMSADRetItsMNode(PMSAD* msad)
+{
+    U64 phyaddr = 0;
+    MNode* node = NULL; 
+    IF_NULL_RETURN_NULL(msad);
+    phyaddr = PMSADRetPAddr(msad);
+    node = PHYAddrRetMNode(phyaddr);
+    return node;
+}
+
 KLINE Bool PMSADDireIsHave(PMSADDire* dire)
 {
     IF_NULL_DEAD(dire);
