@@ -424,6 +424,35 @@ public Bool KrlMmPHYMSPaceAreaInit()
     return TRUE;
 }
 
+public Bool PMSADAddInPABHList(PABHList* pabhl, PMSAD* msad, UInt order)
+{
+    PMSAD* msadend = NULL;
+    IF_NULL_RETURN_FALSE(pabhl);
+    IF_NULL_RETURN_FALSE(msad);
+    
+    if(PMSADIsFree(msad) == FALSE)
+    {
+        return FALSE;
+    }
+    if(pabhl->Order != order)
+    {
+        return FALSE;
+    }
+    
+    KrlMmLocked(&pabhl->Lock);
+    
+    msadend = &msad[(1 << order) - 1];
+    ListAdd(&msad->Lists, &pabhl->FreeLists);
+    SetPMSADOLType(msad, MF_OLKTY_ODER);
+    SetPMSADBlockLink(msad, (void*)msadend);
+    SetPMSADOLType(msadend, MF_OLKTY_BAFH);
+    SetPMSADBlockLink(msad, (void*)pabhl);
+    pabhl->FreePmsadNR += (1 << order);
+    pabhl->PmsadNR += (1 << order);
+    KrlMmUnLock(&pabhl->Lock);
+    return TRUE;
+}
+
 private SInt RetOrderInPMSADsNR(PMSAD* start, PMSAD* end)
 {
     UInt msadnr = 0;
