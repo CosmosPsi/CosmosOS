@@ -552,15 +552,23 @@ private UInt ScanContinuousAddrPMSADs(MNode* node, MArea* area, PMSAD* start, PM
     msad = start;
     while(msad <= end)
     {
-        count = ScanContinuousAddrPMSADsLen(msad, end);
-        if(0 < count)
+        if(MA_TYPE_PROC == area->Type)
         {
-            sum += ScanOrderPMSADsAddInPABHList(node, area, msad, end);
-            msad += count;            
+            sum += ScanOrderPMSADsAddInPABHList(node, area, msad, msad);
+            msad++;
         }
         else
         {
-            msad++;
+            count = ScanContinuousAddrPMSADsLen(msad, end);
+            if(0 < count)
+            {
+                sum += ScanOrderPMSADsAddInPABHList(node, area, msad, end);
+                msad += count;
+            }
+            else
+            {
+                msad++;
+            }
         }
     }
     return sum;
@@ -764,5 +772,6 @@ public Bool KrlMmManageInit()
     KrlMmMNodeInit();
     KrlMmPMSADInit();
     KrlMmScanOccupancyPMSAD();
+    KrlMmMAreaInit();
     return TRUE;
 }
