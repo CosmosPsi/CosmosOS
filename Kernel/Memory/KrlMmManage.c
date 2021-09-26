@@ -520,6 +520,11 @@ private UInt ScanOrderPMSADsAddInPABHList(MNode* node, MArea* area, PMSAD* start
         }
         sum += count;
     }
+
+    area->AllPMSADNR += sum;
+    area->MaxPMSAD += sum;
+    node->NodeMemSize += (sum << MSAD_PADR_SLBITS);
+    
     return sum;
 }
 
