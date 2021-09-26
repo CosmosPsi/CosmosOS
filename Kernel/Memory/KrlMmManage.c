@@ -502,6 +502,9 @@ private PMSAD* NextOrderPMSADsAddInPABHList(MNode* node, MArea* area, PMSAD* sta
     }
     *summsad = 1 << order;
     nextmsad = &start[(msadnr - (1 << order)) + 1];
+
+    area->FreePMSAD += (1 << order);
+
     return nextmsad;
 }
 
@@ -521,10 +524,6 @@ private UInt ScanOrderPMSADsAddInPABHList(MNode* node, MArea* area, PMSAD* start
         sum += count;
     }
 
-    area->AllPMSADNR += sum;
-    area->MaxPMSAD += sum;
-    node->NodeMemSize += (sum << MSAD_PADR_SLBITS);
-    
     return sum;
 }
 
