@@ -478,6 +478,33 @@ private SInt RetOrderInPMSADsNR(PMSAD* start, PMSAD* end)
     return order;
 } 
 
+private PMSAD* NextOrderPMSADsAddInPABHList(MNode* node, MArea* area, PMSAD* start, PMSAD* end, UInt* summsad)
+{
+    SInt msadnr = 0;
+    SInt order = -1;
+    PABHList* pabhlist = NULL;
+    PMSAD* nextmsad = NULL;
+
+    pabhlist = area->MSPLMerData.PAddrBlockArr;
+    msadnr = (end - start) + 1;
+
+    order = RetOrderInPMSADsNR(start, end);
+    if(0 > order)
+    {
+        KrlErrorCrashDead("RetOrderInPMSADsNR is Fail\n");
+        return NULL;
+    }
+
+    if(PMSADAddInPABHList(&pabhlist[order], start, (UInt)order) == FALSE)
+    {
+        KrlErrorCrashDead("PMSADAddInPABHList is Fail\n");
+        return NULL;
+    }
+    *summsad = 1 << order;
+    nextmsad = &start[(msadnr - (1 << order)) + 1];
+    return nextmsad;
+}
+
 private UInt ScanContinuousAddrPMSADsLen(PMSAD* start, PMSAD* end)
 {
     PMSAD* msad = NULL;
