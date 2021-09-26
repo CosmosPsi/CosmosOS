@@ -505,6 +505,24 @@ private PMSAD* NextOrderPMSADsAddInPABHList(MNode* node, MArea* area, PMSAD* sta
     return nextmsad;
 }
 
+private UInt ScanOrderPMSADsAddInPABHList(MNode* node, MArea* area, PMSAD* start, PMSAD* end)
+{
+    PMSAD* msad = NULL;
+    UInt count = 0;
+    UInt sum = 0;
+    msad = start;
+    while(msad <= end)
+    {
+        msad = NextOrderPMSADsAddInPABHList(node, area, msad, end, &count)
+        if(NULL == msad)
+        {
+            KrlErrorCrashDead("NextOrderPMSADsAddInPABHList is Fail\n");
+        }
+        sum += count;
+    }
+    return sum;
+}
+
 private UInt ScanContinuousAddrPMSADsLen(PMSAD* start, PMSAD* end)
 {
     PMSAD* msad = NULL;

@@ -506,6 +506,7 @@ public Bool KrlMmPHYMSPaceAreaInit();
 public Bool PMSADAddInPABHList(PABHList* pabhl, PMSAD* msad, UInt order);
 private SInt RetOrderInPMSADsNR(PMSAD* start, PMSAD* end);
 private PMSAD* NextOrderPMSADsAddInPABHList(MNode* node, MArea* area, PMSAD* start, PMSAD* end, UInt* summsad);
+private UInt ScanOrderPMSADsAddInPABHList(MNode* node, MArea* area, PMSAD* start, PMSAD* end);
 private UInt ScanContinuousAddrPMSADsLen(PMSAD* start, PMSAD* end);
 private UInt ScanContinuousAddrPMSADs(MNode* node, MArea* area, PMSAD* start, PMSAD* end);
 private UInt ScanContinuousFreePMSADsLen(PMSAD* start, PMSAD* end);
