@@ -550,8 +550,8 @@ private PMSAD* NextOrderPMSADsAddInPABHList(MNode* node, MArea* area, PMSAD* sta
     *summsad = 1 << order;
     nextmsad = &start[(msadnr - (1 << order)) + 1];
 
-    area->FreePMSAD += (1 << order);
-
+    area->FreePMSAD += (UInt)(1 << order);
+    KrlMmUPAddGMMAllocMaxFreeNR(0, 0, (UInt)(1 << order));
     return nextmsad;
 }
 
