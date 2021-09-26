@@ -291,6 +291,7 @@ private PMSAD* NewOnePMSAD(MNode* node, PHYMSPaceArea* area, PMSADDire* dire, U6
     marea->AllPMSADNR++;
     marea->MaxPMSAD++;
     node->NodeMemSize += MSAD_SIZE;
+    KrlMmUPAddGMMAllocMaxFreeNR(0, 1, 0);
     return &msadstart[index];
 }
 
