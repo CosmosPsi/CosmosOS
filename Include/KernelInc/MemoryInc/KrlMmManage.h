@@ -349,6 +349,24 @@ KLINE Bool PMSADIsEQAreaType(PMSAD* msad, UInt areatype)
     return FALSE;
 }
 
+KLINE Bool PMSADIsMArea(PMSAD* msad, MArea* area)
+{
+    Addr phyaddr = 0;
+    IF_NULL_RETURN_FALSE(msad);
+    IF_NULL_RETURN_FALSE(area);
+    if(PMSADIsEQAreaType(msad, area->Type) == FALSE)
+    {
+        return FALSE;
+    }
+
+    phyaddr = PMSADRetPAddr(msad);
+    if(area->LogicStart <= phyaddr && phyaddr < area->LogicEnd)
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
+
 KLINE void SetPMSADOLType(PMSAD* msad, U32 oltype)
 {
     IF_NULL_DEAD(msad);
