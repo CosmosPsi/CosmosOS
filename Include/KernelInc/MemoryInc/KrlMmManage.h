@@ -371,14 +371,14 @@ KLINE void SetPMSADOccupancyType(PMSAD* msad, U32 occupancytype)
     return;
 }
 
-KLINE void SetPMSADAllocBit(PMSAD* msad)
+KLINE void SetPMSADAlloc(PMSAD* msad)
 {
     IF_NULL_DEAD(msad);
     msad->PhyAddr.AllocBit = PAF_ALLOC;
     return;
 }
 
-KLINE void ClearPMSADAllocBit(PMSAD* msad)
+KLINE void ClearPMSADAlloc(PMSAD* msad)
 {
     IF_NULL_DEAD(msad);
     msad->PhyAddr.AllocBit = 0;
