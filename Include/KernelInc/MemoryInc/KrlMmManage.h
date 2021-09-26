@@ -535,6 +535,7 @@ private void MSPlitMerInit(MSPlitMer* init);
 private void MAreaInit(MArea* init);
 private void MNodeInit(MNode* init);
 private void GMemManageInit(GMemManage* init);
+public Bool KrlMmUPAddGMMAllocMaxFreeNR(UInt allocnr, UInt maxnr, UInt freenr);
 public void KrlMmLocked(MLock* lock);
 public void KrlMmUnLock(MLock* lock);
 private Bool NewOnePHYMSPaceArea(E820Map* e820, PHYMSPaceArea* area);
