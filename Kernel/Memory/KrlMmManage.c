@@ -230,7 +230,8 @@ private PMSAD* NewOnePMSAD(MNode* node, PHYMSPaceArea* area, PMSADDire* dire, U6
 {
     PhyAddrFlags* tmp = NULL;
     PMSAD* msadstart = NULL;
-    UInt index = 0; 
+    MArea* marea = NULL;
+    UInt index = 0;
     IF_NULL_RETURN_NULL(node);
     IF_NULL_RETURN_NULL(area);
     IF_NULL_RETURN_NULL(dire);
@@ -245,6 +246,12 @@ private PMSAD* NewOnePMSAD(MNode* node, PHYMSPaceArea* area, PMSADDire* dire, U6
 	msadstart[index].PhyAddr.PAddrBit = tmp->PAddrBit;
     
     SetPMSADInMNodeMAreaInfo(node, &msadstart[index]);
+    
+    marea = PMSADRetItsMArea(&msadstart[index]);
+    IF_NULL_DEAD(marea);
+    marea->AllPMSADNR++;
+    marea->MaxPMSAD++;
+    node->NodeMemSize += MSAD_SIZE;
     return &msadstart[index];
 }
 
