@@ -374,6 +374,20 @@ KLINE void ClearPMSADAllocBit(PMSAD* msad)
     return;
 }
 
+KLINE void SetPMSADBlockLink(PMSAD* msad, void* link)
+{
+    IF_NULL_DEAD(msad);
+    msad->BlockLink = link;
+    return;
+}
+
+KLINE void ClearPMSADBlockLink(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    msad->BlockLink = NULL;
+    return;
+}
+
 KLINE void GetPMSAD(PMSAD* msad)
 {
     IF_NULL_DEAD(msad);
