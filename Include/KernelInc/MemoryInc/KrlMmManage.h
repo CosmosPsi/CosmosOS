@@ -499,6 +499,24 @@ KLINE MNode* PMSADRetItsMNode(PMSAD* msad)
     return node;
 }
 
+KLINE MArea* PMSADRetItsMArea(PMSAD* msad)
+{
+    MNode* node = NULL;
+    MArea* area = NULL;
+    IF_NULL_RETURN_NULL(msad);
+    node = PMSADRetMNode(msad);
+    IF_NULL_RETURN_NULL(node);
+    area = node->MAreaArr;
+    for(UInt i = 0; i < MEMAREA_MAX; i++)
+    {
+        if(PMSADIsMArea(msad, &area[i]) == TRUE)
+        {
+            return &area[i];
+        }
+    }
+    return NULL;
+}
+
 KLINE Bool PMSADDireIsHave(PMSADDire* dire)
 {
     IF_NULL_DEAD(dire);
