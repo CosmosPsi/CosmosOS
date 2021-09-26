@@ -349,6 +349,17 @@ KLINE Bool PMSADIsEQAreaType(PMSAD* msad, UInt areatype)
     return FALSE;
 }
 
+KLINE void SetPMSADOLType(PMSAD* msad, U32 oltype)
+{
+    IF_NULL_DEAD(msad);
+    if(MF_OLKTY_TOBJ < oltype)
+    {
+        return;
+    }
+    msad->CountFlags.OLTypeBit = oltype;
+    return;
+}
+
 KLINE void SetPMSADOccupancyType(PMSAD* msad, U32 occupancytype)
 {
     IF_NULL_DEAD(msad);
