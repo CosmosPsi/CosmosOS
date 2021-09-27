@@ -70,6 +70,10 @@ SECTIONS
 	.drventry.text ALIGN(4) : AT(ADDR(.drventry.text)-VIRTUAL_ADDRESS) { *(.drventry.text)}
 	EndDriverEntryText = .;
 
+    BeginMEMData = .;
+        .mem.data ALIGN(4) : AT(ADDR(.mem.data)-VIRTUAL_ADDRESS) { *(.mem.data) }
+ 	EndMEMData = .;
+
 	BeginData = .;
         .data ALIGN(4) : AT(ADDR(.data)-VIRTUAL_ADDRESS) { *(.data) *(.bss) }
  	EndData = .;
