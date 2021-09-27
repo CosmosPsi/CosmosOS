@@ -71,7 +71,7 @@ public Bool MemMNodeTest()
 {
     GMemManage* gmm = NULL;
     MNode* node = NULL;
-    
+
     gmm = KrlMmGetGMemManageAddr();
     IF_NULL_DEAD(gmm);
 
@@ -82,6 +82,65 @@ public Bool MemMNodeTest()
     for(U64 i = 0; i < gmm->MNodeNR; i++)
     {
         IF_EQT_DEAD(0, node[i].NodeMemAddrEnd, "MNode: NodeMemAddrEnd = 0");
+    }
+    return TRUE;
+}
+
+public Bool MemPMSADOnPMSADDireTest(MNode* node, PMSADDire* dire, U64 start, U64 end)
+{
+    PMSAD* msad = NULL;
+    MNode* cnode = NULL;
+    U64 paddr = 0;
+    IF_EQT_DEAD(NULL, node, "PRAM node = NULL\n");
+    IF_EQT_DEAD(NULL, dire, "PRAM dire = NULL\n");
+    msad = dire->DireStart;
+    IF_NULL_RETURN_FALSE(msad);
+    for(UInt i = 0; i < PMSADDIRE_PMSAD_NR; i++)
+    {
+        
+        if(PMSADIsPresent(&msad[i]) == TRUE)
+        {
+            paddr = PMSADRetPAddr(&msad[i]);
+            cnode = PMSADRetItsMNode(&msad[i]);
+            IF_NEQ_DEAD(cnode, node, "PMSAD doesn't node\n");
+            IF_GTN_DEAD(paddr, end, "PMSAD addr Greater than PMSADDire end\n");
+            IF_LTN_DEAD(paddr, start, "PMSAD addr Less than PMSADDire start\n");
+        }
+    }
+    return TRUE;
+}
+
+
+public Bool MemPMSADOnMNodeTest(MNode* node)
+{
+    U64 addrstart = 0;
+    U64 addrend = 0;
+    PMSADDire* dire = NULL;
+    IF_EQT_DEAD(NULL, node, "PRAM node = NULL\n");
+    dire = node->PMSADDir.PMSADEArr;
+    for(UInt i = 0; i < PMSADDIRE_MAX; i++)
+    {
+        addrstart = i * PMSADDIRE_SIZE;
+        addrend = addrstart + PMSADDIRE_SIZE;
+        MemPMSADOnPMSADDireTest(node, &dire[i], addrstart, addrend);
+    }
+    return TRUE;
+}
+
+public Bool MemPMSADTest()
+{
+    GMemManage* gmm = NULL;
+    MNode* node = NULL;
+
+    gmm = KrlMmGetGMemManageAddr();
+    IF_NULL_DEAD(gmm);
+
+    node = gmm->MNodeStart;
+    IF_EQT_DEAD(NULL, node, "GMemManage:MNodeStart = NULL\n");
+    IF_GTN_DEAD(1, gmm->MNodeNR, "GMemManage:MNodeNR < 1\n");
+    for(U64 i = 0; i < gmm->MNodeNR; i++)
+    {
+        MemPMSADOnMNodeTest(&node[i]);        
     }
     return TRUE;
 }
