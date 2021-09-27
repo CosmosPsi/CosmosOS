@@ -267,7 +267,6 @@ private Bool SetPMSADInMNodeMAreaInfo(MNode* node, PMSAD* msad)
 
 private PMSAD* NewOnePMSAD(MNode* node, PHYMSPaceArea* area, PMSADDire* dire, U64 paddr)
 {
-    PhyAddrFlags* tmp = NULL;
     PMSAD* msadstart = NULL;
     MArea* marea = NULL;
     UInt index = 0;
@@ -281,8 +280,9 @@ private PMSAD* NewOnePMSAD(MNode* node, PHYMSPaceArea* area, PMSADDire* dire, U6
     index = PMSADIndex(paddr);
     
     PMSADInit(&msadstart[index]);
-    tmp = (PhyAddrFlags*)(&paddr);
-	msadstart[index].PhyAddr.PAddrBit = tmp->PAddrBit;
+
+    SetPMSADPAddr(&msadstart[index], paddr);
+    SetPMSADPresent(&msadstart[index]);
     
     SetPMSADInMNodeMAreaInfo(node, &msadstart[index]);
     
