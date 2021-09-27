@@ -67,6 +67,25 @@ public Bool MemPHYMSPaceAreaTest()
     return TRUE;
 }
 
+public Bool MemMNodeTest()
+{
+    GMemManage* gmm = NULL;
+    MNode* node = NULL;
+    
+    gmm = KrlMmGetGMemManageAddr();
+    IF_NULL_DEAD(gmm);
+
+    node = gmm->MNodeStart;
+    IF_EQT_DEAD(NULL, node, "GMemManage:MNodeStart = NULL\n");
+    IF_GTN_DEAD(1, gmm->MNodeNR, "GMemManage:MNodeNR < 1\n");
+
+    for(U64 i = 0; i < gmm->MNodeNR; i++)
+    {
+        IF_EQT_DEAD(0, node[i].NodeMemAddrEnd, "MNode: NodeMemAddrEnd = 0");
+    }
+    return TRUE;
+}
+
 public Bool MemTestUnit()
 {
     return TRUE;

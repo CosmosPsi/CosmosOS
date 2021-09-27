@@ -8,6 +8,7 @@
 
 public Bool MemGMemManageTest();
 public Bool MemPHYMSPaceAreaTest();
+public Bool MemMNodeTest();
 public Bool MemTestUnit();
 
 #endif
