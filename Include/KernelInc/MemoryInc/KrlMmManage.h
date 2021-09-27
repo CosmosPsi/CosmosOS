@@ -12,6 +12,10 @@
 #define MSAD_ALIGN(n) ALIGN(n, MSAD_SIZE)
 #define MSAD_MASK (~(MSAD_SIZE-1))
 
+#define MF_P_INIT (0)
+#define MF_P_PRESENT (1)
+
+
 #define MF_OLKTY_INIT (0)
 #define MF_OLKTY_ODER (1)
 #define MF_OLKTY_BAFH (2)
@@ -91,7 +95,8 @@ typedef struct PMSADFLAGS
 	U32 InListBit:1;
 	U32 OccupancyTypeBit:2;
 	U32 AreaTypeBit:3;
-	U32 RefCountBit:24;
+	U32 PresentBit:2;
+	U32 RefCountBit:22;
 }__attribute__((packed)) PMSADFlags; 
 
 //物理地址及其标志
