@@ -6,7 +6,8 @@
 #ifndef _MEMTESTUNITHEAD
 #define _MEMTESTUNITHEAD
 
-public Bool MemGMemManageTest()；
-public Bool MemTestUnit()；
+public Bool MemGMemManageTest();
+public Bool MemPHYMSPaceAreaTest();
+public Bool MemTestUnit();
 
 #endif
