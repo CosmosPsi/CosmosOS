@@ -47,12 +47,22 @@ typedef SInt DrvStus;
 
 #define ALIGN(x, a)     (((x) + (a) - 1) & ~((a) - 1))
 
-#define IF_NULL_RETURN(ptr) if(NULL == ptr){return;}
-#define IF_NULL_RETURN_FALSE(ptr) if(NULL == ptr){return FALSE;}
-#define IF_NULL_RETURN_NULL(ptr) if(NULL == ptr){return NULL;}
-#define IF_NULL_RETURN_ZERO(ptr) if(NULL == ptr){return 0;}
-#define IF_NULL_DEAD(ptr) if(NULL == ptr){KrlErrorCrashDead("OBJ PTR IS NULL!!");}
+#define IF_NULL_RETURN(ptr) do{if(NULL == ptr){return;}}while(0);
+#define IF_NULL_RETURN_FALSE(ptr) do{if(NULL == ptr){return FALSE;}}while(0)
+#define IF_NULL_RETURN_NULL(ptr) do{if(NULL == ptr){return NULL;}}while(0)
+#define IF_NULL_RETURN_ZERO(ptr) do{if(NULL == ptr){return 0;}}while(0)
+#define IF_NULL_DEAD(ptr) do{if(NULL == ptr){KrlErrorCrashDead("OBJ PTR IS NULL!!");}}while(0)
 
-#define INIT_OBJOFPTR_ZERO(ptr) HalMemSet((void*)ptr, 0, sizeof(typeof(*ptr)))
+#define INIT_OBJOFPTR_ZERO(ptr) do{HalMemSet((void*)ptr, 0, sizeof(typeof(*ptr)));}while(0)
+
+#define TEST_FAIL_STRING(str) __FILE__##__LINE__##__FUNCTION__##str
+#define TEST_FAIL_DEAD_ESTMFUNC(str) KrlErrorCrashDead(TEST_FAIL_STRING(str))
+
+#define IF_TEST_OP(cmpsrc, tester, op, excstmfunc) do{if(cmpsrc op tester) {excstmfunc;}}while(0)
+
+#define IF_LTN_DEAD(cmp, test, str) IF_TEST_OP(cmp, test, <, TEST_FAIL_DEAD_ESTMFUNC(str))
+#define IF_GTN_DEAD(cmp, test, str) IF_TEST_OP(cmp, test, >, TEST_FAIL_DEAD_ESTMFUNC(str))
+#define IF_EQT_DEAD(cmp, test, str) IF_TEST_OP(cmp, test, ==, TEST_FAIL_DEAD_ESTMFUNC(str))
+#define IF_NEQ_DEAD(cmp, test, str) IF_TEST_OP(cmp, test, ==, TEST_FAIL_DEAD_ESTMFUNC(str))
 
 #endif
