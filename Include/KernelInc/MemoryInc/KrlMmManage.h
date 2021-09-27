@@ -372,6 +372,20 @@ KLINE Bool PMSADIsMArea(PMSAD* msad, MArea* area)
     return FALSE;
 }
 
+KLINE void SetPMSADPresent(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    msad->CountFlags.PresentBit = MF_P_PRESENT;
+    return;
+}
+
+KLINE void ClearPMSADPresent(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    msad->CountFlags.PresentBit = MF_P_INIT;
+    return;
+}
+
 KLINE void SetPMSADOLType(PMSAD* msad, U32 oltype)
 {
     IF_NULL_DEAD(msad);
