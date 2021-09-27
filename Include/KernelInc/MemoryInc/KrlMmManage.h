@@ -372,6 +372,16 @@ KLINE Bool PMSADIsMArea(PMSAD* msad, MArea* area)
     return FALSE;
 }
 
+KLINE Bool PMSADIsPresent(PMSAD* msad)
+{
+    IF_NULL_RETURN_FALSE(msad);
+    if(MF_P_PRESENT == msad->CountFlags.PresentBit)
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
+
 KLINE void SetPMSADPresent(PMSAD* msad)
 {
     IF_NULL_DEAD(msad);
