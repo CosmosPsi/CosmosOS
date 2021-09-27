@@ -408,6 +408,18 @@ KLINE void SetPMSADOccupancyType(PMSAD* msad, U32 occupancytype)
     return;
 }
 
+KLINE void SetPMSADPAddr(PMSAD* msad, U64 paddr)
+{
+    U64 phyaddr = 0;
+    PhyAddrFlags* pf = NULL;
+    IF_NULL_DEAD(msad);
+
+    phyaddr = paddr;
+    pf = (PhyAddrFlags*)(&phyaddr);
+    msad->PhyAddr.PAddrBit = pf->PAddrBit;
+    return;
+}
+
 KLINE void SetPMSADAlloc(PMSAD* msad)
 {
     IF_NULL_DEAD(msad);
