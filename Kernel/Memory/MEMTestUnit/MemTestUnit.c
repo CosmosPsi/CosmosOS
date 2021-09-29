@@ -236,6 +236,17 @@ public Bool MemMSPlitMerTest(MNode* node, MArea* area, MSPlitMer* splitmer)
     return TRUE;
 }
 
+public Bool MemMAreaOnPerMAreaTest(MNode* node, MArea* area)
+{
+    IF_EQT_DEAD(NULL, node, "PRAM node = NULL\n");
+    IF_EQT_DEAD(NULL, area, "PRAM area = NULL\n");
+    if(0 < area->MaxPMSAD)
+    {
+        MemMSPlitMerTest(node, area, &area->MSPLMerData);
+    }
+    return;
+}
+
 public Bool MemTestUnit()
 {
     return TRUE;
