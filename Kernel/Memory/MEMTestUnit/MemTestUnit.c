@@ -279,5 +279,10 @@ public Bool MemMAreaTest()
 
 public Bool MemTestUnit()
 {
+    MemGMemManageTest();
+    MemPHYMSPaceAreaTest();
+    MemMNodeTest();
+    MemPMSADTest();
+    MemMAreaTest();
     return TRUE;
 }
