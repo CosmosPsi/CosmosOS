@@ -247,6 +247,19 @@ public Bool MemMAreaOnPerMAreaTest(MNode* node, MArea* area)
     return;
 }
 
+public Bool MemMAreaOnMNodeTest(MNode* node)
+{
+    MArea* area = NULL;
+    IF_EQT_DEAD(NULL, node, "PRAM node = NULL\n");
+    area = &node->MAreaArr;
+    for(UInt i = 0; i < MEMAREA_MAX; i++)
+    {
+        MemMAreaOnPerMAreaTest(node, &area[i]);    
+    }
+    return TRUE;
+}
+
+
 public Bool MemTestUnit()
 {
     return TRUE;

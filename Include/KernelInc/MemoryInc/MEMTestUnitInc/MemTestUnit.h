@@ -17,6 +17,7 @@ public Bool MemMSPlitMerOnPerPMSADBlockTest(MNode* node, MArea* area, PABHList* 
 public Bool MemMSPlitMerOnPerPABHListTest(MNode* node, MArea* area, MSPlitMer* splitmer, PABHList* pabhl);
 public Bool MemMSPlitMerTest(MNode* node, MArea* area, MSPlitMer* splitmer);
 public Bool MemMAreaOnPerMAreaTest(MNode* node, MArea* area);
+public Bool MemMAreaOnMNodeTest(MNode* node);
 public Bool MemTestUnit();
 
 #endif
