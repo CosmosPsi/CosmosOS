@@ -12,6 +12,7 @@ public Bool MemMNodeTest();
 public Bool MemPMSADOnPMSADDireTest(MNode* node, PMSADDire* dire, U64 start, U64 end);
 public Bool MemPMSADOnMNodeTest(MNode* node);
 public Bool MemPMSADTest();
+private UInt PMSADBlockIsContinuousAddr(PMSAD* start, PMSAD* end);
 public Bool MemTestUnit();
 
 #endif

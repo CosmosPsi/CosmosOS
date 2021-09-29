@@ -145,6 +145,31 @@ public Bool MemPMSADTest()
     return TRUE;
 }
 
+
+private UInt PMSADBlockIsContinuousAddr(PMSAD* start, PMSAD* end)
+{
+    PMSAD* msad = NULL;
+    UInt count = 1;
+    if(start == end)
+    {
+        return 1;
+    }
+    msad = start + 1;
+    while(msad <= end)
+    {
+        if(PMSADIsAdjacent(msad - 1, msad) == FALSE)
+        {
+            return count;
+        }
+        count++;
+        msad++;
+    }
+    return count;
+}
+
+
+
+
 public Bool MemTestUnit()
 {
     return TRUE;
