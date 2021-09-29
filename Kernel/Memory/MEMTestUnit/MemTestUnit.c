@@ -259,6 +259,23 @@ public Bool MemMAreaOnMNodeTest(MNode* node)
     return TRUE;
 }
 
+public Bool MemMAreaTest()
+{
+    GMemManage* gmm = NULL;
+    MNode* node = NULL;
+
+    gmm = KrlMmGetGMemManageAddr();
+    IF_NULL_DEAD(gmm);
+
+    node = gmm->MNodeStart;
+    IF_EQT_DEAD(NULL, node, "GMemManage:MNodeStart = NULL\n");
+    IF_GTN_DEAD(1, gmm->MNodeNR, "GMemManage:MNodeNR < 1\n");
+    for(U64 i = 0; i < gmm->MNodeNR; i++)
+    {
+        MemMAreaOnMNodeTest(&node[i]);        
+    }
+    return TRUE;
+}
 
 public Bool MemTestUnit()
 {
