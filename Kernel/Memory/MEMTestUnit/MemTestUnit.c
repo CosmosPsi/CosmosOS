@@ -201,6 +201,27 @@ public Bool MemMSPlitMerOnPerPMSADBlockTest(MNode* node, MArea* area, PABHList* 
     return TRUE;
 }
 
+public Bool MemMSPlitMerOnPerPABHListTest(MNode* node, MArea* area, MSPlitMer* splitmer, PABHList* pabhl)
+{
+    Bool rets = FALSE;
+    List* pos = NULL;
+    PMSAD* msad = NULL;
+    IF_EQT_DEAD(NULL, node, "PRAM node = NULL\n");
+    IF_EQT_DEAD(NULL, area, "PRAM area = NULL\n");
+    IF_EQT_DEAD(NULL, splitmer, "PRAM splitmer = NULL\n");
+    IF_EQT_DEAD(NULL, pabhl, "PRAM pabhl = NULL\n");
+    if(0 < pabhl->PmsadNR)
+    {
+        rets = ListIsEmptyCareful(&pabhl->FreeLists);
+        IF_EQT_DEAD(TRUE, rets, "PABHList:FreeLists == Empty\n");
+        ListForEach(pos, &pabhl->FreeLists)
+        {
+            msad = ListEntry(pos, PMSAD, Lists);
+            MemMSPlitMerOnPerPMSADBlockTest(node, area, pabhl, msad);
+        }
+    }
+}
+
 public Bool MemTestUnit()
 {
     return TRUE;

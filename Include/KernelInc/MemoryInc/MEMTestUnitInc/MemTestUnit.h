@@ -14,6 +14,7 @@ public Bool MemPMSADOnMNodeTest(MNode* node);
 public Bool MemPMSADTest();
 private UInt PMSADBlockIsContinuousAddr(PMSAD* start, PMSAD* end);
 public Bool MemMSPlitMerOnPerPMSADBlockTest(MNode* node, MArea* area, PABHList* pabhl, PMSAD* start);
+public Bool MemMSPlitMerOnPerPABHListTest(MNode* node, MArea* area, MSPlitMer* splitmer, PABHList* pabhl);
 public Bool MemTestUnit();
 
 #endif
