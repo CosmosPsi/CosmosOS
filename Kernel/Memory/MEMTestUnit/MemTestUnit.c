@@ -167,8 +167,39 @@ private UInt PMSADBlockIsContinuousAddr(PMSAD* start, PMSAD* end)
     return count;
 }
 
+public Bool MemMSPlitMerOnPerPMSADBlockTest(MNode* node, MArea* area, PABHList* pabhl, PMSAD* start)
+{
+    PMSAD* end = NULL;
+    PMSAD* msad = NULL;
+    Addr paddr = 0;
+    UInt ordernr = 0;
+    UInt msadnr = 0;
+    IF_EQT_DEAD(NULL, node, "PRAM node = NULL\n");
+    IF_EQT_DEAD(NULL, area, "PRAM area = NULL\n");
+    IF_EQT_DEAD(NULL, pabhl, "PRAM pabhl = NULL\n");
+    IF_EQT_DEAD(NULL, start, "PRAM splitmer = NULL\n");
+    IF_NEQ_DEAD(MF_OLKTY_ODER, start->CountFlags.OLTypeBit, "PMSAD:CountFlags.OLTypeBit != MF_OLKTY_ODER\n");
+    
+    end = (PMSAD*)start->BlockLink;
+    msad = start;
+    ordernr = (end - start) + 1;
+ 
+    msadnr = PMSADBlockIsContinuousAddr(start, end);
+    IF_NEQ_DEAD(msadnr, pabhl->InOrderPmsadNR, "PMSADBlock is not continuous\n");
 
-
+    while(msad <= end)
+    {
+        paddr = PMSADRetPAddr(msad);
+        IF_GTN_DEAD(paddr, area->LogicEnd, "PMSAD PAddr doesn't area\n");
+        IF_LTN_DEAD(paddr, area->LogicStart, "PMSAD PAddr doesn't area\n");
+        IF_NEQ_DEAD(TRUE, PMSADIsPresent(msad), "PMSAD Not Present\n");
+        IF_NEQ_DEAD(TRUE, PMSADIsFree(msad), "PMSAD Not Free\n");
+        IF_NEQ_DEAD(node, PMSADRetItsMNode(msad), "PMSAD doesn't node\n");
+        IF_NEQ_DEAD(area, PMSADRetItsMArea(msad), "PMSAD doesn't area\n");
+        IF_NEQ_DEAD(ordernr, pabhl->InOrderPmsadNR, "PMSAD number NEQ\n");
+    }
+    return TRUE;
+}
 
 public Bool MemTestUnit()
 {

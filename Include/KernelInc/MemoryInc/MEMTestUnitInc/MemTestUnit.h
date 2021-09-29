@@ -13,6 +13,7 @@ public Bool MemPMSADOnPMSADDireTest(MNode* node, PMSADDire* dire, U64 start, U64
 public Bool MemPMSADOnMNodeTest(MNode* node);
 public Bool MemPMSADTest();
 private UInt PMSADBlockIsContinuousAddr(PMSAD* start, PMSAD* end);
+public Bool MemMSPlitMerOnPerPMSADBlockTest(MNode* node, MArea* area, PABHList* pabhl, PMSAD* start);
 public Bool MemTestUnit();
 
 #endif
