@@ -222,6 +222,20 @@ public Bool MemMSPlitMerOnPerPABHListTest(MNode* node, MArea* area, MSPlitMer* s
     }
 }
 
+public Bool MemMSPlitMerTest(MNode* node, MArea* area, MSPlitMer* splitmer)
+{
+    PABHList* pabhl = NULL;
+    IF_EQT_DEAD(NULL, node, "PRAM node = NULL\n");
+    IF_EQT_DEAD(NULL, area, "PRAM area = NULL\n");
+    IF_EQT_DEAD(NULL, splitmer, "PRAM splitmer = NULL\n");
+    pabhl = splitmer->PAddrBlockArr;
+    for(UInt i = 0; i < MSPLMER_ARR_LMAX; i++)
+    {
+        MemMSPlitMerOnPerPABHListTest(node, area, splitmer, &pabhl[i]);            
+    }
+    return TRUE;
+}
+
 public Bool MemTestUnit()
 {
     return TRUE;
