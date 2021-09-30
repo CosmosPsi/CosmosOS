@@ -407,6 +407,12 @@ KLINE void SetPMSADOLType(PMSAD* msad, U32 oltype)
     return;
 }
 
+KLINE U32 RetPMSADOLType(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    return (U32)(msad->CountFlags.OLTypeBit);
+}
+
 KLINE void SetPMSADOccupancyType(PMSAD* msad, U32 occupancytype)
 {
     IF_NULL_DEAD(msad);
