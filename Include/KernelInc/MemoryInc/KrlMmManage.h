@@ -464,6 +464,12 @@ KLINE void ClearPMSADBlockLink(PMSAD* msad)
     return;
 }
 
+KLINE void* RetPMSADBlockLink(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    return msad->BlockLink;
+}
+
 KLINE void GetPMSAD(PMSAD* msad)
 {
     IF_NULL_DEAD(msad);
