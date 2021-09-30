@@ -50,6 +50,8 @@ typedef SInt DrvStus;
 #define IF_NULL_RETURN(ptr) do{if(NULL == ptr){return;}}while(0);
 #define IF_NULL_RETURN_FALSE(ptr) do{if(NULL == ptr){return FALSE;}}while(0)
 #define IF_NULL_RETURN_NULL(ptr) do{if(NULL == ptr){return NULL;}}while(0)
+#define IF_ZERO_RETURN_NULL(x) do{if(0 == x){return NULL;}}while(0)
+#define IF_ZERO_RETURN_FALSE(x) do{if(0 == x){return FALSE;}}while(0)
 #define IF_NULL_RETURN_ZERO(ptr) do{if(NULL == ptr){return 0;}}while(0)
 #define IF_NULL_DEAD(ptr) do{if(NULL == ptr){KrlErrorCrashDead("OBJ PTR IS NULL!!");}}while(0)
 
@@ -60,9 +62,30 @@ typedef SInt DrvStus;
 
 #define IF_TEST_OP(cmpsrc, tester, op, excstmfunc) do{if(cmpsrc op tester) {excstmfunc;}}while(0)
 
+#define IF_RET_OP(cmpsrc, tester, op, rets) do{if(cmpsrc op tester) {return rets;}}while(0)
+
 #define IF_LTN_DEAD(cmp, test, str) IF_TEST_OP(cmp, test, <, TEST_FAIL_DEAD_ESTMFUNC(str))
 #define IF_GTN_DEAD(cmp, test, str) IF_TEST_OP(cmp, test, >, TEST_FAIL_DEAD_ESTMFUNC(str))
 #define IF_EQT_DEAD(cmp, test, str) IF_TEST_OP(cmp, test, ==, TEST_FAIL_DEAD_ESTMFUNC(str))
-#define IF_NEQ_DEAD(cmp, test, str) IF_TEST_OP(cmp, test, ==, TEST_FAIL_DEAD_ESTMFUNC(str))
+#define IF_NEQ_DEAD(cmp, test, str) IF_TEST_OP(cmp, test, !=, TEST_FAIL_DEAD_ESTMFUNC(str))
+
+#define IF_LTN_RETURN(cmp, test, rets) IF_RET_OP(cmp, test, <, rets)
+#define IF_GTN_RETURN(cmp, test, rets) IF_RET_OP(cmp, test, >, rets)
+#define IF_EQT_RETURN(cmp, test, rets) IF_RET_OP(cmp, test, ==, rets)
+#define IF_NEQ_RETURN(cmp, test, rets) IF_RET_OP(cmp, test, !=, rets)
+
+#define IF_LTNZERO_RETRUN_NULL(test) IF_LTN_RETURN(test, 0, NULL)
+#define IF_LTNONE_RETRUN_NULL(test) IF_LTN_RETURN(test, 1, NULL)
+#define IF_GTNZERO_RETRUN_NULL(test) IF_GTN_RETURN(test, 0, NULL)
+#define IF_GTNONE_RETRUN_NULL(test) IF_GTN_RETURN(test, 1, NULL)
+#define IF_NEQZERO_RETRUN_NULL(test) IF_NEQ_RETURN(test, 0, NULL)
+#define IF_NEQONE_RETRUN_NULL(test) IF_NEQ_RETURN(test, 1, NULL)
+
+#define IF_LTNZERO_RETRUN_FALSE(test) IF_LTN_RETURN(test, 0, FALSE)
+#define IF_LTNONE_RETRUN_FALSE(test) IF_LTN_RETURN(test, 1, FALSE)
+#define IF_GTNZERO_RETRUN_FALSE(test) IF_GTN_RETURN(test, 0, FALSE)
+#define IF_GTNONE_RETRUN_FALSE(test) IF_GTN_RETURN(test, 1, FALSE)
+#define IF_NEQZERO_RETRUN_FALSE(test) IF_NEQ_RETURN(test, 0, FALSE)
+#define IF_NEQONE_RETRUN_FALSE(test) IF_NEQ_RETURN(test, 1, FALSE)
 
 #endif
