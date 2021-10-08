@@ -24,3 +24,19 @@ private PABHList* ForPmsadNrRetPABListOnMArea(MNode* node, MArea* area, UInt msa
     return NULL;
 }
 
+private PABHList* ForPmsadNrRetAllocPABListOnMArea(MNode* node, MArea* area, UInt msadnr)
+{
+    PABHList* abhlist = NULL;
+    IF_NULL_RETURN_NULL(node);
+    IF_NULL_RETURN_NULL(area);
+    abhlist = area->MSPLMerData.PAddrBlockAr;
+    for(UInt i = 0; i < MSPLMER_ARR_LMAX; i++)
+    {
+        if((abhlist->InOrderPmsadNR >= msadnr) && (abhlist->FreePmsadNR >= msadnr) && 
+                (ListIsEmptyCareful(&abhlist->FreeLists) == FALSE))
+        {
+            return abhlist;
+        }
+    }
+    return NULL;
+}
