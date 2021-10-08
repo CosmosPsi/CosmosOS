@@ -40,3 +40,39 @@ private PABHList* ForPmsadNrRetAllocPABListOnMArea(MNode* node, MArea* area, UIn
     }
     return NULL;
 }
+
+private PMSAD* PickPMSADsOnPABHList(PABHList* abhlist)
+{
+    PMSAD* msad = NULL;
+    PMSAD* end = NULL;
+    
+    IF_NULL_RETURN_NULL(abhlist);
+    IF_LTN_RETURN(abhlist->FreePmsadNR, abhlist->InOrderPmsadNR, NULL);
+    KrlMmLocked(&abhlist->Lock);
+    
+    if(ListIsEmptyCareful(&abhlist->FreeLists) == TRUE)
+    {
+        KrlMmUnLock(&abhlist->Lock);
+        return NULL;
+    }
+    
+    msad = ListFirstOne(&abhlist->FreeLists, PMSAD, Lists); 
+    if(1 == abhlist->InOrderPmsadNR)
+    {
+        IF_NEQ_DEAD(MF_OLKTY_BAFH, RetPMSADOLType(msad), "PMSAD OLTYPE NOT MF_OLKTY_BAFH");
+        ListDel(&msad->Lists);
+        abhlist->FreePmsadNR -= 1;
+        KrlMmUnLock(&abhlist->Lock);
+        return msad;
+    }
+
+    IF_NEQ_DEAD(MF_OLKTY_ODER, RetPMSADOLType(msad), "PMSAD OLTYPE NOT MF_OLKTY_ODER");
+
+    end = (PMSAD*)RetPMSADBlockLink(msad);
+    IF_NEQ_DEAD(MF_OLKTY_BAFH, RetPMSADOLType(end), "PMSAD OLTYPE NOT MF_OLKTY_BAFH");
+    
+    ListDel(&msad->Lists);
+    abhlist->FreePmsadNR -= abhlist->InOrderPmsadNR;
+    KrlMmUnLock(&abhlist->Lock);
+    return msad;
+}
