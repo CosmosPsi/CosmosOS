@@ -138,3 +138,46 @@ private PMSAD* OperationAfterAllocPMSADs(PABHList* abhlist, PMSAD* start, PMSAD*
 	
 	return start;
 }
+
+private PMSAD* AllocPMSADsOnPABHList(MNode* node, MArea* area, PABHList* abhlist, PABHList* allocbhlist, UInt msadnr)
+{
+    PABHList* start = NULL;
+    PABHList* end = NULL;
+    PABHList* tmp = NULL;
+    PMSAD* msad = NULL;
+    Bool rets = FALSE;
+
+    IF_NULL_RETURN_NULL(node);
+    IF_NULL_RETURN_NULL(area);
+    IF_NULL_RETURN_NULL(abhlist);
+    IF_NULL_RETURN_NULL(allocbhlist);
+
+    IF_LTN_RETURN(msadnr, abhlist->InOrderPmsadNR, NULL);
+    IF_GTN_RETURN(msadnr, allocbhlist->InOrderPmsadNR, NULL);
+
+    IF_GTN_RETURN(abhlist, allocbhlist, NULL);
+    start = abhlist;
+    end = allocbhlist;
+    
+    if(start == end)
+    {
+        msad = PickPMSADsOnPABHList(allocbhlist);
+        IF_NULL_RETURN_NULL(msad);
+        SetPMSADAlloc(msad);
+        GetPMSAD(msad);
+        return msad;
+    }
+
+    msad = PickPMSADsOnPABHList(allocbhlist);
+    IF_NULL_RETURN_NULL(msad);
+
+    tmp = end - 1;
+    while(tmp >= start)
+    {
+        rets = PutsPMSADsOnPABHList(tmp, &msad[tmp->InOrderPmsadNR], tmp->Order);
+        IF_NEQ_DEAD(FALSE, rets, "PMSADAddInPABHList rets FALSE\n");        
+        tmp--;
+    }
+    OperationAfterAllocPMSADs(abhlist， msad， &msad[abhlist->InOrderPmsadNR])
+    return msad;
+}
