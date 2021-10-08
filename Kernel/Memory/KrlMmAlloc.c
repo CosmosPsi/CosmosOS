@@ -230,7 +230,8 @@ private PMSAD* KrlMmAllocPMSADsRealize(UInt nodeid, UInt areaid, UInt msadnr, U6
     return NULL;
 }
 
-public PMSAD* KrlMmAllocPMSADs(UInt nodeid, UInt areaid, UInt msadnr)
+public PMSAD* KrlMmAllocPMSADs(UInt nodeid, UInt areaid, UInt msadnr, U64 flags)
 {
-    return KrlMmAllocPMSADsRealize(nodeid, areaid, msadnr, KMAF_DEFAULT);
+    return KrlMmAllocPMSADsRealize(nodeid, areaid, msadnr, flags);
 }
+
