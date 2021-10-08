@@ -240,3 +240,8 @@ public PMSAD* KrlMmAllocKernPMSADs(UInt msadnr)
 {
     return KrlMmAllocPMSADs(DEFAULT_NODE_ID, KERN_AREA_ID, msadnr, KMAF_DEFAULT);
 }
+
+public PMSAD* KrlMmAllocUserPMSADs(UInt msadnr)
+{
+    return KrlMmAllocPMSADs(DEFAULT_NODE_ID, USER_AREA_ID, msadnr, KMAF_DEFAULT);
+}

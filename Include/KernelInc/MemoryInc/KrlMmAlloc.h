@@ -25,4 +25,6 @@ private PMSAD* KrlMmAllocPMSADsRealizeCore(GMemManage* gmm, MNode* node, MArea* 
 private PMSAD* KrlMmAllocPMSADsRealize(UInt nodeid, UInt areaid, UInt msadnr, U64 flags);
 public PMSAD* KrlMmAllocPMSADs(UInt nodeid, UInt areaid, UInt msadnr, U64 flags);
 public PMSAD* KrlMmAllocKernPMSADs(UInt msadnr);
+public PMSAD* KrlMmAllocUserPMSADs(UInt msadnr);
+
 #endif
