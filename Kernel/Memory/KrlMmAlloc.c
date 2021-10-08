@@ -235,3 +235,8 @@ public PMSAD* KrlMmAllocPMSADs(UInt nodeid, UInt areaid, UInt msadnr, U64 flags)
     return KrlMmAllocPMSADsRealize(nodeid, areaid, msadnr, flags);
 }
 
+
+public PMSAD* KrlMmAllocKernPMSADs(UInt msadnr)
+{
+    return KrlMmAllocPMSADs(DEFAULT_NODE_ID, KERN_AREA_ID, msadnr, KMAF_DEFAULT);
+}
