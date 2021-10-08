@@ -617,6 +617,7 @@ private UInt ScanSameAreaTypePMSADs(MNode* node, MArea* area, PMSAD* start, PMSA
 private UInt PMSADBlockInitOnPMSADDire(MNode* node, MArea* area, PMSADDire* dire);
 private Bool OneMAreaInitOnMNode(MNode* node, MArea* area);
 private Bool MAreaInitOnMNode(MNode* node);
+public MNode* KrlMmGetMNode(UInt nodeid);
 public Bool KrlMmMAreaInit();
 private Bool DefaultMNodeInit();
 public Bool KrlMmMNodeInit();

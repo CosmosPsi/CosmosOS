@@ -749,6 +749,26 @@ private Bool MAreaInitOnMNode(MNode* node)
     return TRUE;
 }
 
+public MNode* KrlMmGetMNode(UInt nodeid)
+{
+    GMemManage* gmm = NULL;
+    MNode* node
+    gmm = KrlMmGetGMemManageAddr();
+    IF_NULL_RETURN_NULL(gmm);
+
+    node = gmm->MNodeStart;
+    IF_NULL_RETURN_NULL(node);
+    
+    for(UInt i = 0; i < gmm->MNodeNR; i++)
+    {
+        if(i == nodeid)
+        {
+            return &node[i];    
+        }
+    }
+    return NULL;
+}
+
 public Bool KrlMmMAreaInit()
 {
     MNode* node = NULL;
