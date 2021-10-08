@@ -10,5 +10,6 @@ private PABHList* ForPmsadNrRetPABListOnMArea(MNode* node, MArea* area, UInt msa
 private PABHList* ForPmsadNrRetAllocPABListOnMArea(MNode* node, MArea* area, UInt msadnr);
 private PMSAD* PickPMSADsOnPABHList(PABHList* abhlist);
 private Bool PutsPMSADsOnPABHList(PABHList* abhlist, PMSAD* msad, UInt order);
+private PMSAD* OperationAfterAllocPMSADs(PABHList* abhlist, PMSAD* start, PMSAD* end)；
 
 #endif

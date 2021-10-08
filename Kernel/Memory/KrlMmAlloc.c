@@ -105,3 +105,36 @@ private Bool PutsPMSADsOnPABHList(PABHList* abhlist, PMSAD* msad, UInt order)
     KrlMmUnLock(&abhlist->Lock);
     return TRUE;
 }
+
+private PMSAD* OperationAfterAllocPMSADs(PABHList* abhlist, PMSAD* start, PMSAD* end)
+{
+    UInt msadnr = 0;
+    IF_EQT_DEAD(NULL, abhlist, "PARM:abhlist == NULL\n");
+    IF_EQT_DEAD(NULL, start, "PARM: start == NULL\n");
+    IF_EQT_DEAD(NULL, end, "PARM:end == NULL\n");
+    IF_EQT_DEAD(FALSE, PMSADIsFree(start), "PMSAD:start is Not Free\n");
+    IF_EQT_DEAD(FALSE, PMSADIsFree(end), "PMSAD:end is Not Free\n");
+    
+    msadnr = (end - start) + 1;
+    IF_NEQ_DEAD(msadnr, abhlist->InOrderPmsadNR, "abhlist->InOrderPmsadNR != msadnr\n");
+    
+    if(start == end)
+    {
+        IF_NEQ_DEAD(1, abhlist->InOrderPmsadNR, "abhlist->InOrderPmsadNR != 1\n");
+        GetPMSAD(start);
+        SetPMSADAlloc(start);
+        SetPMSADOLType(start, MF_OLKTY_ODER);
+        SetPMSADBlockLink(start, (void*)end);
+		return start;
+    }
+    GetPMSAD(start);
+    SetPMSADAlloc(start);
+
+    GetPMSAD(end);
+    SetPMSADAlloc(end);
+
+    SetPMSADOLType(start, MF_OLKTY_ODER);
+    SetPMSADBlockLink(start, (void*)end);
+	
+	return start;
+}
