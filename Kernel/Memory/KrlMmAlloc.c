@@ -76,3 +76,32 @@ private PMSAD* PickPMSADsOnPABHList(PABHList* abhlist)
     KrlMmUnLock(&abhlist->Lock);
     return msad;
 }
+
+private Bool PutsPMSADsOnPABHList(PABHList* abhlist, PMSAD* msad, UInt order)
+{
+    PMSAD* msadend = NULL;
+    IF_NULL_RETURN_FALSE(abhlist);
+    IF_NULL_RETURN_FALSE(msad);
+    
+    if(PMSADIsFree(msad) == FALSE)
+    {
+        return FALSE;
+    }
+    if(abhlist->Order != order)
+    {
+        return FALSE;
+    }
+    
+    KrlMmLocked(&abhlist->Lock);
+    
+    msadend = &msad[(1 << order) - 1];
+    ListAdd(&msad->Lists, &abhlist->FreeLists);
+    SetPMSADOLType(msad, MF_OLKTY_ODER);
+    SetPMSADBlockLink(msad, (void*)msadend);
+    SetPMSADOLType(msadend, MF_OLKTY_BAFH);
+    SetPMSADBlockLink(msad, (void*)abhlist);
+    abhlist->FreePmsadNR += (1 << order);
+    abhlist->PmsadNR += (1 << order);
+    KrlMmUnLock(&abhlist->Lock);
+    return TRUE;
+}
