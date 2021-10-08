@@ -189,6 +189,7 @@ typedef struct MAREA
 {
 	List Lists;
 	MLock Lock;
+    U64 AreaId;
 	UInt Status;
 	UInt Flags;
 	UInt Type;

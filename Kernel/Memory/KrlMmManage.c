@@ -83,6 +83,7 @@ private void MNodeInit(MNode* init)
     for(UInt i = 0; i < MEMAREA_MAX; i++)
     {
         MAreaInit(&init->MAreaArr[i]);
+        init->MAreaArr[i].AreaId = (U64)i;
     }
     return;
 }
@@ -761,13 +762,15 @@ public MNode* KrlMmGetMNode(UInt nodeid)
     
     for(UInt i = 0; i < gmm->MNodeNR; i++)
     {
-        if(i == nodeid)
+        if(node[i].NodeID == nodeid)
         {
             return &node[i];    
         }
     }
     return NULL;
 }
+
+
 
 public Bool KrlMmMAreaInit()
 {
