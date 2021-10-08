@@ -221,11 +221,16 @@ private PMSAD* KrlMmAllocPMSADsRealize(UInt nodeid, UInt areaid, UInt msadnr, U6
     
     area = KrlMmGetMArea(node, areaid);
     IF_NULL_RETURN_NULL(area);
-    
+
     KrlMmLocked(&node->Lock);
     KrlMmLocked(&area->Lock);
     msad = KrlMmAllocPMSADsRealizeCore(gmm, node, area, msadnr, flags);
     KrlMmUnLock(&area->Lock);
     KrlMmUnLock(&node->Lock);
     return NULL;
+}
+
+public PMSAD* KrlMmAllocPMSADs(UInt nodeid, UInt areaid, UInt msadnr)
+{
+    return KrlMmAllocPMSADsRealize(nodeid, areaid, msadnr, KMAF_DEFAULT);
 }

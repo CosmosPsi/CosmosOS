@@ -6,6 +6,8 @@
 
 #ifndef _KRLMMALLOCHEAD
 #define _KRLMMALLOCHEAD
+
+#define KMAF_DEFAULT (0) 
 private PABHList* ForPmsadNrRetPABListOnMArea(MNode* node, MArea* area, UInt msadnr);
 private PABHList* ForPmsadNrRetAllocPABListOnMArea(MNode* node, MArea* area, UInt msadnr);
 private PMSAD* PickPMSADsOnPABHList(PABHList* abhlist);
@@ -14,5 +16,6 @@ private PMSAD* OperationAfterAllocPMSADs(PABHList* abhlist, PMSAD* start, PMSAD*
 private PMSAD* AllocPMSADsOnPABHList(MNode* node, MArea* area, PABHList* abhlist, PABHList* allocbhlist, UInt msadnr);
 private PMSAD* KrlMmAllocPMSADsRealizeCore(GMemManage* gmm, MNode* node, MArea* area, UInt msadnr, U64 flags);
 private PMSAD* KrlMmAllocPMSADsRealize(UInt nodeid, UInt areaid, UInt msadnr, U64 flags);
+public PMSAD* KrlMmAllocPMSADs(UInt nodeid, UInt areaid, UInt msadnr);
 
 #endif
