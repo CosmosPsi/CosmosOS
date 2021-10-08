@@ -178,7 +178,7 @@ private PMSAD* AllocPMSADsOnPABHList(MNode* node, MArea* area, PABHList* abhlist
         IF_NEQ_DEAD(FALSE, rets, "PMSADAddInPABHList rets FALSE\n");        
         tmp--;
     }
-    OperationAfterAllocPMSADs(abhlist， msad， &msad[abhlist->InOrderPmsadNR])
+    OperationAfterAllocPMSADs(abhlist， msad， &msad[abhlist->InOrderPmsadNR]);
     return msad;
 }
 
@@ -204,4 +204,28 @@ private PMSAD* KrlMmAllocPMSADsRealizeCore(GMemManage* gmm, MNode* node, MArea* 
     msad = AllocPMSADsOnPABHList(node, area, abhlist, msadnr);
     IF_NULL_RETURN_NULL(msad);
     return msad;
+}
+
+private PMSAD* KrlMmAllocPMSADsRealize(UInt nodeid, UInt areaid, UInt msadnr, U64 flags)
+{
+    GMemManage* gmm = NULL;
+    MNode* node = NULL;
+    MArea* area = NULL;
+    PMSAD* msad = NULL;
+
+    gmm = KrlMmGetGMemManageAddr();
+    IF_NULL_RETURN_NULL(gmm);
+
+    node = KrlMmGetMNode(nodeid);
+    IF_NULL_RETURN_NULL(node);
+    
+    area = KrlMmGetMArea(node, areaid);
+    IF_NULL_RETURN_NULL(area);
+    
+    KrlMmLocked(&node->Lock);
+    KrlMmLocked(&area->Lock);
+    msad = KrlMmAllocPMSADsRealizeCore(gmm, node, area, msadnr, flags);
+    KrlMmUnLock(&area->Lock);
+    KrlMmUnLock(&node->Lock);
+    return NULL;
 }
