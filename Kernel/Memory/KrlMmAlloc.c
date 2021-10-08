@@ -181,3 +181,27 @@ private PMSAD* AllocPMSADsOnPABHList(MNode* node, MArea* area, PABHList* abhlist
     OperationAfterAllocPMSADs(abhlist， msad， &msad[abhlist->InOrderPmsadNR])
     return msad;
 }
+
+private PMSAD* KrlMmAllocPMSADsRealizeCore(GMemManage* gmm, MNode* node, MArea* area, UInt msadnr, U64 flags)
+{
+    PABHList* abhlist = NULL;
+    PABHList* allocbhlist = NULL;
+    PMSAD* msad = NULL;
+    IF_NULL_RETURN_NULL(gmm);
+    IF_NULL_RETURN_NULL(node);
+    IF_NULL_RETURN_NULL(area);
+    IF_ZERO_RETURN_NULL(msadnr);
+
+    IF_LTN_RETURN(gmm->FreePMSAD, msadnr, NULL);
+    IF_LTN_RETURN(area->FreePMSAD, msadnr, NULL);
+
+    abhlist = ForPmsadNrRetPABListOnMArea(node, area, msadnr);
+    IF_NULL_RETURN_NULL(abhlist);
+
+    allocbhlist = ForPmsadNrRetAllocPABListOnMArea(node, area, msadnr);
+    IF_NULL_RETURN_NULL(allocbhlist);
+    
+    msad = AllocPMSADsOnPABHList(node, area, abhlist, msadnr);
+    IF_NULL_RETURN_NULL(msad);
+    return msad;
+}
