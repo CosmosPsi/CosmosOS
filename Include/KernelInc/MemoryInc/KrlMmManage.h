@@ -619,6 +619,7 @@ private UInt PMSADBlockInitOnPMSADDire(MNode* node, MArea* area, PMSADDire* dire
 private Bool OneMAreaInitOnMNode(MNode* node, MArea* area);
 private Bool MAreaInitOnMNode(MNode* node);
 public MNode* KrlMmGetMNode(UInt nodeid);
+public MArea* KrlMmGetMArea(MNode* node, UInt areaid);
 public Bool KrlMmMAreaInit();
 private Bool DefaultMNodeInit();
 public Bool KrlMmMNodeInit();

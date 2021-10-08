@@ -770,7 +770,19 @@ public MNode* KrlMmGetMNode(UInt nodeid)
     return NULL;
 }
 
-
+public MArea* KrlMmGetMArea(MNode* node, UInt areaid)
+{
+    IF_NULL_RETURN_NULL(node);
+    
+    for(UInt i = 0; i < MEMAREA_MAX; i++)
+    {
+        if(node->MAreaArr[i].AreaId == (U64)areaid)
+        {
+            return &node->MAreaArr[i];    
+        }
+    }
+    return NULL;
+}
 
 public Bool KrlMmMAreaInit()
 {
