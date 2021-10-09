@@ -178,7 +178,7 @@ private PMSAD* AllocPMSADsOnPABHList(MNode* node, MArea* area, PABHList* abhlist
         IF_NEQ_DEAD(FALSE, rets, "PMSADAddInPABHList rets FALSE\n");        
         tmp--;
     }
-    OperationAfterAllocPMSADs(abhlist， msad， &msad[abhlist->InOrderPmsadNR]);
+    OperationAfterAllocPMSADs(abhlist, msad, &msad[abhlist->InOrderPmsadNR]);
     return msad;
 }
 
