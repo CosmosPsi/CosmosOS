@@ -23,7 +23,8 @@ private PMSAD* OperationAfterAllocPMSADs(PABHList* abhlist, PMSAD* start, PMSAD*
 private PMSAD* AllocPMSADsOnPABHList(MNode* node, MArea* area, PABHList* abhlist, PABHList* allocbhlist, UInt msadnr);
 private PMSAD* KrlMmAllocPMSADsRealizeCore(GMemManage* gmm, MNode* node, MArea* area, UInt msadnr, U64 flags);
 private PMSAD* KrlMmAllocPMSADsRealize(UInt nodeid, UInt areaid, UInt msadnr, U64 flags);
-public U64 KrlMmGetPMSADLen(PMSAD* msad);
+public U64 KrlMmGetPMSADsLen(PMSAD* msad);
+public U64 KrlMmGetPMSADsSize(PMSAD* msad);
 public PMSAD* KrlMmAllocPMSADs(UInt nodeid, UInt areaid, UInt msadnr, U64 flags);
 public PMSAD* KrlMmAllocKernPMSADs(UInt msadnr);
 public PMSAD* KrlMmAllocUserPMSADs(UInt msadnr);
