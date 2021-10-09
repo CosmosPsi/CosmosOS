@@ -227,7 +227,7 @@ private PMSAD* KrlMmAllocPMSADsRealize(UInt nodeid, UInt areaid, UInt msadnr, U6
     msad = KrlMmAllocPMSADsRealizeCore(gmm, node, area, msadnr, flags);
     KrlMmUnLock(&area->Lock);
     KrlMmUnLock(&node->Lock);
-    return NULL;
+    return msad;
 }
 
 public U64 KrlMmGetPMSADsLen(PMSAD* msad)
