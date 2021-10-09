@@ -230,6 +230,19 @@ private PMSAD* KrlMmAllocPMSADsRealize(UInt nodeid, UInt areaid, UInt msadnr, U6
     return NULL;
 }
 
+public U64 KrlMmGetPMSADLen(PMSAD* msad)
+{
+    PMSAD* end = NULL;
+	IF_NULL_RETURN_ZERO(msad);
+    IF_NEQ_RETURN(TRUE, PMSADIsFree(msad), 0);
+	IF_NULL_RETURN_ZERO(RetPMSADBlockLink(msad));
+
+    end = (PMSAD*)RetPMSADBlockLink(msad);
+    IF_LTN_RETURN(end, msad, 0);
+
+	return ((U64)(end - msad) + 1);
+}
+
 public PMSAD* KrlMmAllocPMSADs(UInt nodeid, UInt areaid, UInt msadnr, U64 flags)
 {
     return KrlMmAllocPMSADsRealize(nodeid, areaid, msadnr, flags);
@@ -243,5 +256,6 @@ public PMSAD* KrlMmAllocKernPMSADs(UInt msadnr)
 
 public PMSAD* KrlMmAllocUserPMSADs(UInt msadnr)
 {
+    IF_NEQONE_RETRUN_NULL(msadnr);
     return KrlMmAllocPMSADs(DEFAULT_NODE_ID, USER_AREA_ID, msadnr, KMAF_DEFAULT);
 }
