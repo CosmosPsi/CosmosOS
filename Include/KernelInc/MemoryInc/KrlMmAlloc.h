@@ -14,7 +14,7 @@
 #define KERN_AREA_ID (MA_TYPE_KRNL)
 #define USER_AREA_ID (MA_TYPE_PROC) 
 #define SHAR_AREA_ID (MA_TYPE_SHAR)
-
+private SInt ForPmsadNrRetOrder(UInt msadnr);
 private PABHList* ForPmsadNrRetPABListOnMArea(MNode* node, MArea* area, UInt msadnr);
 private PABHList* ForPmsadNrRetAllocPABListOnMArea(MNode* node, MArea* area, UInt msadnr);
 private PMSAD* PickPMSADsOnPABHList(PABHList* abhlist);

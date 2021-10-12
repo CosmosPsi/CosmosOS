@@ -5,8 +5,22 @@
 **********************************************************/
 #include "BaseType.h"
 #include "List.h"
+#include "HalCPU.h"
 #include "KrlMmManage.h"
 #include "KrlMmAlloc.h"
+
+private SInt ForPmsadNrRetOrder(UInt msadnr)
+{
+	SInt mbits = HalSearch64RLBits((U64)msadnr);
+    IF_LTN_RETURN(mbits, 0, -1);
+
+	if(msadnr & (msadnr - 1))
+	{
+		mbits++;//有问题不要使用
+	}
+	return mbits;
+}
+
 
 private PABHList* ForPmsadNrRetPABListOnMArea(MNode* node, MArea* area, UInt msadnr)
 {
@@ -268,3 +282,4 @@ public PMSAD* KrlMmAllocUserPMSADs(UInt msadnr)
     IF_NEQONE_RETRUN_NULL(msadnr);
     return KrlMmAllocPMSADs(DEFAULT_NODE_ID, USER_AREA_ID, msadnr, KMAF_DEFAULT);
 }
+
