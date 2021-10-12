@@ -493,6 +493,13 @@ KLINE void PutPMSAD(PMSAD* msad)
     return;
 }
 
+KLINE UInt RetPMSADRefCount(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    return (UInt)msad->CountFlags.RefCountBit;
+}
+
+
 KLINE GMemManage* KrlMmGetGMemManageAddr()
 {
     return &GMemManageData;
