@@ -408,22 +408,28 @@ KLINE U64 HalReadX86RDTSC(void)
 
 KLINE SInt HalSearch64RLBits(U64 val)
 {
-    SInt retbitnr = -1;
+    SInt count = -1;
     __asm__ __volatile__(
         "bsrq %1,%q0 \t\n"
-        : "+r"(retbitnr)
-        : "rm"(val));
-    return retbitnr + 1;
+        "jnz 1f \t\n"
+        "movq $-1,%q0 \t\n"
+        "1:"
+        : "=q"(count)
+        : "q"(val));
+    return count;
 }
 
 KLINE SInt HalSearch32RLBits(U32 val)
 {
-    SInt retbitnr = -1;
+    SInt count = -1;
     __asm__ __volatile__(
         "bsrl %1,%0 \t\n"
-        : "+r"(retbitnr)
-        : "rm"(val));
-    return retbitnr + 1;
+        "jnz 1f \t\n"
+        "movl $-1,%0 \t\n"
+        "1:"
+        : "=r"(count)
+        : "r"(val));
+    return count;
 }
 
 KLINE U32 HalReadKESP()
