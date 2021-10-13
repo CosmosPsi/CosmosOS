@@ -343,3 +343,15 @@ private UInt OperationBeforeFreePMSADs(PABHList* abhlist, PMSAD* start, PMSAD* e
     SetPMSADBlockLink(end, (void*)abhlist);
 	return 2;
 }
+
+private Bool CheckOnePMSADBlock(PABHList* abhlist, PMSAD* mblockstart, PMSAD* mblockend)
+{
+    IF_NULL_RETURN_FALSE(abhlist);
+    IF_NULL_RETURN_FALSE(mblockstart);
+    IF_NULL_RETURN_FALSE(mblockend);
+    IF_LTN_RETURN(mblockend, mblockstart, FALSE);
+    IF_NEQ_RETURN(abhlist->InOrderPmsadNR, ((mblockend - mblockstart) + 1), FALSE);
+    IF_NEQ_RETURN(TRUE, PMSADIsFree(mblockstart), FALSE);
+    IF_NEQ_RETURN(TRUE, PMSADIsFree(mblockend), FALSE);
+    return TRUE;
+}

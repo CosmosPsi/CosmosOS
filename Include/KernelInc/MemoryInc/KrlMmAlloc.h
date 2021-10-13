@@ -30,5 +30,6 @@ public PMSAD* KrlMmAllocPMSADs(UInt nodeid, UInt areaid, UInt msadnr, U64 flags)
 public PMSAD* KrlMmAllocKernPMSADs(UInt msadnr);
 public PMSAD* KrlMmAllocUserPMSADs(UInt msadnr);
 private UInt OperationBeforeFreePMSADs(PABHList* abhlist, PMSAD* start, PMSAD* end);
+private Bool CheckOnePMSADBlock(PABHList* abhlist, PMSAD* mblockstart, PMSAD* mblockend);
 
 #endif
