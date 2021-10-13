@@ -76,6 +76,7 @@ private PMSAD* PickPMSADsOnPABHList(PABHList* abhlist)
         IF_NEQ_DEAD(MF_OLKTY_BAFH, RetPMSADOLType(msad), "PMSAD OLTYPE NOT MF_OLKTY_BAFH");
         ListDel(&msad->Lists);
         abhlist->FreePmsadNR -= 1;
+        abhlist->PmsadNR -= 1;
         KrlMmUnLock(&abhlist->Lock);
         return msad;
     }
@@ -87,15 +88,17 @@ private PMSAD* PickPMSADsOnPABHList(PABHList* abhlist)
     
     ListDel(&msad->Lists);
     abhlist->FreePmsadNR -= abhlist->InOrderPmsadNR;
+    abhlist->PmsadNR -= abhlist->InOrderPmsadNR;
     KrlMmUnLock(&abhlist->Lock);
     return msad;
 }
 
-private Bool PutsPMSADsOnPABHList(PABHList* abhlist, PMSAD* msad, UInt order)
+private Bool PutsPMSADsOnPABHList(PABHList* abhlist, PMSAD* msad, PMSAD* msadend, UInt order)
 {
-    PMSAD* msadend = NULL;
+    PMSAD* end = NULL;
     IF_NULL_RETURN_FALSE(abhlist);
     IF_NULL_RETURN_FALSE(msad);
+    IF_NULL_RETURN_FALSE(msadend);
     
     if(PMSADIsFree(msad) == FALSE)
     {
@@ -106,9 +109,10 @@ private Bool PutsPMSADsOnPABHList(PABHList* abhlist, PMSAD* msad, UInt order)
         return FALSE;
     }
     
+    end = &msad[(1 << order) - 1];
+    IF_NEQ_RETURN(end, msadend, FALSE);
+
     KrlMmLocked(&abhlist->Lock);
-    
-    msadend = &msad[(1 << order) - 1];
     ListAdd(&msad->Lists, &abhlist->FreeLists);
     SetPMSADOLType(msad, MF_OLKTY_ODER);
     SetPMSADBlockLink(msad, (void*)msadend);
@@ -188,7 +192,7 @@ private PMSAD* AllocPMSADsOnPABHList(MNode* node, MArea* area, PABHList* abhlist
     tmp = end - 1;
     while(tmp >= start)
     {
-        rets = PutsPMSADsOnPABHList(tmp, &msad[tmp->InOrderPmsadNR], tmp->Order);
+        rets = PutsPMSADsOnPABHList(tmp, &msad[tmp->InOrderPmsadNR], &msad[tmp->InOrderPmsadNR + tmp->InOrderPmsadNR - 1], tmp->Order);
         IF_NEQ_DEAD(FALSE, rets, "PMSADAddInPABHList rets FALSE\n");        
         tmp--;
     }
@@ -215,7 +219,7 @@ private PMSAD* KrlMmAllocPMSADsRealizeCore(GMemManage* gmm, MNode* node, MArea* 
     allocbhlist = ForPmsadNrRetAllocPABListOnMArea(node, area, msadnr);
     IF_NULL_RETURN_NULL(allocbhlist);
     
-    msad = AllocPMSADsOnPABHList(node, area, abhlist, msadnr);
+    msad = AllocPMSADsOnPABHList(node, area, abhlist, allocbhlist, msadnr);
     IF_NULL_RETURN_NULL(msad);
     return msad;
 }
@@ -282,4 +286,6 @@ public PMSAD* KrlMmAllocUserPMSADs(UInt msadnr)
     IF_NEQONE_RETRUN_NULL(msadnr);
     return KrlMmAllocPMSADs(DEFAULT_NODE_ID, USER_AREA_ID, msadnr, KMAF_DEFAULT);
 }
+
+
 
