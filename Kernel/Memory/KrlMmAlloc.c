@@ -382,3 +382,75 @@ private UInt PMSADTowBlockIsOk(PABHList* abhlist, PMSAD* _1mblocks, PMSAD* _1mbl
     IF_EQT_RETURN(TRUE, PMSADIsAdjacent(_2mblocke, _1mblocks), 4);
     return 0;
 }
+
+private UInt FindContinuousPMSADsBlock(PABHList* abhlist, PMSAD** msadstart, PMSAD** msadend)
+{
+    PMSAD* start = NULL;
+    PMSAD* end = NULL;
+    UInt msadnr = 0;
+    List* tmplst = NULL;
+	PMSAD* tmpmsa = NULL;
+    PMSAD* blkms = NULL;
+    PMSAD* blkme = NULL;
+	UInt rets = 0;
+    
+    start = *msadstart;
+    end = *msadend;
+	msadnr = (UInt)KrlMmGetPMSADsLen(start);
+
+    KrlMmLocked(&abhlist->Lock);   
+    if(1 > abhlist->FreePmsadNR)
+    {
+        KrlMmUnLock(&abhlist->Lock);
+        return 1;
+    }
+
+    IF_EQT_DEAD(abhlist->InOrderPmsadNR, msadnr, "PMSAD len NEQ area order NR\n");
+    
+    ListForEach(tmplst, &abhlist->FreeLists)
+    {
+        tmpmsa = ListEntry(tmplst, PMSAD, Lists);
+        rets = PMSADTowBlockIsOk(abhlist, start, end, tmpmsa, &tmpmsa[abhlist->InOrderPmsadNR - 1]);
+		if (2 == rets || 4 == rets)
+		{
+			blkms = tmpmsa;
+			blkme = &tmpmsa[abhlist->InOrderPmsadNR - 1];
+			ListDel(&tmpmsa->Lists);
+			abhlist->FreePmsadNR -= abhlist->InOrderPmsadNR;
+            abhlist->PmsadNR -= abhlist->InOrderPmsadNR;
+            KrlMmUnLock(&abhlist->Lock);
+			goto step1;
+		}
+    }
+    
+    KrlMmUnLock(&abhlist->Lock);
+
+step1:
+	if(0 == rets || 1 == rets)
+	{
+		return 1;
+	}
+
+    if(2 == rets)
+	{
+		if(ClearPMSADTowBlockFlags(abhlist + 1, start,end, blkms, blkme) == TRUE)
+		{
+			*msadstart = start;
+			*msadend = blkme;
+			return 2;
+		}
+		return 0;
+	}
+
+	if(4 == rets)
+	{
+		if(ClearPMSADTowBlockFlags(abhlist + 1, blkms, blkme, start, end) == TRUE)
+		{
+			*msadstart = blkms;
+			*msadend = end;
+			return 2;
+		}
+		return 0;
+	}
+    return 0;
+}
