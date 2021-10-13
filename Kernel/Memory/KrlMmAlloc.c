@@ -551,3 +551,8 @@ private Bool KrlMmFreePMSADsRealize(PMSAD* msad, U64 flags)
     KrlMmUnLock(&node->Lock);
     return rets;
 }
+
+public Bool KrlMmFreePMSADs(PMSAD* msad, U64 flags)
+{
+    return KrlMmFreePMSADsRealize(msad, flags);
+}

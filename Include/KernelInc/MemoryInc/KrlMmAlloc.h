@@ -37,5 +37,6 @@ private UInt FindContinuousPMSADsBlock(PABHList* abhlist, PMSAD** msadstart, PMS
 private Bool FreePMSADsOnPABHList(MNode* node, MArea* area, PABHList* abhlist, PABHList* freebhlist, PMSAD* msad, UInt msadnr);
 private Bool KrlMmFreePMSADsRealizeCore(GMemManage* gmm, MNode* node, MArea* area, PMSAD* msad, U64 flags);
 private Bool KrlMmFreePMSADsRealize(PMSAD* msad, U64 flags);
+public Bool KrlMmFreePMSADs(PMSAD* msad, U64 flags);
 
 #endif
