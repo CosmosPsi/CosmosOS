@@ -422,7 +422,7 @@ private UInt FindContinuousPMSADsBlock(PABHList* abhlist, PMSAD** msadstart, PMS
 			goto step1;
 		}
     }
-    
+
     KrlMmUnLock(&abhlist->Lock);
 
 step1:
@@ -453,4 +453,38 @@ step1:
 		return 0;
 	}
     return 0;
+}
+
+private Bool FreePMSADsOnPABHList(MNode* node, MArea* area, PABHList* abhlist, PABHList* freebhlist, PMSAD* msad, UInt msadnr)
+{
+    PABHList* start = NULL;
+    PABHList* end = NULL;
+    PABHList* tmp = NULL;
+	PMSAD* mblockstart = NULL;
+    PMSAD* mblockend = NULL;
+    Bool rets = FALSE;
+    UInt oks = 0;
+
+    IF_NULL_RETURN_FALSE(node);
+    IF_NULL_RETURN_FALSE(area);
+    IF_NULL_RETURN_FALSE(abhlist);
+    IF_NULL_RETURN_FALSE(freebhlist);
+
+    IF_GTN_RETURN(abhlist, freebhlist, FALSE);
+    start = abhlist;
+    end = freebhlist;
+
+    mblockstart = msad;
+    mblockend = &msad[msadnr - 1];
+	for(tmp = start; tmp < end; tmp++)
+	{
+		oks = FindContinuousPMSADsBlock(tmp, &mblockstart, &mblockend);
+		if(1 == oks)
+		{
+			break;
+		}
+		IF_EQT_DEAD(0, oks, "oks is zero\n");
+	}
+    IF_NEQ_DEAD(tmp->InOrderPmsadNR, KrlMmGetPMSADsLen(mblockstart), "tmp->InOrderPmsadNR != mblockstart len\n");
+    return PutsPMSADsOnPABHList(tmp, mblockstart, mblockend, tmp->Order);
 }

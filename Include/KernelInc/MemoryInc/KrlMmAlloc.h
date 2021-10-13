@@ -34,5 +34,6 @@ private Bool CheckOnePMSADBlock(PABHList* abhlist, PMSAD* mblockstart, PMSAD* mb
 private Bool ClearPMSADTowBlockFlags(PABHList* abhlist, PMSAD* _1mblocks, PMSAD* _1mblocke, PMSAD* _2mblocks, PMSAD* _2mblocke);
 private UInt PMSADTowBlockIsOk(PABHList* abhlist, PMSAD* _1mblocks, PMSAD* _1mblocke, PMSAD* _2mblocks, PMSAD* _2mblocke);
 private UInt FindContinuousPMSADsBlock(PABHList* abhlist, PMSAD** msadstart, PMSAD** msadend);
+private Bool FreePMSADsOnPABHList(MNode* node, MArea* area, PABHList* abhlist, PABHList* freebhlist, PMSAD* msad, UInt msadnr);
 
 #endif
