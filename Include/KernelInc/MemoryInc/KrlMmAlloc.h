@@ -39,5 +39,6 @@ private Bool KrlMmFreePMSADsRealizeCore(GMemManage* gmm, MNode* node, MArea* are
 private Bool KrlMmFreePMSADsRealize(PMSAD* msad, U64 flags);
 public Bool KrlMmFreePMSADs(PMSAD* msad, U64 flags);
 public Bool KrlMmFreeKernPMSADs(PMSAD* msad);
+public Bool KrlMmFreeUserPMSADs(PMSAD* msad);
 
 #endif

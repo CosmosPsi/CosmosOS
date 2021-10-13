@@ -561,3 +561,9 @@ public Bool KrlMmFreeKernPMSADs(PMSAD* msad)
 {
     return KrlMmFreePMSADs(msad, KMAF_DEFAULT);
 }
+
+public Bool KrlMmFreeUserPMSADs(PMSAD* msad)
+{
+    IF_NULL_RETURN_FALSE(msad);
+    return KrlMmFreePMSADs(msad, KMAF_DEFAULT);
+}
