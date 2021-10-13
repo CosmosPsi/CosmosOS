@@ -556,3 +556,8 @@ public Bool KrlMmFreePMSADs(PMSAD* msad, U64 flags)
 {
     return KrlMmFreePMSADsRealize(msad, flags);
 }
+
+public Bool KrlMmFreeKernPMSADs(PMSAD* msad)
+{
+    return KrlMmFreePMSADs(msad, KMAF_DEFAULT);
+}
