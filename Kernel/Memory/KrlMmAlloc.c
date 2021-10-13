@@ -355,3 +355,21 @@ private Bool CheckOnePMSADBlock(PABHList* abhlist, PMSAD* mblockstart, PMSAD* mb
     IF_NEQ_RETURN(TRUE, PMSADIsFree(mblockend), FALSE);
     return TRUE;
 }
+
+private Bool ClearPMSADTowBlockFlags(PABHList* abhlist, PMSAD* _1mblocks, PMSAD* _1mblocke, PMSAD* _2mblocks, PMSAD* _2mblocke)
+{
+    if(_1mblocks == _2mblocks || _1mblocke == _2mblocke)
+	{
+		return FALSE;
+	}
+    SetPMSADOLType(_1mblocke, MF_OLKTY_INIT);
+    SetPMSADBlockLink(_1mblocke, NULL);
+    SetPMSADOLType(_2mblocks, MF_OLKTY_INIT);
+    SetPMSADBlockLink(_2mblocks, NULL);
+
+    SetPMSADOLType(_1mblocks, MF_OLKTY_ODER);
+    SetPMSADBlockLink(_1mblocks, (void*)_2mblocke);
+	SetPMSADOLType(_2mblocke, MF_OLKTY_BAFH);
+    SetPMSADBlockLink(_2mblocke, (void*)abhlist);
+    return TRUE;
+}
