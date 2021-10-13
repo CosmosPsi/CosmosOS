@@ -270,6 +270,19 @@ public U64 KrlMmGetPMSADsSize(PMSAD* msad)
     return (msadlen << MSAD_PADR_SLBITS);
 }
 
+public PMSAD* KrlMmGetPMSADsEnd(PMSAD* msad)
+{
+    PMSAD* end = NULL;
+	IF_NULL_RETURN_NULL(msad);
+    IF_NEQ_RETURN(TRUE, PMSADIsFree(msad), NULL);
+    IF_NEQ_RETURN(MF_OLKTY_ODER, RetPMSADOLType(msad), NULL);
+	IF_NULL_RETURN_NULL(RetPMSADBlockLink(msad));
+
+    end = (PMSAD*)RetPMSADBlockLink(msad);
+    IF_LTN_RETURN(end, msad, NULL);
+	return end;
+}
+
 public PMSAD* KrlMmAllocPMSADs(UInt nodeid, UInt areaid, UInt msadnr, U64 flags)
 {
     return KrlMmAllocPMSADsRealize(nodeid, areaid, msadnr, flags);
