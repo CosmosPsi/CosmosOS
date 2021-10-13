@@ -488,3 +488,40 @@ private Bool FreePMSADsOnPABHList(MNode* node, MArea* area, PABHList* abhlist, P
     IF_NEQ_DEAD(tmp->InOrderPmsadNR, KrlMmGetPMSADsLen(mblockstart), "tmp->InOrderPmsadNR != mblockstart len\n");
     return PutsPMSADsOnPABHList(tmp, mblockstart, mblockend, tmp->Order);
 }
+
+private Bool KrlMmFreePMSADsRealizeCore(GMemManage* gmm, MNode* node, MArea* area, PMSAD* msad, U64 flags)
+{
+    Bool rets = FALSE;
+    PABHList* abhlist = NULL;
+    PABHList* freebhlist = NULL;
+    UInt msadnr = 0;
+    UInt opt = 0;
+    IF_NULL_RETURN_FALSE(gmm);
+    IF_NULL_RETURN_FALSE(node);
+    IF_NULL_RETURN_FALSE(area);
+    IF_NULL_RETURN_FALSE(msad);
+
+    msadnr = (UInt)KrlMmGetPMSADsLen(msad);
+    freebhlist = &area->MSPLMerData.PAddrBlockArr[MSPLMER_ARR_LMAX - 1];
+    abhlist = ForPmsadNrRetPABListOnMArea(node, area, msadnr);
+    IF_NULL_RETURN_FALSE(abhlist);
+    opt = OperationBeforeFreePMSADs(abhlist, msad, KrlMmGetPMSADsEnd(msad));
+    if(2 == opt)
+	{
+        rets = FreePMSADsOnPABHList(node, area,abhlist, freebhlist, msad, msadnr);
+        if(TRUE == rets)
+		{
+			return rets;
+		}
+		return FALSE;
+	}
+	if(1 == opt)
+	{
+		return TRUE;
+	}
+	if(0 == opt)
+	{
+		return FALSE;
+	}
+    return FALSE;
+}

@@ -35,5 +35,6 @@ private Bool ClearPMSADTowBlockFlags(PABHList* abhlist, PMSAD* _1mblocks, PMSAD*
 private UInt PMSADTowBlockIsOk(PABHList* abhlist, PMSAD* _1mblocks, PMSAD* _1mblocke, PMSAD* _2mblocks, PMSAD* _2mblocke);
 private UInt FindContinuousPMSADsBlock(PABHList* abhlist, PMSAD** msadstart, PMSAD** msadend);
 private Bool FreePMSADsOnPABHList(MNode* node, MArea* area, PABHList* abhlist, PABHList* freebhlist, PMSAD* msad, UInt msadnr);
+private Bool KrlMmFreePMSADsRealizeCore(GMemManage* gmm, MNode* node, MArea* area, PMSAD* msad, U64 flags);
 
 #endif
