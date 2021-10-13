@@ -373,3 +373,12 @@ private Bool ClearPMSADTowBlockFlags(PABHList* abhlist, PMSAD* _1mblocks, PMSAD*
     SetPMSADBlockLink(_2mblocke, (void*)abhlist);
     return TRUE;
 }
+
+private UInt PMSADTowBlockIsOk(PABHList* abhlist, PMSAD* _1mblocks, PMSAD* _1mblocke, PMSAD* _2mblocks, PMSAD* _2mblocke)
+{
+    IF_NEQ_RETURN(TRUE, CheckOnePMSADBlock(abhlist, _1mblocks, _1mblocke), 1);
+    IF_NEQ_RETURN(TRUE, CheckOnePMSADBlock(abhlist, _2mblocks, _2mblocke), 1);
+    IF_EQT_RETURN(TRUE, PMSADIsAdjacent(_1mblocke, _2mblocks), 2);
+    IF_EQT_RETURN(TRUE, PMSADIsAdjacent(_2mblocke, _1mblocks), 4);
+    return 0;
+}

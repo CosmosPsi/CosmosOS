@@ -32,5 +32,6 @@ public PMSAD* KrlMmAllocUserPMSADs(UInt msadnr);
 private UInt OperationBeforeFreePMSADs(PABHList* abhlist, PMSAD* start, PMSAD* end);
 private Bool CheckOnePMSADBlock(PABHList* abhlist, PMSAD* mblockstart, PMSAD* mblockend);
 private Bool ClearPMSADTowBlockFlags(PABHList* abhlist, PMSAD* _1mblocks, PMSAD* _1mblocke, PMSAD* _2mblocks, PMSAD* _2mblocke);
+private UInt PMSADTowBlockIsOk(PABHList* abhlist, PMSAD* _1mblocks, PMSAD* _1mblocke, PMSAD* _2mblocks, PMSAD* _2mblocke);
 
 #endif
