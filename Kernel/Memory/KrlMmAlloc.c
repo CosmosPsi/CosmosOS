@@ -525,3 +525,29 @@ private Bool KrlMmFreePMSADsRealizeCore(GMemManage* gmm, MNode* node, MArea* are
 	}
     return FALSE;
 }
+
+private Bool KrlMmFreePMSADsRealize(PMSAD* msad, U64 flags)
+{
+    Bool rets = FALSE;
+    UInt msadnr = 0;
+    GMemManage* gmm = NULL;
+    MNode* node = NULL;
+    MArea* area = NULL;
+    IF_NULL_RETURN_FALSE(msad);
+
+    gmm = KrlMmGetGMemManageAddr();
+    IF_NULL_RETURN_FALSE(gmm);
+
+    node = PMSADRetItsMNode(msad);
+    IF_NULL_RETURN_FALSE(node);
+    
+    area = PMSADRetItsMArea(msad);
+    IF_NULL_RETURN_FALSE(area);
+
+    KrlMmLocked(&node->Lock);
+    KrlMmLocked(&area->Lock);
+    rets = KrlMmFreePMSADsRealizeCore(gmm, node, area, msad, flags);
+    KrlMmUnLock(&area->Lock);
+    KrlMmUnLock(&node->Lock);
+    return rets;
+}
