@@ -29,5 +29,6 @@ public PMSAD* KrlMmGetPMSADsEnd(PMSAD* msad);
 public PMSAD* KrlMmAllocPMSADs(UInt nodeid, UInt areaid, UInt msadnr, U64 flags);
 public PMSAD* KrlMmAllocKernPMSADs(UInt msadnr);
 public PMSAD* KrlMmAllocUserPMSADs(UInt msadnr);
+private UInt OperationBeforeFreePMSADs(PABHList* abhlist, PMSAD* start, PMSAD* end);
 
 #endif

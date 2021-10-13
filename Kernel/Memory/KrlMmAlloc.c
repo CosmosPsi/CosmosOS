@@ -300,5 +300,46 @@ public PMSAD* KrlMmAllocUserPMSADs(UInt msadnr)
     return KrlMmAllocPMSADs(DEFAULT_NODE_ID, USER_AREA_ID, msadnr, KMAF_DEFAULT);
 }
 
+private UInt OperationBeforeFreePMSADs(PABHList* abhlist, PMSAD* start, PMSAD* end)
+{
+    UInt msadnr = 0;
+    IF_EQT_DEAD(NULL, abhlist, "PARM:abhlist == NULL\n");
+    IF_EQT_DEAD(NULL, start, "PARM: start == NULL\n");
+    IF_EQT_DEAD(NULL, end, "PARM:end == NULL\n");
+    IF_EQT_DEAD(TRUE, PMSADIsFree(start), "PMSAD:start is Not Alloc\n");
+    IF_EQT_DEAD(TRUE, PMSADIsFree(end), "PMSAD:end is Not Alloc\n");
+    
+    msadnr = (end - start) + 1;
+    IF_NEQ_DEAD(msadnr, abhlist->InOrderPmsadNR, "abhlist->InOrderPmsadNR != msadnr\n");
+    
+    if(start == end)
+    {
+        IF_NEQ_DEAD(1, abhlist->InOrderPmsadNR, "abhlist->InOrderPmsadNR != 1\n");
+        PutPMSAD(start);
+        if(RetPMSADRefCount(start) > 0)
+        {
+            return 1;
+        }
 
+        ClearPMSADAlloc(start);
+        SetPMSADOLType(start, MF_OLKTY_BAFH);
+        SetPMSADBlockLink(start, (void*)abhlist);
+		return 2;
+    }
 
+    PutPMSAD(start);
+    PutPMSAD(end);
+    if(RetPMSADRefCount(start) > 0)
+    {
+        return 1;
+    }
+
+    ClearPMSADAlloc(start);
+    ClearPMSADAlloc(end);
+
+    SetPMSADOLType(start, MF_OLKTY_ODER);
+    SetPMSADBlockLink(start, (void*)end);
+    SetPMSADOLType(end, MF_OLKTY_BAFH);
+    SetPMSADBlockLink(end, (void*)abhlist);
+	return 2;
+}
