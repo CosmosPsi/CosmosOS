@@ -246,6 +246,8 @@ private PMSAD* KrlMmAllocPMSADsRealize(UInt nodeid, UInt areaid, UInt msadnr, U6
     KrlMmUnLock(&area->Lock);
     KrlMmUnLock(&node->Lock);
     msadnr = (UInt)KrlMmGetPMSADsLen(msad);
+    KrlMmUPAddMNodeAreaAllocMaxFreeNR(node, area, msadnr, 0, 0);
+    KrlMmUPSubMNodeAreaAllocMaxFreeNR(node, area, 0, 0, msadnr);
     KrlMmUPAddGMMAllocMaxFreeNR(msadnr, 0, 0);
     KrlMmUPSubGMMAllocMaxFreeNR(0, 0, msadnr);
     return msad;
