@@ -111,6 +111,18 @@ public Bool KrlMmUPAddGMMAllocMaxFreeNR(UInt allocnr, UInt maxnr, UInt freenr)
     return TRUE;
 }
 
+public Bool KrlMmUPAddMNodeAreaAllocMaxFreeNR(MNode* node, MArea* area, UInt allocnr, UInt maxnr, UInt freenr)
+{
+    IF_NULL_RETURN_FALSE(node);
+    IF_NULL_RETURN_FALSE(area);
+    KrlMmLocked(&area->Lock);
+    area->AllocPMSAD += allocnr;
+    area->MaxPMSAD += maxnr;
+    area->FreePMSAD += freenr;
+    KrlMmUnLock(&area->Lock);
+    return TRUE;
+}
+
 public Bool KrlMmUPSubGMMAllocMaxFreeNR(UInt allocnr, UInt maxnr, UInt freenr)
 {
     GMemManage* gmm = NULL;

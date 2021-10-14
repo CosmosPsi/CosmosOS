@@ -597,6 +597,7 @@ private void MAreaInit(MArea* init);
 private void MNodeInit(MNode* init);
 private void GMemManageInit(GMemManage* init);
 public Bool KrlMmUPAddGMMAllocMaxFreeNR(UInt allocnr, UInt maxnr, UInt freenr);
+public Bool KrlMmUPAddMNodeAreaAllocMaxFreeNR(MNode* node, MArea* area, UInt allocnr, UInt maxnr, UInt freenr);
 public Bool KrlMmUPSubGMMAllocMaxFreeNR(UInt allocnr, UInt maxnr, UInt freenr);
 public void KrlMmLocked(MLock* lock);
 public void KrlMmUnLock(MLock* lock);
