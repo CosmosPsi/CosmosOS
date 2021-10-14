@@ -428,9 +428,9 @@ private UInt FindContinuousPMSADsBlock(PABHList* abhlist, PMSAD** msadstart, PMS
 		}
     }
 
-    KrlMmUnLock(&abhlist->Lock);
-
 step1:
+
+    KrlMmUnLock(&abhlist->Lock);
 	if(0 == rets || 1 == rets)
 	{
 		return 1;
