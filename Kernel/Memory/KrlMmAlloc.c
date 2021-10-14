@@ -230,7 +230,7 @@ private PMSAD* KrlMmAllocPMSADsRealize(UInt nodeid, UInt areaid, UInt msadnr, U6
     MNode* node = NULL;
     MArea* area = NULL;
     PMSAD* msad = NULL;
-
+    UInt msadnr = 0;
     gmm = KrlMmGetGMemManageAddr();
     IF_NULL_RETURN_NULL(gmm);
 
@@ -245,6 +245,9 @@ private PMSAD* KrlMmAllocPMSADsRealize(UInt nodeid, UInt areaid, UInt msadnr, U6
     msad = KrlMmAllocPMSADsRealizeCore(gmm, node, area, msadnr, flags);
     KrlMmUnLock(&area->Lock);
     KrlMmUnLock(&node->Lock);
+    msadnr = (UInt)KrlMmGetPMSADsLen(msad);
+    KrlMmUPAddGMMAllocMaxFreeNR(msadnr, 0, 0);
+    KrlMmUPSubGMMAllocMaxFreeNR(0, 0, msadnr);
     return msad;
 }
 
@@ -544,7 +547,7 @@ private Bool KrlMmFreePMSADsRealize(PMSAD* msad, U64 flags)
     area = PMSADRetItsMArea(msad);
     IF_NULL_RETURN_FALSE(area);
     
-    msadnr = KrlMmGetPMSADsLen(msad);
+    msadnr = (UInt)KrlMmGetPMSADsLen(msad);
 
     KrlMmLocked(&node->Lock);
     KrlMmLocked(&area->Lock);
