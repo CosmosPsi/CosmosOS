@@ -543,12 +543,16 @@ private Bool KrlMmFreePMSADsRealize(PMSAD* msad, U64 flags)
     
     area = PMSADRetItsMArea(msad);
     IF_NULL_RETURN_FALSE(area);
+    
+    msadnr = KrlMmGetPMSADsLen(msad);
 
     KrlMmLocked(&node->Lock);
     KrlMmLocked(&area->Lock);
     rets = KrlMmFreePMSADsRealizeCore(gmm, node, area, msad, flags);
     KrlMmUnLock(&area->Lock);
     KrlMmUnLock(&node->Lock);
+    KrlMmUPAddGMMAllocMaxFreeNR(0, 0, msadnr);
+    KrlMmUPSubGMMAllocMaxFreeNR(msadnr, 0, 0);
     return rets;
 }
 
