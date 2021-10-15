@@ -122,6 +122,25 @@ private Bool ExtendKMemPoolCapacity(GMemPoolManage* gmpm, KMemPool* pool)
     return TRUE;
 }
 
+private void* NewPOEntitiesOnKMemPool(GMemPoolManage* gmpm, KMemPool* pool, Size size)
+{
+    POEntities* entities = NULL;
+    Bool rets = FALSE;
+    IF_NULL_RETURN_NULL(gmpm);
+    IF_NULL_RETURN_NULL(pool);
+    IF_LTN_RETURN(pool->Size, size, NULL);
+    IF_GTN_RETURN(pool->Size, (size + PER_POE_INCSIZE), NULL);
+    entities = PickPOEntitiesOnKMemPool(pool);
+    if(NULL != entities)
+    {
+        INIT_OBJOFPTR_ZERO(entities);
+        return (void*)entities;
+    }
+    rets = ExtendKMemPoolCapacity(gmpm, pool);
+    IF_NEQ_RETURN(TRUE, rets, NULL);
+    return (void*)PickPOEntitiesOnKMemPool(pool);
+}
+
 public Bool KrlMmPoolInit()
 {
     GMemPoolManageInit(&GMemPoolData);
