@@ -8,6 +8,7 @@
 #define _KRLMMPOOLHEAD
 #define MSCLST_MAX (5)
 #define KMPOOL_MAX (64)
+#define PER_POE_INCSIZE (32)
 #define KUC_NEWFLG (1)
 #define KUC_DELFLG (2)
 #define KUC_DSYFLG (3)
@@ -28,6 +29,7 @@ typedef struct KMEMPOOL
     UInt Size;
     UInt ObjNR;
     UInt FreeObjNR;
+    UInt AllocPMSADNR;
     Addr VAddrStart;
     Addr VAddrEnd;
     List ObjLists;
