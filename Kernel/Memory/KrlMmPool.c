@@ -64,6 +64,18 @@ private KMemPool* ForSizeRetKMemPoolOnGMemPoolManage(GMemPoolManage* gmpm, Size 
     return NULL;
 }
 
+private POEntities* PickPOEntitiesOnKMemPool(KMemPool* pool)
+{
+    POEntities* entities = NULL;
+    IF_NULL_RETURN_NULL(pool);
+    IF_LTNONE_RETRUN_NULL(pool->FreeObjNR);
+    IF_LTNONE_RETRUN_NULL(pool->ObjNR);
+    IF_EQT_RETURN(TRUE, ListIsEmptyCareful(&pool->ObjLists), NULL);
+    entities = ListFirstOne(&pool->ObjLists, POEntities, Lists);
+    ListDel(&entities->Lists);
+    pool->FreeObjNR--;
+    return entities;
+}
 
 public Bool KrlMmPoolInit()
 {
