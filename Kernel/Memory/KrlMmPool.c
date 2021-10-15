@@ -170,6 +170,12 @@ private void* KrlMmNewPOEntitiesRealize(Size size)
     return addr;
 }
 
+public void* KrlMmNewPOEntities(Size size)
+{
+    IF_LTNONE_RETRUN_NULL(size);
+    return KrlMmNewPOEntitiesRealize(size);
+}
+
 public Bool KrlMmPoolInit()
 {
     GMemPoolManageInit(&GMemPoolData);
