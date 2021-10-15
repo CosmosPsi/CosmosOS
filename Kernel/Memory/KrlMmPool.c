@@ -77,6 +77,32 @@ private POEntities* PickPOEntitiesOnKMemPool(KMemPool* pool)
     return entities;
 }
 
+private UInt POEntitiesArrInitOnMemSPace(KMemPool* pool, Addr start, Addr end)
+{
+    POEntities* entstart = NULL;
+    POEntities* entend = NULL;
+    entstart = (POEntities*)start;
+    entend = (POEntities*)end;
+    UInt i = 0;
+    for(; entstart < entend; entstart++, i++)
+    {
+        POEntitiesInit(entstart);
+        ListAdd(&entstart->Lists, &pool->ObjLists);
+        pool->ObjNR++;
+        pool->FreeObjNR++;
+    }
+    IF_EQT_RETURN(0, i, 0);
+    if(start < pool->VAddrStart)
+    {
+        pool->VAddrStart = start;
+    }
+    if(end > pool->VAddrEnd)
+    {
+        pool->VAddrEnd = end;
+    }
+    return i;
+}
+
 public Bool KrlMmPoolInit()
 {
     GMemPoolManageInit(&GMemPoolData);
