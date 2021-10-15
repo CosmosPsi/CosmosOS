@@ -58,5 +58,6 @@ KLINE GMemPoolManage* KrlMmGetGMemPoolAddr()
 private void POEntitiesInit(POEntities* init);
 private void KMemPoolInit(KMemPool* init);
 private void GMemPoolManageInit(GMemPoolManage* init);
+private KMemPool* ForSizeRetKMemPoolOnGMemPoolManage(GMemPoolManage* gmpm, Size size);
 public Bool KrlMmPoolInit();
 #endif
