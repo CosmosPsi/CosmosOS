@@ -156,6 +156,20 @@ private void* KrlMmNewPOEntitiesRealizeCore(GMemPoolManage* gmpm, Size size)
     return addr;
 }
 
+private void* KrlMmNewPOEntitiesRealize(Size size)
+{
+    void* addr = NULL;
+    GMemPoolManage* gmpm = NULL;
+    
+    gmpm = KrlMmGetGMemPoolAddr();
+    IF_NULL_RETURN_NULL(gmpm);
+
+    KrlMmLocked(&gmpm->Lock);
+    addr = KrlMmNewPOEntitiesRealizeCore(gmpm, size);
+    KrlMmUnLock(&gmpm->Lock);
+    return addr;
+}
+
 public Bool KrlMmPoolInit()
 {
     GMemPoolManageInit(&GMemPoolData);
