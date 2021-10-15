@@ -278,8 +278,8 @@ typedef struct GMEMMANAGE
 	U64 PAreaNR;
 	MNode* MNodeStart;
 	U64 MNodeNR;
-	void* privp;
-	void* extp;
+	void* Priv;
+	void* Ext;
 }GMemManage;
 
 
