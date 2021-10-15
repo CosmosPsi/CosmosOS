@@ -63,6 +63,7 @@ private POEntities* PickPOEntitiesOnKMemPool(KMemPool* pool);
 private UInt POEntitiesArrInitOnMemSPace(KMemPool* pool, Addr start, Addr end);
 private Bool ExtendKMemPoolCapacity(GMemPoolManage* gmpm, KMemPool* pool);
 private void* NewPOEntitiesOnKMemPool(GMemPoolManage* gmpm, KMemPool* pool, Size size);
+private void* KrlMmNewPOEntitiesRealizeCore(GMemPoolManage* gmpm, Size size);
 
 public Bool KrlMmPoolInit();
 #endif

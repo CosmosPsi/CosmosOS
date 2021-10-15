@@ -141,6 +141,21 @@ private void* NewPOEntitiesOnKMemPool(GMemPoolManage* gmpm, KMemPool* pool, Size
     return (void*)PickPOEntitiesOnKMemPool(pool);
 }
 
+private void* KrlMmNewPOEntitiesRealizeCore(GMemPoolManage* gmpm, Size size)
+{
+    void* addr = NULL;
+    KMemPool* pool = NULL;
+    IF_NULL_RETURN_NULL(gmpm);
+
+    pool = ForSizeRetKMemPoolOnGMemPoolManage(gmpm, size);
+    IF_NULL_RETURN_NULL(pool);
+    
+    KrlMmLocked(&pool->Lock);
+    addr = NewPOEntitiesOnKMemPool(gmpm, pool, size);
+    KrlMmUnLock(&pool->Lock);
+    return addr;
+}
+
 public Bool KrlMmPoolInit()
 {
     GMemPoolManageInit(&GMemPoolData);
