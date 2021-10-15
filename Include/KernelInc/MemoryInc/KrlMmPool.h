@@ -48,5 +48,13 @@ typedef struct GMEMPOOLMANAGE
     KMemPool* KMemPoolArr[KMPOOL_MAX];
 }GMemPoolManage;
 
+KLINE GMemPoolManage* KrlMmGetGMemPoolAddr()
+{
+    return &GMemPoolData;
+}
 
+private void POEntitiesInit(POEntities* init);
+private void KMemPoolInit(KMemPool* init);
+private void GMemPoolManageInit(GMemPoolManage* init);
+public Bool KrlMmPoolInit();
 #endif
