@@ -103,6 +103,25 @@ private UInt POEntitiesArrInitOnMemSPace(KMemPool* pool, Addr start, Addr end)
     return i;
 }
 
+private Bool ExtendKMemPoolCapacity(GMemPoolManage* gmpm, KMemPool* pool)
+{
+    PMSAD* msad = NULL;
+    Addr start = NULL; 
+    Addr end = NULL;
+    UInt nr = 0; 
+    IF_NULL_RETURN_FALSE(gmpm);
+    IF_NULL_RETURN_FALSE(pool);
+    msad = KrlMmAllocKernPMSADs(pool->AllocPMSADNR);
+    IF_NULL_RETURN_FALSE(msad);
+
+    start = PMSADRetVAddr(msad);
+    end = start + (Addr)(KrlMmGetPMSADsSize(msad) - 1);
+
+    nr = POEntitiesArrInitOnMemSPace(poolm start, end);
+    IF_LTNONE_RETRUN_FALSE(nr);
+    return TRUE;
+}
+
 public Bool KrlMmPoolInit()
 {
     GMemPoolManageInit(&GMemPoolData);
