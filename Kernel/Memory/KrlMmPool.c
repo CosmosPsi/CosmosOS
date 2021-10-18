@@ -81,15 +81,17 @@ private UInt POEntitiesArrInitOnMemSPace(KMemPool* pool, Addr start, Addr end)
 {
     POEntities* entstart = NULL;
     POEntities* entend = NULL;
+    UInt i = 0;
+
     entstart = (POEntities*)start;
     entend = (POEntities*)end;
-    UInt i = 0;
-    for(; entstart < entend; entstart++, i++)
+    for(; entstart < entend; i++)
     {
         POEntitiesInit(entstart);
         ListAdd(&entstart->Lists, &pool->ObjLists);
         pool->ObjNR++;
         pool->FreeObjNR++;
+        entstart = (POEntities*)(((UInt)entstart) + ((UInt)pool->Size));
     }
     IF_EQT_RETURN(0, i, 0);
     if(start < pool->VAddrStart)
