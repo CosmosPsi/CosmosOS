@@ -13,6 +13,13 @@
 #define KUC_DELFLG (2)
 #define KUC_DSYFLG (3)
 
+typedef struct POOLPARM
+{
+    UInt AllocPMSADs;
+    UInt POESize;
+}PoolParam;
+
+
 typedef struct POENTITIES
 {
     List Lists;
