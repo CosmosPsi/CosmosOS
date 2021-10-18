@@ -74,7 +74,7 @@ private void* KrlMmNewPOEntitiesRealizeCore(GMemPoolManage* gmpm, Size size);
 private void* KrlMmNewPOEntitiesRealize(Size size);
 private UInt CreateNewKMemPoolInit(KMemPool* pool, PMSAD* msad, Addr start, Addr end, Size size);
 private KMemPool* KrlMmCreateKMemPoolRealize(GMemPoolManage* gmpm, Size size);
-
+public KMemPool* KrlMmCreateKMemPool(Size size);
 public void* KrlMmNewPOEntities(Size size);
 public Bool KrlMmPoolInit();
 #endif

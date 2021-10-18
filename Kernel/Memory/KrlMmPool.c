@@ -236,6 +236,16 @@ private KMemPool* KrlMmCreateKMemPoolRealize(GMemPoolManage* gmpm, Size size)
     return pool;
 }
 
+public KMemPool* KrlMmCreateKMemPool(Size size)
+{
+    GMemPoolManage* gmpm;
+    IF_LTNONE_RETRUN_NULL(size);
+    IF_GTN_RETURN(size, 2024, NULL);
+    gmpm = KrlMmGetGMemPoolAddr();
+    IF_NULL_RETURN_NULL(gmpm);
+    return KrlMmCreateKMemPoolRealize(gmpm, size);
+}
+
 
 public void* KrlMmNewPOEntities(Size size)
 {
