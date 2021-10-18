@@ -216,6 +216,27 @@ private UInt CreateNewKMemPoolInit(KMemPool* pool, PMSAD* msad, Addr start, Addr
     return i;
 }
 
+private KMemPool* KrlMmCreateKMemPoolRealize(GMemPoolManage* gmpm, Size size)
+{
+    KMemPool* pool = NULL;
+    PMSAD* msad = NULL;
+    Bool rets = FALSE;
+    IF_NULL_RETURN_NULL(gmpm);
+    msad = KrlMmAllocKernPMSADs(4);
+    IF_NULL_RETURN_NULL(msad);
+    pool = (KMemPool*)PMSADRetVAddr(msad);
+    IF_NULL_RETURN_NULL(pool);
+    KMemPoolInit(pool);
+    if(1 > CreateNewKMemPoolInit(pool, msad, (Addr)pool, ((Addr)pool + (Addr)KrlMmGetPMSADsSize(msad) - 1), size))
+    {
+        rets = KrlMmFreeKernPMSADs(msad);
+        IF_EQT_DEAD(FALSE, rets, "KrlMmFreeKernPMSADs is Fail\n");
+        return NULL;
+    }
+    return pool;
+}
+
+
 public void* KrlMmNewPOEntities(Size size)
 {
     IF_LTNONE_RETRUN_NULL(size);
