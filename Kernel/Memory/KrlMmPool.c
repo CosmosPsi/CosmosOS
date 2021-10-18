@@ -117,7 +117,7 @@ private Bool ExtendKMemPoolCapacity(GMemPoolManage* gmpm, KMemPool* pool)
     start = PMSADRetVAddr(msad);
     end = start + (Addr)(KrlMmGetPMSADsSize(msad) - 1);
 
-    nr = POEntitiesArrInitOnMemSPace(poolm start, end);
+    nr = POEntitiesArrInitOnMemSPace(pool, start, end);
     IF_LTNONE_RETRUN_FALSE(nr);
     return TRUE;
 }
