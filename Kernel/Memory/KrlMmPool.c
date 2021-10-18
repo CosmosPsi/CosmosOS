@@ -190,6 +190,32 @@ private void* KrlMmNewPOEntitiesRealize(Size size)
     return addr;
 }
 
+private UInt CreateNewKMemPoolInit(KMemPool* pool, PMSAD* msad, Addr start, Addr end, Size size)
+{
+    POEntities* entstart = NULL;
+    POEntities* entend = NULL;
+    KMemPool* tmp = 0;
+    UInt i = 0;
+    tmp = pool + 1;
+    entstart = (POEntities*)tmp;
+    entend = (POEntities*)end;
+    
+    pool->Size = size;
+    pool->VAddrStart = start;
+    pool->VAddrEnd = end;
+    ListAdd(&msad->Lists, &pool->PMSADsLists);
+    for(; entstart < entend; i++)
+    {
+        POEntitiesInit(entstart);
+        ListAdd(&entstart->Lists, &pool->ObjLists);
+        pool->ObjNR++;
+        pool->FreeObjNR++;
+        entstart = (POEntities*)(((UInt)entstart) + ((UInt)pool->Size));
+    }
+    IF_EQT_RETURN(0, i, 0);
+    return i;
+}
+
 public void* KrlMmNewPOEntities(Size size)
 {
     IF_LTNONE_RETRUN_NULL(size);
