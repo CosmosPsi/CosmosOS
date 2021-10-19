@@ -145,6 +145,16 @@ private POEntities* PickPOEntitiesOnKMemPool(KMemPool* pool)
     return entities;
 }
 
+private Bool PutsPOEntitiesOnKMemPool(KMemPool* pool, POEntities* entities)
+{
+    IF_NULL_RETURN_FALSE(pool);
+    IF_NULL_RETURN_FALSE(entities);
+    POEntitiesInit(entities);
+    ListAdd(&entities->Lists, &pool->ObjLists);
+    pool->FreeObjNR++;
+    return TRUE;
+}
+
 private UInt POEntitiesArrInitOnMemSPace(KMemPool* pool, Addr start, Addr end)
 {
     POEntities* entstart = NULL;
