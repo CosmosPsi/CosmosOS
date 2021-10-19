@@ -261,6 +261,21 @@ private Bool DelPOEntitiesOnKMemPool(GMemPoolManage* gmpm, KMemPool* pool, void*
     return rets;
 }
 
+private Bool KrlMmDelPOEntitiesRealizeCore(GMemPoolManage* gmpm, void* addr)
+{
+    Bool rets = FALSE;
+    KMemPool* pool = NULL;
+    IF_NULL_RETURN_FALSE(gmpm);
+
+    pool = ForAddrRetKMemPoolOnGMemPoolManage(gmpm, addr);
+    IF_NULL_RETURN_FALSE(pool);
+    
+    KrlMmLocked(&pool->Lock);
+    rets = DelPOEntitiesOnKMemPool(gmpm, pool, addr);
+    KrlMmUnLock(&pool->Lock);
+    return rets;
+}
+
 private UInt CreateNewKMemPoolInit(KMemPool* pool, PMSAD* msad, UInt msadnr, Addr start, Addr end, Size size)
 {
     POEntities* entstart = NULL;
