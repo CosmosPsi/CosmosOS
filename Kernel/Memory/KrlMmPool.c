@@ -354,6 +354,10 @@ public Bool KrlMmDelPOEntities(void* addr)
     return KrlMmNewPOEntitiesRealize(addr);
 }
 
+public Bool KrlMmDel(void* addr)
+{
+    return KrlMmDelPOEntities(addr);
+}
 
 public void* KrlMmNewPOEntities(Size size)
 {
