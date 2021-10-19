@@ -255,6 +255,11 @@ public void* KrlMmNewPOEntities(Size size)
     return KrlMmNewPOEntitiesRealize(size);
 }
 
+public void* KrlMmNew(Size size)
+{
+    return KrlMmNewPOEntities(size);
+}
+
 public Bool KrlMmPoolInit()
 {
     GMemPoolManage* gmpm = NULL;
