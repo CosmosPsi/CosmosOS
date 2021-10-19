@@ -250,6 +250,17 @@ private void* KrlMmNewPOEntitiesRealize(Size size)
     return addr;
 }
 
+private Bool DelPOEntitiesOnKMemPool(GMemPoolManage* gmpm, KMemPool* pool, void* addr)
+{
+    Bool rets = FALSE;
+    IF_NULL_RETURN_FALSE(gmpm);
+    IF_NULL_RETURN_FALSE(pool);
+    IF_NULL_RETURN_FALSE(addr);
+
+    rets = PutsPOEntitiesOnKMemPool(pool, (POEntities*)addr);
+    return rets;
+}
+
 private UInt CreateNewKMemPoolInit(KMemPool* pool, PMSAD* msad, UInt msadnr, Addr start, Addr end, Size size)
 {
     POEntities* entstart = NULL;
