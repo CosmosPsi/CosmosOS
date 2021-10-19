@@ -288,6 +288,13 @@ public PMSAD* KrlMmGetPMSADsEnd(PMSAD* msad)
 	return end;
 }
 
+public Addr KrlMmGetPMSADsRangeVStart(PMSAD* msad)
+{
+	IF_NULL_DEAD(msad);
+    IF_NEQ_DEAD(TRUE, PMSADIsFree(msad), "PMSAD Is Not Free\n");
+    return PMSADRetVAddr(msad);
+}
+
 public PMSAD* KrlMmAllocPMSADs(UInt nodeid, UInt areaid, UInt msadnr, U64 flags)
 {
     return KrlMmAllocPMSADsRealize(nodeid, areaid, msadnr, flags);
