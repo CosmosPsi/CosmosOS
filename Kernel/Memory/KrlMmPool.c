@@ -6,11 +6,11 @@
 #include "BaseType.h"
 #include "List.h"
 #include "KrlMmManage.h"
-#include "KrlMmPool.h"
 #include "KrlMmAlloc.h"
+#include "KrlMmPool.h"
 
 DefinedMEMData(GMemPoolManage, GMemPoolData);
-PoolParam PoolParamArr[] = {
+MEMDATA_SECTION PoolParam PoolParamArr[KMPOOL_MAX] = {
     {2, 32}, {2, 64}, {2, 96}, {2, 128}, 
     {2, 160}, {2, 192}, {2, 224}, {2, 256}, 
     {2, 288}, {2, 320}, {2, 352}, {2, 384}, 
@@ -190,7 +190,7 @@ private void* KrlMmNewPOEntitiesRealize(Size size)
     return addr;
 }
 
-private UInt CreateNewKMemPoolInit(KMemPool* pool, PMSAD* msad, Addr start, Addr end, Size size)
+private UInt CreateNewKMemPoolInit(KMemPool* pool, PMSAD* msad, UInt msadnr, Addr start, Addr end, Size size)
 {
     POEntities* entstart = NULL;
     POEntities* entend = NULL;
@@ -201,6 +201,7 @@ private UInt CreateNewKMemPoolInit(KMemPool* pool, PMSAD* msad, Addr start, Addr
     entend = (POEntities*)end;
     
     pool->Size = size;
+    pool->AllocPMSADNR = msadnr;
     pool->VAddrStart = start;
     pool->VAddrEnd = end;
     ListAdd(&msad->Lists, &pool->PMSADsLists);
@@ -216,18 +217,18 @@ private UInt CreateNewKMemPoolInit(KMemPool* pool, PMSAD* msad, Addr start, Addr
     return i;
 }
 
-private KMemPool* KrlMmCreateKMemPoolRealize(GMemPoolManage* gmpm, Size size)
+private KMemPool* KrlMmCreateKMemPoolRealize(GMemPoolManage* gmpm, UInt msadnr, Size size)
 {
     KMemPool* pool = NULL;
     PMSAD* msad = NULL;
     Bool rets = FALSE;
     IF_NULL_RETURN_NULL(gmpm);
-    msad = KrlMmAllocKernPMSADs(4);
+    msad = KrlMmAllocKernPMSADs(msadnr);
     IF_NULL_RETURN_NULL(msad);
     pool = (KMemPool*)PMSADRetVAddr(msad);
     IF_NULL_RETURN_NULL(pool);
     KMemPoolInit(pool);
-    if(1 > CreateNewKMemPoolInit(pool, msad, (Addr)pool, ((Addr)pool + (Addr)KrlMmGetPMSADsSize(msad) - 1), size))
+    if(1 > CreateNewKMemPoolInit(pool, msad, msadnr, (Addr)pool, ((Addr)pool + (Addr)KrlMmGetPMSADsSize(msad) - 1), size))
     {
         rets = KrlMmFreeKernPMSADs(msad);
         IF_EQT_DEAD(FALSE, rets, "KrlMmFreeKernPMSADs is Fail\n");
@@ -236,14 +237,15 @@ private KMemPool* KrlMmCreateKMemPoolRealize(GMemPoolManage* gmpm, Size size)
     return pool;
 }
 
-public KMemPool* KrlMmCreateKMemPool(Size size)
+public KMemPool* KrlMmCreateKMemPool(UInt msadnr, Size size)
 {
     GMemPoolManage* gmpm;
+    IF_LTNONE_RETRUN_NULL(msadnr);
     IF_LTNONE_RETRUN_NULL(size);
-    IF_GTN_RETURN(size, 2024, NULL);
+    IF_GTN_RETURN(size, 2048, NULL);
     gmpm = KrlMmGetGMemPoolAddr();
     IF_NULL_RETURN_NULL(gmpm);
-    return KrlMmCreateKMemPoolRealize(gmpm, size);
+    return KrlMmCreateKMemPoolRealize(gmpm, msadnr, size);
 }
 
 
@@ -255,6 +257,19 @@ public void* KrlMmNewPOEntities(Size size)
 
 public Bool KrlMmPoolInit()
 {
-    GMemPoolManageInit(&GMemPoolData);
+    GMemPoolManage* gmpm = NULL;
+    KMemPool* pool = NULL;
+    gmpm = KrlMmGetGMemPoolAddr();
+    IF_NULL_RETURN_FALSE(gmpm);
+    GMemPoolManageInit(gmpm);
+    for(UInt i = 0; i < KMPOOL_MAX; i++)
+    {
+        pool = KrlMmCreateKMemPool(PoolParamArr[i].AllocPMSADs, PoolParamArr[i].POESize);
+        if(NULL != pool)
+        {
+            gmpm->KMemPoolArr[i] = pool;
+            gmpm->KMemPoolNR++;
+        }
+    }   
     return TRUE;
 }
