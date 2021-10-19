@@ -80,6 +80,7 @@ private Bool KrlMmDelPOEntitiesRealize(void* addr);
 private UInt CreateNewKMemPoolInit(KMemPool* pool, PMSAD* msad, UInt msadnr, Addr start, Addr end, Size size);
 private KMemPool* KrlMmCreateKMemPoolRealize(GMemPoolManage* gmpm, UInt msadnr, Size size);
 public KMemPool* KrlMmCreateKMemPool(UInt msadnr, Size size);
+public Bool KrlMmDelPOEntities(void* addr);
 public void* KrlMmNewPOEntities(Size size);
 public void* KrlMmNew(Size size);
 public Bool KrlMmPoolInit();

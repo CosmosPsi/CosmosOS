@@ -348,6 +348,12 @@ public KMemPool* KrlMmCreateKMemPool(UInt msadnr, Size size)
     return KrlMmCreateKMemPoolRealize(gmpm, msadnr, size);
 }
 
+public Bool KrlMmDelPOEntities(void* addr)
+{
+    IF_NULL_RETURN_FALSE(addr);
+    return KrlMmNewPOEntitiesRealize(addr);
+}
+
 
 public void* KrlMmNewPOEntities(Size size)
 {
