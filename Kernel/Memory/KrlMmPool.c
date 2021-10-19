@@ -82,6 +82,56 @@ private KMemPool* ForSizeRetKMemPoolOnGMemPoolManage(GMemPoolManage* gmpm, Size 
     return NULL;
 }
 
+private KMemPool* ForAddrRetKMemPoolOnGMemPoolManage(GMemPoolManage* gmpm, void* addr)
+{
+    List* lists = NULL;
+    PMSAD* msad = NULL;
+    KMemPool* pool = NULL;
+    Addr rangestart = NULL; 
+    Addr rangeend = NULL; 
+    IF_NULL_RETURN_NULL(gmpm);
+    if(NULL != gmpm->KMemPoolCache)
+    {
+        pool = gmpm->KMemPoolCache;
+        if((pool->VAddrStart <= (Addr)addr) && ((Addr)addr < pool->VAddrEnd))
+        {
+            ListForEach(lists, &pool->PMSADsLists)
+            {
+                msad = ListEntry(lists, PMSAD, Lists);
+                rangestart = KrlMmGetPMSADsRangeVStart(msad);
+                rangeend = KrlMmGetPMSADsRangeVEnd(msad);
+                if((rangestart <= (Addr)addr) && ((Addr)addr < rangeend))
+                {
+                    return pool;
+                }
+            }
+        }
+        
+    }
+    for(UInt i = 0; i < KMPOOL_MAX; i++)
+    {
+        if(NULL != gmpm->KMemPoolArr[i])
+        {
+            pool = gmpm->KMemPoolArr[i];
+            if ((pool->VAddrStart <= (Addr)addr) && ((Addr)addr < pool->VAddrEnd))
+            {
+                ListForEach(lists, &pool->PMSADsLists)
+                {
+                    msad = ListEntry(lists, PMSAD, Lists);
+                    rangestart = KrlMmGetPMSADsRangeVStart(msad);
+                    rangeend = KrlMmGetPMSADsRangeVEnd(msad);
+                    if((rangestart <= (Addr)addr) && ((Addr)addr < rangeend))
+                    {
+                        return pool;
+                    }
+                }
+            }
+        }
+    }
+    return NULL;
+}
+
+
 private POEntities* PickPOEntitiesOnKMemPool(KMemPool* pool)
 {
     POEntities* entities = NULL;

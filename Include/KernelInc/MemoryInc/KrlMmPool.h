@@ -66,6 +66,7 @@ private void POEntitiesInit(POEntities* init);
 private void KMemPoolInit(KMemPool* init);
 private void GMemPoolManageInit(GMemPoolManage* init);
 private KMemPool* ForSizeRetKMemPoolOnGMemPoolManage(GMemPoolManage* gmpm, Size size);
+private KMemPool* ForAddrRetKMemPoolOnGMemPoolManage(GMemPoolManage* gmpm, void* addr);
 private POEntities* PickPOEntitiesOnKMemPool(KMemPool* pool);
 private UInt POEntitiesArrInitOnMemSPace(KMemPool* pool, Addr start, Addr end);
 private Bool ExtendKMemPoolCapacity(GMemPoolManage* gmpm, KMemPool* pool);
