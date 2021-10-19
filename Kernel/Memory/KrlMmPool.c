@@ -276,6 +276,20 @@ private Bool KrlMmDelPOEntitiesRealizeCore(GMemPoolManage* gmpm, void* addr)
     return rets;
 }
 
+private Bool KrlMmDelPOEntitiesRealize(void* addr)
+{
+    Bool rets = FALSE;
+    GMemPoolManage* gmpm = NULL;
+    
+    gmpm = KrlMmGetGMemPoolAddr();
+    IF_NULL_RETURN_FALSE(gmpm);
+
+    KrlMmLocked(&gmpm->Lock);
+    rets = KrlMmDelPOEntitiesRealizeCore(gmpm, addr);
+    KrlMmUnLock(&gmpm->Lock);
+    return rets;
+}
+
 private UInt CreateNewKMemPoolInit(KMemPool* pool, PMSAD* msad, UInt msadnr, Addr start, Addr end, Size size)
 {
     POEntities* entstart = NULL;
