@@ -27,6 +27,7 @@ public U64 KrlMmGetPMSADsLen(PMSAD* msad);
 public U64 KrlMmGetPMSADsSize(PMSAD* msad);
 public PMSAD* KrlMmGetPMSADsEnd(PMSAD* msad);
 public Addr KrlMmGetPMSADsRangeVStart(PMSAD* msad);
+public Addr KrlMmGetPMSADsRangeVEnd(PMSAD* msad);
 public PMSAD* KrlMmAllocPMSADs(UInt nodeid, UInt areaid, UInt msadnr, U64 flags);
 public PMSAD* KrlMmAllocKernPMSADs(UInt msadnr);
 public PMSAD* KrlMmAllocUserPMSADs(UInt msadnr);
