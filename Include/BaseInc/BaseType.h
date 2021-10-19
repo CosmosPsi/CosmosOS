@@ -57,8 +57,8 @@ typedef SInt DrvStus;
 
 #define INIT_OBJOFPTR_ZERO(ptr) do{HalMemSet((void*)ptr, 0, sizeof(typeof(*ptr)));}while(0)
 
-#define TEST_FAIL_STRING(str) __FILE__##__LINE__##__FUNCTION__##str
-#define TEST_FAIL_DEAD_ESTMFUNC(str) KrlErrorCrashDead(TEST_FAIL_STRING(str))
+#define TEST_FAIL_STRING(fmt, ...) fmt,##__VA_ARGS__
+#define TEST_FAIL_DEAD_ESTMFUNC(str) KrlErrorCrashDead(TEST_FAIL_STRING("%s,%d,%s,%s",__FILE__,__LINE__,__FUNCTION__,str))
 
 #define IF_TEST_OP(cmpsrc, tester, op, excstmfunc) do{if(cmpsrc op tester) {excstmfunc;}}while(0)
 
