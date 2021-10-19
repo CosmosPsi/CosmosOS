@@ -6,6 +6,9 @@
 #ifndef _KRLMMMANAGEHEAD
 #define _KRLMMMANAGEHEAD
 
+#include "HalSync.h"
+#include "HalBoot.h"
+
 #define MSAD_PADR_SLBITS (12)
 #define MSAD_PAGE_MAX (8)
 #define MSAD_SIZE (1 << MSAD_PADR_SLBITS)
@@ -82,7 +85,8 @@
 #define PMSA_F_ARM_64 (1<<3)
 #define PMSA_F_HAL_MASK 0xff
 
-#define DefinedMEMData(vartype,varname) __attribute__((section(".mem.data"))) vartype varname
+#define MEMDATA_SECTION __attribute__((section(".mem.data")))
+#define DefinedMEMData(vartype,varname) MEMDATA_SECTION vartype varname
 
 #define PMSADDIRE_MAX (1 << 18)
 #define PMSADDIRE_INDEX_BITS (30)
@@ -282,6 +286,7 @@ typedef struct GMEMMANAGE
 	void* Ext;
 }GMemManage;
 
+DefinedMEMData(GMemManage, GMemManageData);
 
 
 KLINE Addr PMSADRetPAddr(PMSAD* msad)
