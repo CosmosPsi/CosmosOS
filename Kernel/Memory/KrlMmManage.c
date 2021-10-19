@@ -17,7 +17,7 @@ DefinedMEMData(GMemManage, GMemManageData);
 private void MLockInit(MLock* init)
 {
     IF_NULL_RETURN(init);
-    SPinLockInit(&init->Lock.Locks);
+    SPinLockInit(&init->Locks);
     return;
 }
 
@@ -69,7 +69,7 @@ private void MAreaInit(MArea* init)
     INIT_OBJOFPTR_ZERO(init);
     ListInit(&init->Lists);
     MLockInit(&init->Lock);
-    ListInit(&init->AllocPMSADLists);
+    ListInit(&init->AllPMSADLists);
     MSPlitMerInit(&init->MSPLMerData);
     return;
 }
@@ -140,7 +140,7 @@ public Bool KrlMmUPSubGMMAllocMaxFreeNR(UInt allocnr, UInt maxnr, UInt freenr)
     }
     if((U64)freenr <= gmm->FreePMSAD)
     {
-        gmm->FreePMSAD -= (U64)freenr
+        gmm->FreePMSAD -= (U64)freenr;
     }
     gmm->MemroySZ = (U64)(gmm->MaxPMSAD << MSAD_PADR_SLBITS);
     KrlMmUnLock(&gmm->Lock);
@@ -363,7 +363,7 @@ private PMSAD* PMSADDireIsNeedAllocMemory(U64 start, U64 end)
     {
         if(PMSA_T_OSAPUSERRAM == pmsarea[i].Type)
         {
-            for(U64 paddr = pmsarea[i]->Start; (paddr + (MSAD_SIZE - 1)) < pmsarea[i]->End; paddr += MSAD_SIZE)
+            for(U64 paddr = pmsarea[i].Start; (paddr + (MSAD_SIZE - 1)) < pmsarea[i].End; paddr += MSAD_SIZE)
             {
                 if((start <= paddr) && (paddr < end))
                 {
@@ -597,7 +597,7 @@ private UInt ScanOrderPMSADsAddInPABHList(MNode* node, MArea* area, PMSAD* start
     msad = start;
     while(msad <= end)
     {
-        msad = NextOrderPMSADsAddInPABHList(node, area, msad, end, &count)
+        msad = NextOrderPMSADsAddInPABHList(node, area, msad, end, &count);
         if(NULL == msad)
         {
             KrlErrorCrashDead("NextOrderPMSADsAddInPABHList is Fail\n");
@@ -786,7 +786,7 @@ private Bool MAreaInitOnMNode(MNode* node)
 public MNode* KrlMmGetMNode(UInt nodeid)
 {
     GMemManage* gmm = NULL;
-    MNode* node
+    MNode* node = NULL;
     gmm = KrlMmGetGMemManageAddr();
     IF_NULL_RETURN_NULL(gmm);
 
