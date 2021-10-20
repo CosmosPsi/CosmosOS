@@ -8,6 +8,7 @@
 #define _KRLMMPOOLHEAD
 #define MSCLST_MAX (5)
 #define KMPOOL_MAX (64)
+#define PMLH_MAX (32)
 #define PER_POE_INCSIZE (32)
 #define KUC_NEWFLG (1)
 #define KUC_DELFLG (2)
@@ -18,6 +19,13 @@ typedef struct POOLPARM
     UInt AllocPMSADs;
     UInt POESize;
 }PoolParam;
+
+typedef struct PMLHEAD
+{
+    UInt PmsadNR;
+    UInt AllocPMSADNR;
+    List Lists;
+}PMLHead;
 
 
 typedef struct POENTITIES
@@ -45,6 +53,16 @@ typedef struct KMEMPOOL
 	void* Ext;
 }KMemPool;
 
+typedef struct KPMSADSPOOL
+{
+    List Lists;
+	MLock Lock;
+    UInt Status;
+	UInt Flags;
+    UInt PmsadsNR;
+    PMLHead PMLHeadArr[PMLH_MAX];
+}KPMSADsPool;
+
 typedef struct GMEMPOOLMANAGE
 {
     List Lists;
@@ -52,7 +70,7 @@ typedef struct GMEMPOOLMANAGE
 	UInt Status;
 	UInt Flags;
     UInt KMemPoolNR;
-    KMemPool KMemPoolMain;
+    KPMSADsPool PMSADsPool;
     KMemPool* KMemPoolCache;
     KMemPool* KMemPoolArr[KMPOOL_MAX];
 }GMemPoolManage;
