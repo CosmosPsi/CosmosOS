@@ -275,6 +275,24 @@ private void* NewPMSADsOnKPMSADsPool(GMemPoolManage* gmpm, KPMSADsPool* pool, PM
     return (void*)PMSADRetVAddr(msad);
 }
 
+private void* KrlMmNewPMSADsRealizeCore(GMemPoolManage* gmpm, Size size)
+{
+    void* addr = NULL;
+    KPMSADsPool* pool = NULL;
+    PMLHead* head = NULL;
+    UInt msadnr = 0;
+    IF_NULL_RETURN_NULL(gmpm);
+    msadnr = (MSAD_ALIGN(size) >> MSAD_PADR_SLBITS);
+    pool = &gmpm->PMSADsPool;
+    head = ForMsadNrRetPMLHeadOnGMemPoolManage(gmpm, msadnr);
+    IF_NULL_RETURN_NULL(head);
+    
+    KrlMmLocked(&pool->Lock);
+    addr = NewPMSADsOnKPMSADsPool(gmpm, pool, head, msadnr);
+    KrlMmUnLock(&pool->Lock);
+    return addr;
+}
+
 private void* KrlMmNewPOEntitiesRealizeCore(GMemPoolManage* gmpm, Size size)
 {
     void* addr = NULL;
