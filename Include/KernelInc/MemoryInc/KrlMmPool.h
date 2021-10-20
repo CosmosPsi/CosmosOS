@@ -60,6 +60,7 @@ typedef struct KPMSADSPOOL
     UInt Status;
 	UInt Flags;
     UInt PmsadsNR;
+    PMLHead* PMLHeadCache;
     PMLHead PMLHeadArr[PMLH_MAX];
 }KPMSADsPool;
 
