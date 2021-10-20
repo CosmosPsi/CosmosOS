@@ -95,6 +95,7 @@ private Bool PutsPOEntitiesOnKMemPool(KMemPool* pool, POEntities* entities);
 private UInt POEntitiesArrInitOnMemSPace(KMemPool* pool, Addr start, Addr end);
 private Bool ExtendKMemPoolCapacity(GMemPoolManage* gmpm, KMemPool* pool);
 private void* NewPOEntitiesOnKMemPool(GMemPoolManage* gmpm, KMemPool* pool, Size size);
+private void* NewPMSADsOnKPMSADsPool(GMemPoolManage* gmpm, KPMSADsPool* pool, PMLHead* head, UInt msadnr);
 private void* KrlMmNewPOEntitiesRealizeCore(GMemPoolManage* gmpm, Size size);
 private void* KrlMmNewPOEntitiesRealize(Size size);
 private Bool DelPOEntitiesOnKMemPool(GMemPoolManage* gmpm, KMemPool* pool, void* addr);

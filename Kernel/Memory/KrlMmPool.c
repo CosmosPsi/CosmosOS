@@ -260,6 +260,21 @@ private void* NewPOEntitiesOnKMemPool(GMemPoolManage* gmpm, KMemPool* pool, Size
     return (void*)PickPOEntitiesOnKMemPool(pool);
 }
 
+private void* NewPMSADsOnKPMSADsPool(GMemPoolManage* gmpm, KPMSADsPool* pool, PMLHead* head, UInt msadnr)
+{
+    PMSAD* msad = NULL;
+    IF_NULL_RETURN_NULL(gmpm);
+    IF_NULL_RETURN_NULL(pool);
+    IF_NULL_RETURN_NULL(head);
+    IF_ZERO_RETURN_NULL(msadnr);
+    msad = KrlMmAllocKernPMSADs(msadnr);
+    IF_NULL_RETURN_NULL(msad);
+    ListAdd(&msad->Lists, &head->Lists);
+    head->PmsadNR++;
+    pool->PmsadsNR++;
+    return (void*)PMSADRetVAddr(msad);
+}
+
 private void* KrlMmNewPOEntitiesRealizeCore(GMemPoolManage* gmpm, Size size)
 {
     void* addr = NULL;
