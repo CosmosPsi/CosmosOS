@@ -102,6 +102,7 @@ private void* KrlMmNewPOEntitiesRealizeCore(GMemPoolManage* gmpm, Size size);
 private void* KrlMmNewPMSADsRealize(Size size);
 private void* KrlMmNewPOEntitiesRealize(Size size);
 private Bool DelPOEntitiesOnKMemPool(GMemPoolManage* gmpm, KMemPool* pool, void* addr);
+private Bool KrlMmDelPMSADsRealizeCore(GMemPoolManage* gmpm, void* addr);
 private Bool KrlMmDelPOEntitiesRealizeCore(GMemPoolManage* gmpm, void* addr);
 private Bool KrlMmDelPOEntitiesRealize(void* addr);
 private UInt CreateNewKMemPoolInit(KMemPool* pool, PMSAD* msad, UInt msadnr, Addr start, Addr end, Size size);

@@ -372,6 +372,26 @@ private Bool DelPOEntitiesOnKMemPool(GMemPoolManage* gmpm, KMemPool* pool, void*
     return rets;
 }
 
+private Bool KrlMmDelPMSADsRealizeCore(GMemPoolManage* gmpm, void* addr)
+{
+    Bool rets = FALSE;
+    PMSAD* msad = NULL;
+    IF_NULL_RETURN_FALSE(gmpm);
+
+    msad = ForAddrDelAndRetPMSADOnKPMSADsPool(&gmpm->PMSADsPool, addr);
+    IF_NULL_RETURN_FALSE(msad);
+    IF_NEQ_DEAD(addr, (void*)PMSADRetVAddr(msad), "addr is not EQ PMSAD Addr\n");
+    rets = KrlMmFreeKernPMSADs(msad);
+    IF_NEQ_DEAD(TRUE, rets, "KrlMmFreeKernPMSADs Called Fail\n");
+    KrlMmLocked(&gmpm->PMSADsPool.Lock);
+    if(gmpm->PMSADsPool.PmsadsNR > 0)
+    {
+        gmpm->PMSADsPool.PmsadsNR--;
+    }
+    KrlMmUnLock(&gmpm->PMSADsPool.Lock);
+    return rets;
+}
+
 private Bool KrlMmDelPOEntitiesRealizeCore(GMemPoolManage* gmpm, void* addr)
 {
     Bool rets = FALSE;
