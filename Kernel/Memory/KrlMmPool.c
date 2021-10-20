@@ -417,6 +417,12 @@ private Bool KrlMmDelPOEntitiesRealize(void* addr)
 
     KrlMmLocked(&gmpm->Lock);
     rets = KrlMmDelPOEntitiesRealizeCore(gmpm, addr);
+    if(TRUE == rets)
+    {
+        KrlMmUnLock(&gmpm->Lock);
+        return rets;
+    }
+    rets = KrlMmDelPMSADsRealizeCore(gmpm, addr);
     KrlMmUnLock(&gmpm->Lock);
     return rets;
 }
