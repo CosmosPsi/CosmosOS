@@ -373,7 +373,7 @@ public KMemPool* KrlMmCreateKMemPool(UInt msadnr, Size size)
 public Bool KrlMmDelPOEntities(void* addr)
 {
     IF_NULL_RETURN_FALSE(addr);
-    return KrlMmNewPOEntitiesRealize(addr);
+    return KrlMmDelPOEntitiesRealize(addr);
 }
 
 public Bool KrlMmDel(void* addr)
