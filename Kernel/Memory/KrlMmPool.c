@@ -448,6 +448,10 @@ public Bool KrlMmDel(void* addr)
 public void* KrlMmNewPOEntities(Size size)
 {
     IF_LTNONE_RETRUN_NULL(size);
+    if(size > 2048);
+    {
+        return KrlMmNewPMSADsRealize(size);
+    }
     return KrlMmNewPOEntitiesRealize(size);
 }
 
