@@ -29,6 +29,28 @@ MEMDATA_SECTION PoolParam PoolParamArr[KMPOOL_MAX] = {
     {16, 1952}, {16, 1984}, {16, 2016}, {16, 2048}, 
 };
 
+private void PMLHeadInit(PMLHead* init, UInt msadnr)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    init->AllocPMSADNR = msadnr;
+    ListInit(&init->Lists);
+    return;
+}
+
+private void KPMSADsPoolInit(KPMSADsPool* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ListInit(&init->Lists);
+    MLockInit(&init->Lock);
+    for(UInt i = 0; i < PMLH_MAX; i++)
+    {
+        PMLHeadInit(&init->PMLHeadArr[i], (1 << i));    
+    }
+    return;
+}
+
 private void POEntitiesInit(POEntities* init)
 {
     IF_NULL_RETURN_NULL(init);
@@ -54,7 +76,7 @@ private void GMemPoolManageInit(GMemPoolManage* init)
     INIT_OBJOFPTR_ZERO(init);
     ListInit(&init->Lists);
     MLockInit(&init->Lock);
-    KMemPoolInit(&init->KMemPoolMain);
+    KPMSADsPoolInit(&init->PMSADsPool);
     return;
 }
 

@@ -80,6 +80,8 @@ KLINE GMemPoolManage* KrlMmGetGMemPoolAddr()
     return &GMemPoolData;
 }
 
+private void PMLHeadInit(PMLHead* init, UInt msadnr);
+private void KPMSADsPoolInit(KPMSADsPool* init);
 private void POEntitiesInit(POEntities* init);
 private void KMemPoolInit(KMemPool* init);
 private void GMemPoolManageInit(GMemPoolManage* init);
