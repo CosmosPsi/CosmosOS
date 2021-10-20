@@ -24,6 +24,7 @@ typedef struct PMLHEAD
 {
     UInt PmsadNR;
     UInt AllocPMSADNR;
+    UInt EndMaxPMSADNR;
     List Lists;
 }PMLHead;
 
@@ -81,13 +82,14 @@ KLINE GMemPoolManage* KrlMmGetGMemPoolAddr()
     return &GMemPoolData;
 }
 
-private void PMLHeadInit(PMLHead* init, UInt msadnr);
+private void PMLHeadInit(PMLHead* init, UInt msadnr, UInt endmsadnr);
 private void KPMSADsPoolInit(KPMSADsPool* init);
 private void POEntitiesInit(POEntities* init);
 private void KMemPoolInit(KMemPool* init);
 private void GMemPoolManageInit(GMemPoolManage* init);
 private KMemPool* ForSizeRetKMemPoolOnGMemPoolManage(GMemPoolManage* gmpm, Size size);
 private KMemPool* ForAddrRetKMemPoolOnGMemPoolManage(GMemPoolManage* gmpm, void* addr);
+private PMLHead* ForMsadNrRetPMLHeadOnGMemPoolManage(GMemPoolManage* gmpm, UInt msadnr);
 private POEntities* PickPOEntitiesOnKMemPool(KMemPool* pool);
 private Bool PutsPOEntitiesOnKMemPool(KMemPool* pool, POEntities* entities);
 private UInt POEntitiesArrInitOnMemSPace(KMemPool* pool, Addr start, Addr end);

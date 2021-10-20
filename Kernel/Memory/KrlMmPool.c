@@ -29,11 +29,12 @@ MEMDATA_SECTION PoolParam PoolParamArr[KMPOOL_MAX] = {
     {16, 1952}, {16, 1984}, {16, 2016}, {16, 2048}, 
 };
 
-private void PMLHeadInit(PMLHead* init, UInt msadnr)
+private void PMLHeadInit(PMLHead* init, UInt msadnr, UInt endmsadnr)
 {
     IF_NULL_RETURN(init);
     INIT_OBJOFPTR_ZERO(init);
     init->AllocPMSADNR = msadnr;
+    init->EndMaxPMSADNR = endmsadnr;
     ListInit(&init->Lists);
     return;
 }
@@ -46,7 +47,7 @@ private void KPMSADsPoolInit(KPMSADsPool* init)
     MLockInit(&init->Lock);
     for(UInt i = 0; i < PMLH_MAX; i++)
     {
-        PMLHeadInit(&init->PMLHeadArr[i], (1 << i));    
+        PMLHeadInit(&init->PMLHeadArr[i], (1 << i), ((1 << (i + 1)) - 1));    
     }
     return;
 }
@@ -153,6 +154,22 @@ private KMemPool* ForAddrRetKMemPoolOnGMemPoolManage(GMemPoolManage* gmpm, void*
     return NULL;
 }
 
+private PMLHead* ForMsadNrRetPMLHeadOnGMemPoolManage(GMemPoolManage* gmpm, UInt msadnr)
+{
+    PMLHead* head = NULL;
+    KPMSADsPool* pool = NULL;
+    IF_NULL_RETURN_NULL(gmpm);
+    pool = &gmpm->PMSADsPool;
+    for(UInt i = 0; i < PMLH_MAX; i++)
+    {
+        head = &pool->PMLHeadArr[i];
+        if((msadnr <= head->AllocPMSADNR))
+        {
+            return head;
+        }
+    }
+    return NULL;
+}
 
 private POEntities* PickPOEntitiesOnKMemPool(KMemPool* pool)
 {
