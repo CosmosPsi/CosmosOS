@@ -88,6 +88,7 @@ private void POEntitiesInit(POEntities* init);
 private void KMemPoolInit(KMemPool* init);
 private void GMemPoolManageInit(GMemPoolManage* init);
 private KMemPool* ForSizeRetKMemPoolOnGMemPoolManage(GMemPoolManage* gmpm, Size size);
+private PMSAD* ForAddrDelAndRetPMSADOnKPMSADsPool(KPMSADsPool* pool, void* addr);
 private KMemPool* ForAddrRetKMemPoolOnGMemPoolManage(GMemPoolManage* gmpm, void* addr);
 private PMLHead* ForMsadNrRetPMLHeadOnGMemPoolManage(GMemPoolManage* gmpm, UInt msadnr);
 private POEntities* PickPOEntitiesOnKMemPool(KMemPool* pool);

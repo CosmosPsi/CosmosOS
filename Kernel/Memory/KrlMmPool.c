@@ -105,6 +105,31 @@ private KMemPool* ForSizeRetKMemPoolOnGMemPoolManage(GMemPoolManage* gmpm, Size 
     return NULL;
 }
 
+private PMSAD* ForAddrDelAndRetPMSADOnKPMSADsPool(KPMSADsPool* pool, void* addr)
+{
+    PMLHead* head = NULL;
+    List* lists = NULL;
+    PMSAD* msad = NULL;
+
+    IF_NULL_RETURN_NULL(pool);
+    IF_NULL_RETURN_NULL(addr);
+    for(UInt i = 0; i < PMLH_MAX; i++)
+    {
+        head = &pool->PMLHeadArr[i];
+        ListForEach(lists, &head->Lists)
+        {
+            msad = ListEntry(lists, PMSAD, Lists);
+            if(addr == (void*)PMSADRetVAddr(msad))
+            {
+                ListDel(&msad->Lists);
+                head->PmsadNR--;
+                return msad;
+            }
+        }
+    }
+    return NULL;
+}
+
 private KMemPool* ForAddrRetKMemPoolOnGMemPoolManage(GMemPoolManage* gmpm, void* addr)
 {
     List* lists = NULL;
