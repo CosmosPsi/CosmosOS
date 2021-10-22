@@ -460,6 +460,13 @@ KLINE void SetPMSADKMPool(PMSAD* msad)
     return;
 }
 
+KLINE void ClearPMSADKMPool(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    msad->PhyAddr.KMPoolBit = PAF_NO_KMPOOL;
+    return;
+}
+
 KLINE void SetPMSADBlockLink(PMSAD* msad, void* link)
 {
     IF_NULL_DEAD(msad);
