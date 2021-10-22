@@ -37,13 +37,17 @@
 #define MF_MARTY_PRC (3)
 #define MF_MARTY_SHD (4)
 
-#define  PAF_NO_ALLOC (0)
 #define  PAF_ALLOC (1)
+#define  PAF_NO_ALLOC (0)
+#define  PAF_SHARED (1)
 #define  PAF_NO_SHARED (0)
+#define  PAF_SWAP (1)
 #define  PAF_NO_SWAP (0)
+#define  PAF_CACHE (1)
 #define  PAF_NO_CACHE (0)
 #define  PAF_KMPOOL (1)
 #define  PAF_NO_KMPOOL (0)
+#define  PAF_LOCK (1)
 #define  PAF_NO_LOCK (0)
 #define  PAF_RV2_VAL (0)
 #define  PAF_INIT_PADRS (0)
@@ -450,6 +454,13 @@ KLINE void ClearPMSADAlloc(PMSAD* msad)
 {
     IF_NULL_DEAD(msad);
     msad->PhyAddr.AllocBit = 0;
+    return;
+}
+
+KLINE void SetPMSADShare(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    msad->PhyAddr.SharedBit = PAF_SHARED;
     return;
 }
 
