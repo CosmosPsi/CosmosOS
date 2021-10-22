@@ -512,6 +512,13 @@ KLINE void SetPMSADCache(PMSAD* msad)
     return;
 }
 
+KLINE void ClearPMSADCache(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    msad->PhyAddr.CacheBit = PAF_NO_CACHE;
+    return;
+}
+
 KLINE void SetPMSADKMPool(PMSAD* msad)
 {
     IF_NULL_DEAD(msad);
