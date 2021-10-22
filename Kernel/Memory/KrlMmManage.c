@@ -794,6 +794,18 @@ public Bool KrlMmClearPMSADUseStatus(PMSAD* msad)
     return TRUE;
 }
 
+public PMSAD* KrlMmGetPMSADOnVaddr(Addr vaddr)
+{
+    Addr paddr = NULL;
+    if((vaddr & (MSAD_SIZE - 1)) != 0)
+    {
+        return NULL;
+    }
+    paddr = HalVAddrToPAddr(vaddr);
+    IF_NULL_RETURN_NULL(paddr);
+    return PHYAddrRetPMSAD((U64)paddr);
+}
+
 public MNode* KrlMmGetMNode(UInt nodeid)
 {
     GMemManage* gmm = NULL;

@@ -754,6 +754,7 @@ private UInt PMSADBlockInitOnPMSADDire(MNode* node, MArea* area, PMSADDire* dire
 private Bool OneMAreaInitOnMNode(MNode* node, MArea* area);
 private Bool MAreaInitOnMNode(MNode* node);
 public Bool KrlMmClearPMSADUseStatus(PMSAD* msad);
+public PMSAD* KrlMmGetPMSADOnVaddr(Addr vaddr);
 public MNode* KrlMmGetMNode(UInt nodeid);
 public MArea* KrlMmGetMArea(MNode* node, UInt areaid);
 public Bool KrlMmMAreaInit();
