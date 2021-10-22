@@ -467,6 +467,16 @@ KLINE void ClearPMSADKMPool(PMSAD* msad)
     return;
 }
 
+KLINE Bool PMSADIsKMPool(PMSAD* msad)
+{
+    IF_NULL_RETURN_FALSE(msad);
+    if(PAF_KMPOOL == msad->PhyAddr.KMPoolBit)
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
+
 KLINE void SetPMSADBlockLink(PMSAD* msad, void* link)
 {
     IF_NULL_DEAD(msad);
