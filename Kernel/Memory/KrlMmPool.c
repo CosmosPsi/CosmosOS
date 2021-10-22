@@ -437,11 +437,6 @@ private UInt CreateNewKMemPoolInit(KMemPool* pool, PMSAD* msad, UInt msadnr, Add
     entstart = (POEntities*)tmp;
     entend = (POEntities*)end;
     
-    pool->Size = size;
-    pool->AllocPMSADNR = msadnr;
-    pool->VAddrStart = start;
-    pool->VAddrEnd = end;
-    ListAdd(&msad->Lists, &pool->PMSADsLists);
     for(; entstart < entend; i++)
     {
         POEntitiesInit(entstart);
@@ -450,7 +445,15 @@ private UInt CreateNewKMemPoolInit(KMemPool* pool, PMSAD* msad, UInt msadnr, Add
         pool->FreeObjNR++;
         entstart = (POEntities*)(((UInt)entstart) + ((UInt)pool->Size));
     }
+
     IF_EQT_RETURN(0, i, 0);
+    
+    pool->Size = size;
+    pool->AllocPMSADNR = msadnr;
+    pool->VAddrStart = start;
+    pool->VAddrEnd = end;
+    SetPMSADKMPool(msad);
+    ListAdd(&msad->Lists, &pool->PMSADsLists);
     return i;
 }
 
