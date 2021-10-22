@@ -343,7 +343,7 @@ private UInt OperationBeforeFreePMSADs(PABHList* abhlist, PMSAD* start, PMSAD* e
             return 1;
         }
 
-        ClearPMSADAlloc(start);
+        KrlMmClearPMSADUseStatus(start);
         SetPMSADOLType(start, MF_OLKTY_BAFH);
         SetPMSADBlockLink(start, (void*)abhlist);
 		return 2;
@@ -356,8 +356,8 @@ private UInt OperationBeforeFreePMSADs(PABHList* abhlist, PMSAD* start, PMSAD* e
         return 1;
     }
 
-    ClearPMSADAlloc(start);
-    ClearPMSADAlloc(end);
+    KrlMmClearPMSADUseStatus(start);
+    KrlMmClearPMSADUseStatus(end);
 
     SetPMSADOLType(start, MF_OLKTY_ODER);
     SetPMSADBlockLink(start, (void*)end);
@@ -455,7 +455,7 @@ step1:
 
     if(2 == rets)
 	{
-		if(ClearPMSADTowBlockFlags(abhlist + 1, start,end, blkms, blkme) == TRUE)
+		if(ClearPMSADTowBlockFlags(abhlist + 1, start, end, blkms, blkme) == TRUE)
 		{
 			*msadstart = start;
 			*msadend = blkme;
