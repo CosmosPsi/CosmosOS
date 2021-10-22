@@ -262,7 +262,7 @@ private Bool ExtendKMemPoolCapacity(GMemPoolManage* gmpm, KMemPool* pool)
     start = PMSADRetVAddr(msad);
     end = start + (Addr)(KrlMmGetPMSADsSize(msad) - 1);
     SetPMSADKMPool(msad);
-    
+
     nr = POEntitiesArrInitOnMemSPace(pool, start, end);
     if(1 > nr)
     {
@@ -379,24 +379,52 @@ private Bool DelPOEntitiesOnKMemPool(GMemPoolManage* gmpm, KMemPool* pool, void*
     return rets;
 }
 
-private Bool KrlMmDelPMSADsRealizeCore(GMemPoolManage* gmpm, void* addr)
+private Bool DelPMSADsOnKPMSADsPool(KPMSADsPool* pool, PMLHead* head, PMSAD* msad)
 {
     Bool rets = FALSE;
-    PMSAD* msad = NULL;
-    IF_NULL_RETURN_FALSE(gmpm);
+    List* lists = NULL;
+    PMSAD* tmpmsad = NULL;
 
-    msad = ForAddrDelAndRetPMSADOnKPMSADsPool(&gmpm->PMSADsPool, addr);
+    IF_NULL_RETURN_FALSE(pool);
+    IF_NULL_RETURN_FALSE(head);
     IF_NULL_RETURN_FALSE(msad);
-    IF_NEQ_DEAD(addr, (void*)PMSADRetVAddr(msad), "addr is not EQ PMSAD Addr\n");
-    rets = KrlMmFreeKernPMSADs(msad);
-    IF_NEQ_DEAD(TRUE, rets, "KrlMmFreeKernPMSADs Called Fail\n");
-    KrlMmLocked(&gmpm->PMSADsPool.Lock);
-    if(gmpm->PMSADsPool.PmsadsNR > 0)
+    KrlMmLocked(&pool->Lock);
+    ListForEach(lists, &head->Lists)
     {
-        gmpm->PMSADsPool.PmsadsNR--;
+        tmpmsad = ListEntry(lists, PMSAD, Lists);
+        if(tmpmsad == msad)
+        {
+            ListDel(&msad->Lists);
+            head->PmsadNR--;
+            rets = KrlMmFreeKernPMSADs(msad);
+            IF_NEQ_DEAD(TRUE, rets, "KrlMmFreeKernPMSADs Called Fail\n");
+            if(pool->PmsadsNR > 0)
+            {
+                pool->PmsadsNR--;
+            }
+            KrlMmUnLock(&pool->Lock);
+            return rets;
+        }
     }
-    KrlMmUnLock(&gmpm->PMSADsPool.Lock);
-    return rets;
+    KrlMmUnLock(&pool->Lock);
+    return FALSE;
+}
+
+private Bool KrlMmDelPMSADsRealizeCore(GMemPoolManage* gmpm, PMSAD* msad, void* addr)
+{
+    Bool rets = FALSE;
+    UInt msadnr = 0;
+    PMLHead* head = NULL;
+    IF_NULL_RETURN_FALSE(gmpm);
+    IF_NULL_RETURN_FALSE(msad);
+
+    msadnr = (UInt)KrlMmGetPMSADsLen(msad);
+    IF_ZERO_RETURN_FALSE(msadnr);
+    IF_NEQ_RETURN(FALSE, PMSADIsKMPool(msad), FALSE);
+    IF_NEQ_DEAD(addr, (void*)PMSADRetVAddr(msad), "addr is not EQ PMSAD Addr\n");
+    head = ForMsadNrRetPMLHeadOnGMemPoolManage(gmpm, msadnr);
+    IF_NULL_RETURN_FALSE(head);
+    return DelPMSADsOnKPMSADsPool(&gmpm->PMSADsPool, head, msad);
 }
 
 private Bool KrlMmDelPOEntitiesRealizeCore(GMemPoolManage* gmpm, void* addr)
@@ -418,18 +446,31 @@ private Bool KrlMmDelPOEntitiesRealize(void* addr)
 {
     Bool rets = FALSE;
     GMemPoolManage* gmpm = NULL;
-    
+    PMSAD* msad = NULL;
+
     gmpm = KrlMmGetGMemPoolAddr();
     IF_NULL_RETURN_FALSE(gmpm);
 
     KrlMmLocked(&gmpm->Lock);
-    rets = KrlMmDelPOEntitiesRealizeCore(gmpm, addr);
-    if(TRUE == rets)
+    
+    msad = KrlMmGetPMSADOnVaddr((Addr)addr);
+    if(msad != NULL)
     {
-        KrlMmUnLock(&gmpm->Lock);
-        return rets;
+        if(PMSADIsKMPool(msad) != TRUE)
+        {
+            rets = KrlMmDelPMSADsRealizeCore(gmpm, msad, addr);
+            KrlMmUnLock(&gmpm->Lock);
+            return rets;
+        }
+        else
+        {
+            rets = KrlMmDelPOEntitiesRealizeCore(gmpm, addr);
+            KrlMmUnLock(&gmpm->Lock);
+            return rets;
+        }
     }
-    rets = KrlMmDelPMSADsRealizeCore(gmpm, addr);
+
+    rets = KrlMmDelPOEntitiesRealizeCore(gmpm, addr);
     KrlMmUnLock(&gmpm->Lock);
     return rets;
 }
