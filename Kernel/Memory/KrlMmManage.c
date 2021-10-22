@@ -783,6 +783,17 @@ private Bool MAreaInitOnMNode(MNode* node)
     return TRUE;
 }
 
+public Bool KrlMmClearPMSADUseStatus(PMSAD* msad)
+{
+    IF_NULL_RETURN_FALSE(msad);
+    ClearPMSADAlloc(msad);
+    ClearPMSADShare(msad);
+    ClearPMSADSwap(msad);
+    ClearPMSADLock(msad);
+    ClearPMSADKMPool(msad);
+    return TRUE;
+}
+
 public MNode* KrlMmGetMNode(UInt nodeid)
 {
     GMemManage* gmm = NULL;
