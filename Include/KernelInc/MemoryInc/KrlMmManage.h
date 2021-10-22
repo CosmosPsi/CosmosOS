@@ -464,6 +464,13 @@ KLINE void SetPMSADShare(PMSAD* msad)
     return;
 }
 
+KLINE void ClearPMSADShare(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    msad->PhyAddr.SharedBit = PAF_NO_SHARED;
+    return;
+}
+
 KLINE void SetPMSADKMPool(PMSAD* msad)
 {
     IF_NULL_DEAD(msad);
