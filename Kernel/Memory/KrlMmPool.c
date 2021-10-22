@@ -252,6 +252,7 @@ private Bool ExtendKMemPoolCapacity(GMemPoolManage* gmpm, KMemPool* pool)
     PMSAD* msad = NULL;
     Addr start = NULL; 
     Addr end = NULL;
+    Bool rets = FALSE;
     UInt nr = 0; 
     IF_NULL_RETURN_FALSE(gmpm);
     IF_NULL_RETURN_FALSE(pool);
@@ -260,9 +261,15 @@ private Bool ExtendKMemPoolCapacity(GMemPoolManage* gmpm, KMemPool* pool)
 
     start = PMSADRetVAddr(msad);
     end = start + (Addr)(KrlMmGetPMSADsSize(msad) - 1);
-
+    SetPMSADKMPool(msad);
+    
     nr = POEntitiesArrInitOnMemSPace(pool, start, end);
-    IF_LTNONE_RETRUN_FALSE(nr);
+    if(1 > nr)
+    {
+        rets = KrlMmFreeKernPMSADs(msad);
+        IF_EQT_DEAD(FALSE, rets, "KrlMmFreeKernPMSADs is Fail\n");
+        return FALSE;
+    }
     return TRUE;
 }
 
@@ -447,7 +454,7 @@ private UInt CreateNewKMemPoolInit(KMemPool* pool, PMSAD* msad, UInt msadnr, Add
     }
 
     IF_EQT_RETURN(0, i, 0);
-    
+
     pool->Size = size;
     pool->AllocPMSADNR = msadnr;
     pool->VAddrStart = start;
