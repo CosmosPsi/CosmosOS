@@ -536,6 +536,13 @@ KLINE void SetPMSADLock(PMSAD* msad)
     return;
 }
 
+KLINE void ClearPMSADLock(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    msad->PhyAddr.LockBit = PAF_NO_LOCK;
+    return;
+}
+
 KLINE void SetPMSADKMPool(PMSAD* msad)
 {
     IF_NULL_DEAD(msad);
