@@ -42,10 +42,9 @@
 #define  PAF_NO_SHARED (0)
 #define  PAF_NO_SWAP (0)
 #define  PAF_NO_CACHE (0)
-#define  PAF_NO_KMAP (0)
+#define  PAF_KMPOOL (1)
+#define  PAF_NO_KMPOOL (0)
 #define  PAF_NO_LOCK (0)
-#define  PAF_NO_DIRTY (0)
-#define  PAF_NO_BUSY (0)
 #define  PAF_RV2_VAL (0)
 #define  PAF_INIT_PADRS (0)
 
@@ -451,6 +450,13 @@ KLINE void ClearPMSADAlloc(PMSAD* msad)
 {
     IF_NULL_DEAD(msad);
     msad->PhyAddr.AllocBit = 0;
+    return;
+}
+
+KLINE void SetPMSADKMPool(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    msad->PhyAddr.KMPoolBit = PAF_KMPOOL;
     return;
 }
 
