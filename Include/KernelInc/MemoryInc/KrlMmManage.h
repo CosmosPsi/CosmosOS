@@ -495,6 +495,16 @@ KLINE void ClearPMSADSwap(PMSAD* msad)
     return;
 }
 
+KLINE Bool PMSADIsSwap(PMSAD* msad)
+{
+    IF_NULL_RETURN_FALSE(msad);
+    if(PAF_SWAP == msad->PhyAddr.SwapBit)
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
+
 KLINE void SetPMSADKMPool(PMSAD* msad)
 {
     IF_NULL_DEAD(msad);
