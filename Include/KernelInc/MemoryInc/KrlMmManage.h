@@ -505,6 +505,13 @@ KLINE Bool PMSADIsSwap(PMSAD* msad)
     return FALSE;
 }
 
+KLINE void SetPMSADCache(PMSAD* msad)
+{
+    IF_NULL_DEAD(msad);
+    msad->PhyAddr.CacheBit = PAF_CACHE;
+    return;
+}
+
 KLINE void SetPMSADKMPool(PMSAD* msad)
 {
     IF_NULL_DEAD(msad);
