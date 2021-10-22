@@ -6,6 +6,7 @@
 #ifndef _ATOMICHEAD
 #define _ATOMICHEAD
 
+// 原子类
 typedef struct ATOMIC{
 	volatile S32 Count;
 }Atomic;
