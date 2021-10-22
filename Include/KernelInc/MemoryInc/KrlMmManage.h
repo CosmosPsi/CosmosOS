@@ -110,11 +110,9 @@ typedef struct PHYADDRFLAGS
 	U64 SharedBit:1;
 	U64 SwapBit:1;
 	U64 CacheBit:1;
-	U64 KMapBit:1;
 	U64 LockBit:1;
-	U64 DirtyBit:1;
-	U64 BusyBit:1;
-	U64 ReservedBit:4;
+	U64 KMPoolBit:1;
+	U64 ReservedBit:6;
 	U64 PAddrBit:52;
 }__attribute__((packed)) PhyAddrFlags;
 
