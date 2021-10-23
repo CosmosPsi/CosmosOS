@@ -35,7 +35,6 @@ typedef SInt Bool;
 typedef const char* String;
 
 // 字符类型
-
 typedef char Char;
 
 // 句柄类型
