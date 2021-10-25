@@ -79,7 +79,7 @@ typedef SInt DrvStus;
 
 // 注意：do {} while(0) 是一种宏书写技巧，将代码包括起来并只执行一次
 // 判断为 NULL 返回
-#define IF_NULL_RETURN(ptr) do{if(NULL == ptr){return;}}while(0);
+#define IF_NULL_RETURN(ptr) do{if(NULL == ptr){return;}}while(0)
 
 // 判断为 NULL 返回 false
 #define IF_NULL_RETURN_FALSE(ptr) do{if(NULL == ptr){return FALSE;}}while(0)
