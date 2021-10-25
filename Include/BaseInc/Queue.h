@@ -10,22 +10,22 @@
 typedef struct QNODE
 {
     List Node;
-    void *Obj;
-    void *Ext;
+    void* Obj;
+    void* Ext;
 } QNode;
 
 // 队列
 typedef struct QUEUE
 {
     List QHead;
-    QNode *QCurr;
+    QNode* QCurr;
 } Queue;
 
 // 节点初始化
 // @param init 节点
-KLINE void QnodeInit(QNode *init)
+KLINE void QnodeInit(QNode* init)
 {
-    if (NULL == init)
+    if(NULL == init)
     {
         return;
     }
@@ -37,9 +37,9 @@ KLINE void QnodeInit(QNode *init)
 
 // 队列初始化
 // @param init 队列
-KLINE void QueueInit(Queue *init)
+KLINE void QueueInit(Queue* init)
 {
-    if (NULL == init)
+    if(NULL == init)
     {
         return;
     }
@@ -50,13 +50,13 @@ KLINE void QueueInit(Queue *init)
 
 // 队列是否为空
 // @param q 队列
-KLINE Bool QueueIsEmpty(Queue *q)
+KLINE Bool QueueIsEmpty(Queue* q)
 {
-    if (NULL == q)
+    if(NULL == q)
     {
         return TRUE;
     }
-    if (ListIsEmptyCareful(&q->QHead) == TRUE)
+    if(ListIsEmptyCareful(&q->QHead) == TRUE)
     {
         return TRUE;
     }
@@ -65,15 +65,15 @@ KLINE Bool QueueIsEmpty(Queue *q)
 
 // 从队列中弹出一个元素
 // @param q 队列
-KLINE QNode *QueuePop(Queue *q)
+KLINE QNode* QueuePop(Queue* q)
 {
-    List *prev;
-    QNode *qn;
-    if (NULL == q)
+    List* prev;
+    QNode* qn;
+    if(NULL == q)
     {
         return NULL;
     }
-    if (NULL == q->QCurr || ListIsEmptyCareful(&q->QHead) == TRUE)
+    if(NULL == q->QCurr || ListIsEmptyCareful(&q->QHead) == TRUE)
     {
         return NULL;
     }
@@ -82,7 +82,7 @@ KLINE QNode *QueuePop(Queue *q)
     prev = qn->Node.Prev;
 
     ListDel(&qn->Node);
-    if (ListIsEmptyCareful(&q->QHead) == TRUE)
+    if(ListIsEmptyCareful(&q->QHead) == TRUE)
     {
         q->QCurr = NULL;
         return qn;
@@ -94,9 +94,9 @@ KLINE QNode *QueuePop(Queue *q)
 // 向队列中推入一个元素
 // @param q  队列
 // @param qn 元素
-KLINE QNode *QueuePush(Queue *q, QNode *qn)
+KLINE QNode* QueuePush(Queue* q, QNode* qn)
 {
-    if (NULL == q || NULL == qn)
+    if(NULL == q || NULL == qn)
     {
         return NULL;
     }
@@ -108,9 +108,9 @@ KLINE QNode *QueuePush(Queue *q, QNode *qn)
 // 向队列中加入一个元素
 // @param q  队列
 // @param qn 元素
-KLINE QNode *QueueAdd(Queue *q, QNode *qn)
+KLINE QNode* QueueAdd(Queue* q, QNode* qn)
 {
-    if (NULL == q || NULL == qn)
+    if(NULL == q || NULL == qn)
     {
         return NULL;
     }
@@ -120,14 +120,14 @@ KLINE QNode *QueueAdd(Queue *q, QNode *qn)
 
 // 从队列中拿出
 // @param q 队列
-KLINE QNode *QueuePoll(Queue *q)
+KLINE QNode* QueuePoll(Queue* q)
 {
-    QNode *qn;
-    if (NULL == q)
+    QNode* qn;
+    if(NULL == q)
     {
         return NULL;
     }
-    if (ListIsEmptyCareful(&q->QHead) == TRUE)
+    if(ListIsEmptyCareful(&q->QHead) == TRUE)
     {
         return NULL;
     }
@@ -138,10 +138,10 @@ KLINE QNode *QueuePoll(Queue *q)
 
 // 新建节点
 // @param obj 节点数据 
-KLINE QNode *NewQNode(void *obj)
+KLINE QNode* NewQNode(void* obj)
 {
-    QNode *qn = (QNode *)kmsob_new(sizeof(QNode));
-    if (NULL == qn)
+    QNode* qn = (QNode* )kmsob_new(sizeof(QNode));
+    if(NULL == qn)
     {
         return NULL;
     }
@@ -152,13 +152,13 @@ KLINE QNode *NewQNode(void *obj)
 
 // 删除节点
 // @param qn 节点 
-KLINE Bool DelQonde(QNode *qn)
+KLINE Bool DelQonde(QNode* qn)
 {
-    if (NULL == qn)
+    if(NULL == qn)
     {
         return FALSE;
     }
-    return kmsob_delete((void *)qn, sizeof(QNode));
+    return kmsob_delete((void* )qn, sizeof(QNode));
 }
 
 #endif

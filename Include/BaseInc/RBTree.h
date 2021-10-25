@@ -30,32 +30,32 @@ typedef struct RBTFLAGS
 typedef struct RBTREE
 {
 	RBTFlags Flags;
-	struct RBTREE *Left;
-	struct RBTREE *Right;
-	struct RBTREE *Parent;
+	struct RBTREE* Left;
+	struct RBTREE* Right;
+	struct RBTREE* Parent;
 } RBTree;
 
 // 根节点
 typedef struct RBROOT
 {
 	UInt Count;
-	RBTree *MostLeft;
-	RBTree *Node;
-	RBTree *MostRight;
+	RBTree* MostLeft;
+	RBTree* Node;
+	RBTree* MostRight;
 } RBRoot;
 
 // 路径比较函数
-typedef UInt (*RBPathCMP)(RBTree *srcrb, RBTree *cmprb);
+typedef UInt (*RBPathCMP)(RBTree* srcrb, RBTree* cmprb);
 // 替换函数
-typedef UInt (*RBRePlace)(RBTree *srcrb, RBTree *reprb);
+typedef UInt (*RBRePlace)(RBTree* srcrb, RBTree* reprb);
 // 删除函数
-typedef UInt (*RBDelAfter)(RBTree *delrb);
+typedef UInt (*RBDelAfter)(RBTree* delrb);
 
 // 红黑树初始化
 // @param init 红黑树实例
-KLINE void RBTreeInit(RBTree *init)
+KLINE void RBTreeInit(RBTree* init)
 {
-	if (NULL == init)
+	if(NULL == init)
 	{
 		return;
 	}
@@ -70,9 +70,9 @@ KLINE void RBTreeInit(RBTree *init)
 
 // 根节点初始化
 // @param init 根节点
-KLINE void RBRootInit(RBRoot *init)
+KLINE void RBRootInit(RBRoot* init)
 {
-	if (NULL == init)
+	if(NULL == init)
 	{
 		return;
 	}
@@ -86,9 +86,9 @@ KLINE void RBRootInit(RBRoot *init)
 // 设置颜色
 // @param rbtree 红黑树
 // @param color  颜色
-KLINE void RBTreeSetColor(RBTree *rbtree, U16 color)
+KLINE void RBTreeSetColor(RBTree* rbtree, U16 color)
 {
-	if (NULL == rbtree)
+	if(NULL == rbtree)
 	{
 		return;
 	}
@@ -98,13 +98,13 @@ KLINE void RBTreeSetColor(RBTree *rbtree, U16 color)
 
 // 是否为红色
 // @param rbtree 红黑树
-KLINE Bool RBTreeColorIsRed(RBTree *rbtree)
+KLINE Bool RBTreeColorIsRed(RBTree* rbtree)
 {
-	if (NULL == rbtree)
+	if(NULL == rbtree)
 	{
 		return FALSE;
 	}
-	if (RBRED == rbtree->Flags.Color)
+	if(RBRED == rbtree->Flags.Color)
 	{
 		return TRUE;
 	}
@@ -113,13 +113,13 @@ KLINE Bool RBTreeColorIsRed(RBTree *rbtree)
 
 // 是否为黑色
 // @param rbtree 红黑树
-KLINE Bool RBTreeColorIsBlack(RBTree *rbtree)
+KLINE Bool RBTreeColorIsBlack(RBTree* rbtree)
 {
-	if (NULL == rbtree)
+	if(NULL == rbtree)
 	{
 		return TRUE;
 	}
-	if (RBBLACK == rbtree->Flags.Color)
+	if(RBBLACK == rbtree->Flags.Color)
 	{
 		return TRUE;
 	}
@@ -128,19 +128,19 @@ KLINE Bool RBTreeColorIsBlack(RBTree *rbtree)
 
 // 得到兄弟节点
 // @param rbtree 红黑树
-KLINE RBTree *RBTreeSibling(RBTree *rbtree)
+KLINE RBTree* RBTreeSibling(RBTree* rbtree)
 {
-	RBTree *parent;
-	if (NULL == rbtree)
+	RBTree* parent;
+	if(NULL == rbtree)
 	{
 		return NULL;
 	}
 	parent = rbtree->Parent;
-	if (NULL == parent)
+	if(NULL == parent)
 	{
 		return NULL;
 	}
-	if (parent->Left == rbtree)
+	if(parent->Left == rbtree)
 	{
 		return parent->Right;
 	}
@@ -152,13 +152,13 @@ KLINE RBTree *RBTreeSibling(RBTree *rbtree)
 
 // 得到叔叔节点(父节点的兄弟节点)
 // @param rbtree 红黑树
-KLINE RBTree *RBTreeUncle(RBTree *rbtree)
+KLINE RBTree* RBTreeUncle(RBTree* rbtree)
 {
-	if (NULL == rbtree)
+	if(NULL == rbtree)
 	{
 		return NULL;
 	}
-	if (NULL == rbtree->Parent)
+	if(NULL == rbtree->Parent)
 	{
 		return NULL;
 	}
@@ -167,9 +167,9 @@ KLINE RBTree *RBTreeUncle(RBTree *rbtree)
 
 // 得到父节点
 // @param rbtree 红黑树
-KLINE RBTree *RBTreeParent(RBTree *rbtree)
+KLINE RBTree* RBTreeParent(RBTree* rbtree)
 {
-	if (NULL == rbtree)
+	if(NULL == rbtree)
 	{
 		return NULL;
 	}
@@ -178,19 +178,19 @@ KLINE RBTree *RBTreeParent(RBTree *rbtree)
 
 // 是否为右孩子节点
 // @param rbtree 红黑树
-KLINE Bool RBTreeIsRight(RBTree *rbtree)
+KLINE Bool RBTreeIsRight(RBTree* rbtree)
 {
-	RBTree *parent;
-	if (NULL == rbtree)
+	RBTree* parent;
+	if(NULL == rbtree)
 	{
 		return FALSE;
 	}
 	parent = rbtree->Parent;
-	if (NULL == parent)
+	if(NULL == parent)
 	{
 		return FALSE;
 	}
-	if (parent->Right == rbtree)
+	if(parent->Right == rbtree)
 	{
 		return TRUE;
 	}
@@ -202,19 +202,19 @@ KLINE Bool RBTreeIsRight(RBTree *rbtree)
 
 // 是否为左孩子节点
 // @param rbtree 红黑树
-KLINE bool_t RBTreeIsLeft(RBTree *rbtree)
+KLINE bool_t RBTreeIsLeft(RBTree* rbtree)
 {
-	RBTree *parent;
-	if (NULL == rbtree)
+	RBTree* parent;
+	if(NULL == rbtree)
 	{
 		return FALSE;
 	}
 	parent = rbtree->Parent;
-	if (NULL == parent)
+	if(NULL == parent)
 	{
 		return FALSE;
 	}
-	if (parent->Left == rbtree)
+	if(parent->Left == rbtree)
 	{
 		return TRUE;
 	}
@@ -226,13 +226,13 @@ KLINE bool_t RBTreeIsLeft(RBTree *rbtree)
 
 // 是否为根节点
 // @param rbtree 红黑树
-KLINE Bool RBTreeIsRoot(RBTree *rbtree)
+KLINE Bool RBTreeIsRoot(RBTree* rbtree)
 {
-	if (NULL == rbtree)
+	if(NULL == rbtree)
 	{
 		return FALSE;
 	}
-	if (NULL == rbtree->Parent)
+	if(NULL == rbtree->Parent)
 	{
 		return TRUE;
 	}
@@ -241,13 +241,13 @@ KLINE Bool RBTreeIsRoot(RBTree *rbtree)
 
 // 是否为叶子节点
 // @param rbtree 红黑树
-KLINE Bool RBTreeIsLeaf(RBTree *rbtree)
+KLINE Bool RBTreeIsLeaf(RBTree* rbtree)
 {
-	if (NULL == rbtree)
+	if(NULL == rbtree)
 	{
 		return FALSE;
 	}
-	if ((NULL == rbtree->Left) && (NULL == rbtree->Right))
+	if((NULL == rbtree->Left) && (NULL == rbtree->Right))
 	{
 		return TRUE;
 	}
@@ -256,13 +256,13 @@ KLINE Bool RBTreeIsLeaf(RBTree *rbtree)
 
 // 得到祖父(父亲的父亲)节点
 // @param rbtree 红黑树
-KLINE RBTree *RBTreeGrand(RBTree *rbtree)
+KLINE RBTree* RBTreeGrand(RBTree* rbtree)
 {
-	if (NULL == rbtree)
+	if(NULL == rbtree)
 	{
 		return NULL;
 	}
-	if (NULL == rbtree->Parent)
+	if(NULL == rbtree->Parent)
 	{
 		return NULL;
 	}
@@ -271,18 +271,18 @@ KLINE RBTree *RBTreeGrand(RBTree *rbtree)
 
 // 查找前驱节点(查找小于当前节点的最大节点)
 // @param rbtree 红黑树
-KLINE RBTree *RBTreeFindPrecursor(RBTree *rbtree)
+KLINE RBTree* RBTreeFindPrecursor(RBTree* rbtree)
 {
-	RBTree *rbt;
-	RBTree *p;
-	if (NULL == rbtree)
+	RBTree* rbt;
+	RBTree* p;
+	if(NULL == rbtree)
 	{
 		return NULL;
 	}
-	else if (NULL != rbtree->Left)
+	else if(NULL != rbtree->Left)
 	{
 		rbt = rbtree->Left;
-		while (NULL != rbt->Right)
+		while(NULL != rbt->Right)
 		{
 			rbt = rbt->Right;
 		}
@@ -292,7 +292,7 @@ KLINE RBTree *RBTreeFindPrecursor(RBTree *rbtree)
 	{
 		rbt = rbtree;
 		p = rbt->Parent;
-		while (NULL != p && rbt == p->Left)
+		while(NULL != p && rbt == p->Left)
 		{
 			rbt = p;
 			p = p->Parent;
@@ -304,18 +304,18 @@ KLINE RBTree *RBTreeFindPrecursor(RBTree *rbtree)
 
 // 查找后继节点(查找大于当前节点的最小节点)
 // @param rbtree 红黑树
-KLINE RBTree *RBTreeFindSuccessor(RBTree *rbtree)
+KLINE RBTree* RBTreeFindSuccessor(RBTree* rbtree)
 {
-	RBTree *rbt;
-	RBTree *p;
-	if (NULL == rbtree)
+	RBTree* rbt;
+	RBTree* p;
+	if(NULL == rbtree)
 	{
 		return NULL;
 	}
-	else if (NULL != rbtree->Right)
+	else if(NULL != rbtree->Right)
 	{
 		rbt = rbtree->Right;
-		while (NULL != rbt->Left)
+		while(NULL != rbt->Left)
 		{
 			rbt = rbt->Left;
 		}
@@ -325,7 +325,7 @@ KLINE RBTree *RBTreeFindSuccessor(RBTree *rbtree)
 	{
 		rbt = rbtree;
 		p = rbt->Parent;
-		while (NULL != p && rbt == p->Right)
+		while(NULL != p && rbt == p->Right)
 		{
 			rbt = p;
 			p = p->Parent;
@@ -385,13 +385,13 @@ KLINE RBTree *RBTreeFindSuccessor(RBTree *rbtree)
 // 右旋
 // @param rbroot 根节点
 // @param rbtree 红黑树
-KLINE RBTree *RBTreeRightRotate(RBRoot *rbroot, RBTree *rbtree)
+KLINE RBTree* RBTreeRightRotate(RBRoot* rbroot, RBTree* rbtree)
 {
-	RBTree *P;
-	RBTree *R;
-	RBTree *RLN;
-	RBTree *TR;
-	if (NULL == rbtree || NULL == rbroot)
+	RBTree* P;
+	RBTree* R;
+	RBTree* RLN;
+	RBTree* TR;
+	if(NULL == rbtree || NULL == rbroot)
 	{
 		return NULL;
 	}
@@ -400,11 +400,11 @@ KLINE RBTree *RBTreeRightRotate(RBRoot *rbroot, RBTree *rbtree)
 	P = R->Parent;
 	RLN = R->Left;
 	TR = RLN->Right;
-	if (NULL == RLN)
+	if(NULL == RLN)
 	{
 		return NULL;
 	}
-	if (NULL != TR)
+	if(NULL != TR)
 	{
 		TR->Parent = R;
 	}
@@ -413,14 +413,14 @@ KLINE RBTree *RBTreeRightRotate(RBRoot *rbroot, RBTree *rbtree)
 	R->Parent = RLN;
 	RLN->Parent = P;
 
-	if (NULL == P)
+	if(NULL == P)
 	{
 		rbroot->Node = RLN;
 		return R;
 	}
 	else
 	{
-		if (R == P->Left)
+		if(R == P->Left)
 		{
 			P->Left = RLN;
 		}
@@ -436,13 +436,13 @@ KLINE RBTree *RBTreeRightRotate(RBRoot *rbroot, RBTree *rbtree)
 // 左旋
 // @param rbroot 根节点
 // @param rbtree 红黑树
-KLINE RBTree *RBTreeLeftRotate(RBRoot *rbroot, RBTree *rbtree)
+KLINE RBTree* RBTreeLeftRotate(RBRoot* rbroot, RBTree* rbtree)
 {
-	RBTree *P;
-	RBTree *R;
-	RBTree *RRN;
-	RBTree *TL;
-	if (NULL == rbtree || NULL == rbroot)
+	RBTree* P;
+	RBTree* R;
+	RBTree* RRN;
+	RBTree* TL;
+	if(NULL == rbtree || NULL == rbroot)
 	{
 		return NULL;
 	}
@@ -452,12 +452,12 @@ KLINE RBTree *RBTreeLeftRotate(RBRoot *rbroot, RBTree *rbtree)
 	RRN = R->Right;
 	TL = RRN->Left;
 
-	if (NULL == RRN)
+	if(NULL == RRN)
 	{
 		return NULL;
 	}
 
-	if (NULL != TL)
+	if(NULL != TL)
 	{
 		TL->Parent = R;
 	}
@@ -467,14 +467,14 @@ KLINE RBTree *RBTreeLeftRotate(RBRoot *rbroot, RBTree *rbtree)
 	R->Parent = RRN;
 	RRN->Parent = P;
 
-	if (NULL == P)
+	if(NULL == P)
 	{
 		rbroot->Node = RRN;
 		return R;
 	}
 	else
 	{
-		if (R == P->Left)
+		if(R == P->Left)
 		{
 			P->Left = RRN;
 		}
@@ -490,28 +490,28 @@ KLINE RBTree *RBTreeLeftRotate(RBRoot *rbroot, RBTree *rbtree)
 // 节点颜色修复
 // @param rbroot 根节点
 // @param rbtree 红黑树
-KLINE RBTree *RBTreeFixColorReal(RBRoot *rbroot, RBTree *rbtree)
+KLINE RBTree* RBTreeFixColorReal(RBRoot* rbroot, RBTree* rbtree)
 {
-	RBTree *rbt;
-	if (NULL == rbtree || NULL == rbroot)
+	RBTree* rbt;
+	if(NULL == rbtree || NULL == rbroot)
 	{
 		return NULL;
 	}
 	rbt = rbtree;
-	while (rbt)
+	while(rbt)
 	{
-		if (RBTreeIsRoot(rbt) == TRUE)
+		if(RBTreeIsRoot(rbt) == TRUE)
 		{
 			RBTreeSetColor(rbt, RBBLACK);
 			return rbt;
 		}
 
-		if (RBTreeColorIsBlack(RBTreeParent(rbt)) == TRUE)
+		if(RBTreeColorIsBlack(RBTreeParent(rbt)) == TRUE)
 		{
 			return rbt;
 		}
 
-		if ((RBTreeColorIsRed(rbt) == TRUE) &&
+		if((RBTreeColorIsRed(rbt) == TRUE) &&
 			(RBTreeColorIsRed(RBTreeParent(rbt)) == TRUE) &&
 			(RBTreeColorIsRed(RBTreeUncle(rbt)) == TRUE))
 		{
@@ -612,23 +612,23 @@ KLINE RBTree *RBTreeFixColorReal(RBRoot *rbroot, RBTree *rbtree)
 // 节点结构修复
 // @param rbroot 根节点
 // @param rbtree 红黑树
-KLINE RBTree *RBTreeFixRotate(RBRoot *rbroot, RBTree *rbtree)
+KLINE RBTree* RBTreeFixRotate(RBRoot* rbroot, RBTree* rbtree)
 {
-	if (NULL == rbtree || NULL == rbroot)
+	if(NULL == rbtree || NULL == rbroot)
 	{
 		return NULL;
 	}
 
-	if (RBTreeColorIsRed(RBTreeParent(rbtree)) == FALSE ||
+	if(RBTreeColorIsRed(RBTreeParent(rbtree)) == FALSE ||
 		RBTreeColorIsBlack(RBTreeUncle(rbtree)) == FALSE)
 	{
 		return NULL;
 	}
 
-	if (RBTreeIsLeft(RBTreeParent(rbtree)) == TRUE) //L
+	if(RBTreeIsLeft(RBTreeParent(rbtree)) == TRUE) //L
 	{
 
-		if (RBTreeIsLeft(rbtree) == TRUE) //LL父节点变成黑色，爷爷节点变成红色,爷爷节点右旋
+		if(RBTreeIsLeft(rbtree) == TRUE) //LL父节点变成黑色，爷爷节点变成红色,爷爷节点右旋
 		{
 			RBTreeSetColor(RBTreeParent(rbtree), RBBLACK);
 			RBTreeSetColor(RBTreeGrand(rbtree), RBRED);
@@ -646,7 +646,7 @@ KLINE RBTree *RBTreeFixRotate(RBRoot *rbroot, RBTree *rbtree)
 	}
 	else //R
 	{
-		if (RBTreeIsLeft(rbtree) == TRUE) //RL当前节点变成黑色，爷爷节点变成红色,父节点右旋,爷爷节点左旋
+		if(RBTreeIsLeft(rbtree) == TRUE) //RL当前节点变成黑色，爷爷节点变成红色,父节点右旋,爷爷节点左旋
 		{
 			RBTreeSetColor(rbtree, RBBLACK);
 			RBTreeSetColor(RBTreeGrand(rbtree), RBRED);
@@ -669,15 +669,15 @@ KLINE RBTree *RBTreeFixRotate(RBRoot *rbroot, RBTree *rbtree)
 // @param root  根节点
 // @param rbtree 红黑树
 // @param cmper 比较器
-KLINE RBTree *RBTreeAdd(RBRoot *root, RBTree *rbtree, RBPathCMP cmper)
+KLINE RBTree* RBTreeAdd(RBRoot* root, RBTree* rbtree, RBPathCMP cmper)
 {
-	RBTree *srcrb;
+	RBTree* srcrb;
 	uint_t rets;
-	if (NULL == root || NULL == rbtree || NULL == cmper)
+	if(NULL == root || NULL == rbtree || NULL == cmper)
 	{
 		return NULL;
 	}
-	if (NULL == root->Node)
+	if(NULL == root->Node)
 	{
 		root->Node = rbtree;
 		rbtree->Parent = NULL;
@@ -685,12 +685,12 @@ KLINE RBTree *RBTreeAdd(RBRoot *root, RBTree *rbtree, RBPathCMP cmper)
 		return rbtree;
 	}
 	srcrb = root->Node;
-	while (NULL != srcrb)
+	while(NULL != srcrb)
 	{
 		rets = cmper(srcrb, rbtree);
-		if (RBLEFT == rets)
+		if(RBLEFT == rets)
 		{
-			if (NULL == srcrb->Left)
+			if(NULL == srcrb->Left)
 			{
 				srcrb->Left = rbtree;
 				rbtree->Parent = srcrb;
@@ -698,9 +698,9 @@ KLINE RBTree *RBTreeAdd(RBRoot *root, RBTree *rbtree, RBPathCMP cmper)
 			}
 			srcrb = srcrb->Left;
 		}
-		else if (RBRIGHT == rets)
+		else if(RBRIGHT == rets)
 		{
-			if (NULL == srcrb->Right)
+			if(NULL == srcrb->Right)
 			{
 				srcrb->Right = rbtree;
 				rbtree->Parent = srcrb;
@@ -719,28 +719,28 @@ KLINE RBTree *RBTreeAdd(RBRoot *root, RBTree *rbtree, RBPathCMP cmper)
 // 搜索节点
 // @param root  根节点
 // @param key 搜索键
-KLINE RBTree *RBTreeSerch(RBRoot *root, u32_t key)
+KLINE RBTree* RBTreeSerch(RBRoot* root, u32_t key)
 {
-	RBTree *srcrb;
+	RBTree* srcrb;
 	// uint_t rets;
-	if (NULL == root)
+	if(NULL == root)
 	{
 		return NULL;
 	}
-	if (NULL == root->Node)
+	if(NULL == root->Node)
 	{
 
 		return NULL;
 	}
 	srcrb = root->Node;
-	while (NULL != srcrb)
+	whil(NULL != srcrb)
 	{
 		// rets = cmper(srcrb, rbtree);
-		if (key == srcrb->Flags.Hight)
+		if(key == srcrb->Flags.Hight)
 		{
 			return srcrb;
 		}
-		if (key < srcrb->Flags.Hight)
+		if(key < srcrb->Flags.Hight)
 		{
 			srcrb = srcrb->Left;
 		}
@@ -755,21 +755,21 @@ KLINE RBTree *RBTreeSerch(RBRoot *root, u32_t key)
 // 向后添加节点后并修复结构
 // @param rbroot 根节点
 // @param rbtree 红黑树
-KLINE RBTree *RBTreeAddAfterFix(RBRoot *rbroot, RBTree *rbtree)
+KLINE RBTree* RBTreeAddAfterFix(RBRoot* rbroot, RBTree* rbtree)
 {
-	RBTree *node;
-	RBTree *uncle;
-	if (NULL == rbroot || NULL == rbtree)
+	RBTree* node;
+	RBTree* uncle;
+	if(NULL == rbroot || NULL == rbtree)
 	{
 		return NULL;
 	}
 	node = rbtree;
-	while ((NULL != node) && (rbroot->Node != node) && (RBTreeColorIsRed(RBTreeParent(node)) == TRUE))
+	whil((NULL != node) && (rbroot->Node != node) && (RBTreeColorIsRed(RBTreeParent(node)) == TRUE))
 	{
-		if (RBTreeIsLeft(RBTreeParent(node)) == TRUE)
+		if(RBTreeIsLeft(RBTreeParent(node)) == TRUE)
 		{
 			uncle = RBTreeGrand(node)->Right;
-			if (RBTreeColorIsRed(uncle) == TRUE)
+			if(RBTreeColorIsRed(uncle) == TRUE)
 			{
 				RBTreeSetColor(RBTreeParent(node), RBBLACK);
 				RBTreeSetColor(uncle, RBBLACK);
@@ -778,7 +778,7 @@ KLINE RBTree *RBTreeAddAfterFix(RBRoot *rbroot, RBTree *rbtree)
 			}
 			else
 			{
-				if (RBTreeIsRight(node) == TRUE)
+				if(RBTreeIsRight(node) == TRUE)
 				{
 					node = RBTreeParent(node);
 					RBTreeLeftRotate(rbroot, node);
@@ -791,7 +791,7 @@ KLINE RBTree *RBTreeAddAfterFix(RBRoot *rbroot, RBTree *rbtree)
 		else
 		{
 			uncle = RBTreeGrand(node)->Left;
-			if (RBTreeColorIsRed(uncle) == TRUE)
+			if(RBTreeColorIsRed(uncle) == TRUE)
 			{
 				RBTreeSetColor(RBTreeParent(node), RBBLACK);
 				RBTreeSetColor(uncle, RBBLACK);
@@ -800,7 +800,7 @@ KLINE RBTree *RBTreeAddAfterFix(RBRoot *rbroot, RBTree *rbtree)
 			}
 			else
 			{
-				if (RBTreeIsLeft(node) == TRUE)
+				if(RBTreeIsLeft(node) == TRUE)
 				{
 					node = RBTreeParent(node);
 					RBTreeRightRotate(rbroot, node);
@@ -818,15 +818,15 @@ KLINE RBTree *RBTreeAddAfterFix(RBRoot *rbroot, RBTree *rbtree)
 // 向后添加节点
 // @param rbroot 根节点
 // @param rbtree 红黑树
-KLINE RBTree *RBTreeAddAfter(RBRoot *rbroot, RBTree *rbtree)
+KLINE RBTree* RBTreeAddAfter(RBRoot* rbroot, RBTree* rbtree)
 {
-	RBTree *rbt;
-	if (NULL == rbtree)
+	RBTree* rbt;
+	if(NULL == rbtree)
 	{
 		return NULL;
 	}
 	rbt = rbtree;
-	while (NULL != rbt)
+	while(NULL != rbt)
 	{
 		rbt = RBTreeFixColorReal(rbroot, rbt);
 
@@ -839,9 +839,9 @@ KLINE RBTree *RBTreeAddAfter(RBRoot *rbroot, RBTree *rbtree)
 // @param root 根节点
 // @param rbtree 红黑树
 // @param cmper 比较器
-KLINE RBTree *RBTreeInsert(RBRoot *root, RBTree *rbtree, RBPathCMP cmper)
+KLINE RBTree* RBTreeInsert(RBRoot* root, RBTree* rbtree, RBPathCMP cmper)
 {
-	RBTree *rbt;
+	RBTree* rbt;
 	rbt = RBTreeAdd(root, rbtree, cmper);
 	return RBTreeAddAfterFix(root, rbtree);
 }
@@ -849,21 +849,21 @@ KLINE RBTree *RBTreeInsert(RBRoot *root, RBTree *rbtree, RBPathCMP cmper)
 // 删除节点后修复结构
 // @param root 根节点
 // @param rbtree 红黑树
-KLINE RBTree *RBTreeRemoveAfterFix(RBRoot *root, RBTree *rbtree)
+KLINE RBTree* RBTreeRemoveAfterFix(RBRoot* root, RBTree* rbtree)
 {
-	RBTree *rsib;
-	RBTree *rbnode;
-	if (NULL == rbtree || NULL == root)
+	RBTree* rsib;
+	RBTree* rbnode;
+	if(NULL == rbtree || NULL == root)
 	{
 		return NULL;
 	}
 	rbnode = rbtree;
-	while ((rbnode != root->Node) && (RBTreeColorIsBlack(rbnode) == TRUE))
+	while((rbnode != root->Node) && (RBTreeColorIsBlack(rbnode) == TRUE))
 	{
-		if (RBTreeIsLeft(rbnode) == TRUE)
+		if(RBTreeIsLeft(rbnode) == TRUE)
 		{
 			rsib = rbnode->Parent->Right;
-			if ((RBTreeColorIsRed(rsib) == TRUE))
+			if((RBTreeColorIsRed(rsib) == TRUE))
 			{
 				RBTreeSetColor(rsib, RBBLACK);
 				RBTreeSetColor(rbnode->Parent, RBRED);
@@ -871,7 +871,7 @@ KLINE RBTree *RBTreeRemoveAfterFix(RBRoot *root, RBTree *rbtree)
 				rsib = rbnode->Parent->Right;
 			}
 
-			if ((RBTreeColorIsBlack(rsib->Left) == TRUE) &&
+			if((RBTreeColorIsBlack(rsib->Left) == TRUE) &&
 				(RBTreeColorIsBlack(rsib->Right) == TRUE))
 			{
 				RBTreeSetColor(rsib, RBRED);
@@ -879,7 +879,7 @@ KLINE RBTree *RBTreeRemoveAfterFix(RBRoot *root, RBTree *rbtree)
 			}
 			else
 			{
-				if ((RBTreeColorIsBlack(rsib->Right) == TRUE))
+				if((RBTreeColorIsBlack(rsib->Right) == TRUE))
 				{
 					RBTreeSetColor(rsib->Left, RBBLACK);
 					RBTreeSetColor(rsib, RBRED);
@@ -896,7 +896,7 @@ KLINE RBTree *RBTreeRemoveAfterFix(RBRoot *root, RBTree *rbtree)
 		else
 		{
 			rsib = rbnode->Parent->Left;
-			if ((RBTreeColorIsRed(rsib) == TRUE))
+			if((RBTreeColorIsRed(rsib) == TRUE))
 			{
 				RBTreeSetColor(rsib, RBBLACK);
 				RBTreeSetColor(rbnode->Parent, RBRED);
@@ -904,7 +904,7 @@ KLINE RBTree *RBTreeRemoveAfterFix(RBRoot *root, RBTree *rbtree)
 				rsib = rbnode->Parent->Left;
 			}
 
-			if ((RBTreeColorIsBlack(rsib->Right) == TRUE) &&
+			if((RBTreeColorIsBlack(rsib->Right) == TRUE) &&
 				(RBTreeColorIsBlack(rsib->Left) == TRUE))
 			{
 				RBTreeSetColor(rsib, RBRED);
@@ -912,7 +912,7 @@ KLINE RBTree *RBTreeRemoveAfterFix(RBRoot *root, RBTree *rbtree)
 			}
 			else
 			{
-				if ((RBTreeColorIsBlack(rsib->Left) == TRUE))
+				if((RBTreeColorIsBlack(rsib->Left) == TRUE))
 				{
 					RBTreeSetColor(rsib->Right, RBBLACK);
 					RBTreeSetColor(rsib, RBRED);
@@ -936,23 +936,23 @@ KLINE RBTree *RBTreeRemoveAfterFix(RBRoot *root, RBTree *rbtree)
 // @param rbtree 红黑树
 // @param reper 替换函数
 // @param deler 删除函数
-KLINE RBTree *RBTreeRemove(RBRoot *root, RBTree *rbtree, RBRePlace reper, RBDelAfter deler)
+KLINE RBTree* RBTreeRemove(RBRoot* root, RBTree* rbtree, RBRePlace reper, RBDelAfter deler)
 {
-	RBTree *p;
-	RBTree *after;
-	RBTree *rbtnode;
-	RBTree *rbtrepl;
-	if (NULL == rbtree || NULL == root || NULL == reper || NULL == deler)
+	RBTree* p;
+	RBTree* after;
+	RBTree* rbtnode;
+	RBTree* rbtrepl;
+	if(NULL == rbtree || NULL == root || NULL == reper || NULL == deler)
 	{
 		return NULL;
 	}
 	rbtnode = rbtree;
 	p = rbtnode->Parent;
 
-	if ((NULL != rbtnode->Left) && (NULL != rbtnode->Right))
+	if((NULL != rbtnode->Left) && (NULL != rbtnode->Right))
 	{
 		after = RBTreeFindSuccessor(rbtnode);
-		if (NULL == after)
+		if(NULL == after)
 		{
 			return NULL;
 		}
@@ -962,14 +962,14 @@ KLINE RBTree *RBTreeRemove(RBRoot *root, RBTree *rbtree, RBRePlace reper, RBDelA
 
 	rbtrepl = rbtnode->Left != NULL ? rbtnode->Left : rbtnode->Right;
 
-	if (NULL != rbtrepl)
+	if(NULL != rbtrepl)
 	{
 		rbtrepl->Parent = rbtnode->Parent;
-		if (NULL == rbtrepl->Parent)
+		if(NULL == rbtrepl->Parent)
 		{
 			root->Node = rbtrepl;
 		}
-		else if (RBTreeIsLeft(rbtnode) == TRUE)
+		else if(RBTreeIsLeft(rbtnode) == TRUE)
 		{
 			rbtnode->Parent->Left = rbtrepl;
 		}
@@ -980,30 +980,30 @@ KLINE RBTree *RBTreeRemove(RBRoot *root, RBTree *rbtree, RBRePlace reper, RBDelA
 
 		rbtnode->Right = rbtnode->Left = rbtnode->Parent = NULL;
 
-		if (RBTreeColorIsBlack(rbtnode) == TRUE)
+		if(RBTreeColorIsBlack(rbtnode) == TRUE)
 		{
 			RBTreeRemoveAfterFix(root, rbtrepl);
 		}
 		deler(rbtnode);
 	}
-	else if (NULL == rbtnode->Parent)
+	else if(NULL == rbtnode->Parent)
 	{
 		root->Node = NULL;
 		deler(rbtnode);
 	}
 	else
 	{
-		if (RBTreeColorIsBlack(rbtnode) == TRUE)
+		if(RBTreeColorIsBlack(rbtnode) == TRUE)
 		{
 			RBTreeRemoveAfterFix(root, rbtnode);
 		}
-		if (NULL != rbtnode->Parent)
+		if(NULL != rbtnode->Parent)
 		{
-			if (RBTreeIsLeft(rbtnode) == TRUE)
+			if(RBTreeIsLeft(rbtnode) == TRUE)
 			{
 				rbtnode->Parent->Left = NULL;
 			}
-			else if (RBTreeIsRight(rbtnode) == TRUE)
+			else if(RBTreeIsRight(rbtnode) == TRUE)
 			{
 				rbtnode->Parent->Right = NULL;
 			}
@@ -1019,34 +1019,34 @@ KLINE RBTree *RBTreeRemove(RBRoot *root, RBTree *rbtree, RBRePlace reper, RBDelA
 // @param rbtree 红黑树
 // @param reper 替换函数
 // @param deler 删除函数
-KLINE RBTree *RBTreeDelete(RBRoot *root, RBTree *rbtree, RBRePlace reper, RBDelAfter deler)
+KLINE RBTree* RBTreeDelete(RBRoot* root, RBTree* rbtree, RBRePlace reper, RBDelAfter deler)
 {
-	RBTree *rbt;
+	RBTree* rbt;
 	rbt = RBTreeRemove(root, rbtree, reper, deler);
 	return rbt;
 }
 
 // 得到红黑树中最左边的节点(即 key 最小的节点)
 // @param root 根节点
-KLINE RBTree *RBTreeMostLeft(RBRoot *root)
+KLINE RBTree* RBTreeMostLeft(RBRoot* root)
 {
-	RBTree *rbtree;
-	if (NULL == root)
+	RBTree* rbtree;
+	if(NULL == root)
 	{
 		return NULL;
 	}
 	rbtree = root->Node;
-	if (NULL == rbtree)
+	if(NULL == rbtree)
 	{
 		return NULL;
 	}
-	while (NULL != rbtree)
+	while(NULL != rbtree)
 	{
-		if (NULL != rbtree->Left)
+		if(NULL != rbtree->Left)
 		{
 			rbtree = rbtree->Left;
 		}
-		else if (NULL != rbtree->Right)
+		else if(NULL != rbtree->Right)
 		{
 			rbtree = rbtree->Right;
 		}
@@ -1060,25 +1060,25 @@ KLINE RBTree *RBTreeMostLeft(RBRoot *root)
 
 // 得到红黑树中最右边的节点(即 key 最大的节点)
 // @param root 根节点
-KLINE RBTree *RBTreeMostRight(RBRoot *root)
+KLINE RBTree* RBTreeMostRight(RBRoot* root)
 {
-	RBTree *rbtree;
-	if (NULL == root)
+	RBTree* rbtree;
+	if(NULL == root)
 	{
 		return NULL;
 	}
 	rbtree = root->Node;
-	if (NULL == rbtree)
+	if(NULL == rbtree)
 	{
 		return NULL;
 	}
-	while (NULL != rbtree)
+	while(NULL != rbtree)
 	{
-		if (NULL != rbtree->Right)
+		if(NULL != rbtree->Right)
 		{
 			rbtree = rbtree->Right;
 		}
-		else if (NULL != rbtree->Left)
+		else if(NULL != rbtree->Left)
 		{
 			rbtree = rbtree->Left;
 		}
@@ -1090,8 +1090,8 @@ KLINE RBTree *RBTreeMostRight(RBRoot *root)
 	return NULL;
 }
 
-// 遍历红黑树
+// 获取红黑树上的对象
 #define RBTreeEntry(ptr, type, member) \
-	((type *)((char *)(ptr) - (unsigned long)(&((type *)0)->member)))
+	((type* )((char* )(ptr) - (unsigned long)(&((type* )0)->member)))
 
 #endif
