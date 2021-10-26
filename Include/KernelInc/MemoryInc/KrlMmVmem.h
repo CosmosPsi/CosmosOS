@@ -9,7 +9,8 @@
 #include "RBTree.h"
 #include "Atomic.h"
 
-
+#define VPB_CACHE_MAX (0x1000)
+#define VPB_CACHE_MIN (0x40)
 // Virtual Memory PMSAD(Page) Box Manager
 typedef struct VBM 
 {
@@ -104,6 +105,7 @@ typedef struct VMS
 	Addr BrkEnd;
 }VMS;
 
+private void VBMInit(VBM* init);
 private void VPBInit(VPB* init);
 private void VADInit(VAD* init);
 private void VAMInit(VAM* init);

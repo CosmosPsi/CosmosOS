@@ -13,6 +13,19 @@
 #include "KrlMmPool.h"
 #include "KrlMmVmem.h"
 
+private void VBMInit(VBM* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ListInit(&init->Lists);
+    MLockInit(&init->Lock);
+    ListInit(&init->VPBHead);
+    init->VPBCacheMax = VPB_CACHE_MAX;
+    init->VPBCacheMin = VPB_CACHE_MIN;
+    ListInit(&init->VPBCacheHead);
+    return;
+}
+
 private void VPBInit(VPB* init)
 {
     IF_NULL_RETURN(init);
