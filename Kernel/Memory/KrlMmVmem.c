@@ -13,6 +13,17 @@
 #include "KrlMmPool.h"
 #include "KrlMmVmem.h"
 
+private void VPBInit(VPB* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ListInit(&init->Lists);
+    MLockInit(&init->Lock);
+    RefCountInit(&init->Count);
+    ListInit(&init->PmsadLists);
+    return;
+}
+
 private void VADInit(VAD* init)
 {
     IF_NULL_RETURN(init);

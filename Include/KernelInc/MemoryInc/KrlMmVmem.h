@@ -104,6 +104,7 @@ typedef struct VMS
 	Addr BrkEnd;
 }VMS;
 
+private void VPBInit(VPB* init);
 private void VADInit(VAD* init);
 private void VAMInit(VAM* init);
 private void VMSInit(VMS* init);
