@@ -13,6 +13,8 @@
 #include "KrlMmPool.h"
 #include "KrlMmVmem.h"
 
+DefinedMEMData(VBM, VPBoxManager);
+DefinedMEMData(VMS, RootVMemSPace);
 private void VBMInit(VBM* init)
 {
     IF_NULL_RETURN(init);
@@ -67,4 +69,17 @@ private void VMSInit(VMS* init)
     HalMMUInit(&init->Mmu);
     VAMInit(&init->VAManager);
     return;
+}
+
+public Bool KrlMmVMemInit()
+{
+    VBM* vboxmgr = NULL;
+    VMS* rootvms = NULL;
+    vboxmgr = KrlMmGetVPBoxManagerAddr();
+    IF_NULL_RETURN_FALSE(vboxmgr);
+    rootvms = KrlMmGetRootVMemSPaceAddr();
+    IF_NULL_RETURN_FALSE(rootvms);
+    VBMInit(vboxmgr);
+    VMSInit(rootvms);
+    return TRUE;
 }

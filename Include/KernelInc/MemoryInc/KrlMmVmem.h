@@ -123,4 +123,5 @@ private void VPBInit(VPB* init);
 private void VADInit(VAD* init);
 private void VAMInit(VAM* init);
 private void VMSInit(VMS* init);
+public Bool KrlMmVMemInit();
 #endif
