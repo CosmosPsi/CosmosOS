@@ -221,6 +221,16 @@ out:
     return vaddr;
 }
 
+private Addr KrlVMemAllocRealize(VMS* vms, Addr start, Size size, U64 access, UInt type)
+{
+    Addr vaddr = NULL;
+    IF_NULL_RETURN_NULL(vms);
+    KrlMmLocked(&vms->Lock);
+    vaddr = KrlVMemAllocRealizeCore(vms, &vms->VAManager, start, size, access, type);
+    KrlMmUnLock(&vms->Lock);
+    return vaddr;
+}
+
 public Bool KrlMmVMemInit()
 {
     VBM* vboxmgr = NULL;

@@ -128,6 +128,7 @@ private VAD* NewVAD();
 private VAD* VADIsOkForVMAlloc(VAM *vam, VAD* vad, Addr start, Size size, U64 access, UInt type);
 private VAD* FindVADForVMAlloc(VAM* vam, Addr start, Size size, U64 access, UInt type);
 private Addr KrlVMemAllocRealizeCore(VMS* vms, VAM* vam, Addr start, Size size, U64 access, UInt type);
+private Addr KrlVMemAllocRealize(VMS* vms, Addr start, Size size, U64 access, UInt type);
 
 public Bool KrlMmVMemInit();
 #endif
