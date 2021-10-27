@@ -5,6 +5,7 @@
 **********************************************************/
 #include "BaseType.h"
 #include "List.h"
+#include "HalBoot.h"
 #include "HalSync.h"
 #include "HalMMU.h"
 #include "KrlLog.h"
@@ -55,6 +56,7 @@ private void VAMInit(VAM* init)
     INIT_OBJOFPTR_ZERO(init);
     ListInit(&init->Lists);
     RBRootInit(&init->TRoot);
+    ListInit(&init->VADLists);
     MLockInit(&init->Lock);
     return;
 }
@@ -69,6 +71,53 @@ private void VMSInit(VMS* init)
     HalMMUInit(&init->Mmu);
     VAMInit(&init->VAManager);
     return;
+}
+
+private VAD* VADIsOkForVMAlloc(VAM *vam, VAD* vad, Addr start, Size size, U64 access, UInt type)
+{
+	VAD* nextvad = NULL;
+	Addr newend = NULL;
+    
+    nextvad = start + (Addr)size;
+    if((access == vad->Access) && (type == vad->MapType))
+	{
+        if(ListIsLast(&vad->Lists, &vam->VADLists) == FALSE)
+        {
+            nextvad = ListNextEntry(vad, VAD, Lists);
+            if(NULL == start)
+            {
+                if((vad->End + (Addr)size) <= nextvad->Start)
+                {
+                    return vad;
+                }
+            }
+            else
+            {
+                if((vad->End <= start) && (newend <= nextvad->Start))
+                {
+                    return vad;
+                }
+            }
+        }
+        else
+        {
+            if(NULL == start)
+            {
+                if((vad->End + (Addr)size) < vam->IsAllocEnd)
+                {
+                    return vad;
+                }
+            }
+            else
+            {
+                if((vad->End <= start) && (newend < vam->IsAllocEnd))
+                {
+                    return vad;
+                }
+            }
+        }
+    }
+	return NULL;
 }
 
 public Bool KrlMmVMemInit()
