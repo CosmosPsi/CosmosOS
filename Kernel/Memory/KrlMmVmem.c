@@ -73,6 +73,15 @@ private void VMSInit(VMS* init)
     return;
 }
 
+private VAD* NewVAD()
+{
+	VAD* vad = NULL;
+	vad = (VAD*)KrlMmNew(sizeof(VAD));
+	IF_NULL_RETURN_NULL(vad);
+	VADInit(vad);
+	return vad;
+}
+
 private VAD* VADIsOkForVMAlloc(VAM *vam, VAD* vad, Addr start, Size size, U64 access, UInt type)
 {
 	VAD* nextvad = NULL;
