@@ -129,7 +129,6 @@ private VAD* VADIsOkForVMAlloc(VAM *vam, VAD* vad, Addr start, Size size, U64 ac
 	return NULL;
 }
 
-
 private VAD* FindVADForVMAlloc(VAM* vam, Addr start, Size size, U64 access, UInt type)
 {
     VAD* vadcurrent = NULL;
@@ -163,6 +162,63 @@ private VAD* FindVADForVMAlloc(VAM* vam, Addr start, Size size, U64 access, UInt
 	}
 
     return NULL;
+}
+
+private Addr KrlVMemAllocRealizeCore(VMS* vms, VAM* vam, Addr start, Size size, U64 access, UInt type)
+{
+    Addr vaddr = NULL;
+    VAD* currvad = NULL;
+    VAD* newvad = NULL;
+
+    IF_NULL_RETURN_NULL(vam);
+    KrlMmLocked(&vam->Lock);
+    currvad = FindVADForVMAlloc(vam, start, size, access, type);
+	if(NULL == currvad)
+	{
+		vaddr = NULL;
+		goto out;
+	}
+
+	if(((NULL == start) || (start == currvad->End)))
+	{
+		vaddr = currvad->End;
+		currvad->End += (Addr)size;
+		vam->CurrVAD = currvad;
+		goto out;
+	}
+    
+    newvad = NewVAD();
+    if(NULL == newvad)
+    {
+        vaddr = NULL;
+        goto out;
+    }
+
+    if(NULL == start)
+	{
+		newvad->Start = currvad->End;
+	}
+	else
+	{
+		newvad->Start = start;
+	}
+
+	newvad->End = newvad->Start + (Addr)size;
+	newvad->Access = access;
+	newvad->MapType = type;
+	newvad->ParentVAM = vam;
+	vam->CurrVAD = newvad;
+	ListAdd(&newvad->Lists, &currvad->Lists);
+	if(ListIsLast(&newvad->Lists, &vam->VADLists) == TRUE)
+	{
+		vam->EndVAD = newvad;
+	}
+
+	vaddr = newvad->Start;
+
+out:
+    KrlMmUnLock(&vam->Lock);
+    return vaddr;
 }
 
 public Bool KrlMmVMemInit()
