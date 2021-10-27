@@ -105,6 +105,19 @@ typedef struct VMS
 	Addr BrkEnd;
 }VMS;
 
+DefinedMEMData(VBM, VPBoxManager);
+DefinedMEMData(VMS, RootVMemSPace);
+
+KLINE VBM* KrlMmGetVPBoxManagerAddr()
+{
+    return &VPBoxManager;
+}
+
+KLINE VBM* KrlMmGetRootVMemSPaceAddr()
+{
+    return &RootVMemSPace;
+}
+
 private void VBMInit(VBM* init);
 private void VPBInit(VPB* init);
 private void VADInit(VAD* init);
