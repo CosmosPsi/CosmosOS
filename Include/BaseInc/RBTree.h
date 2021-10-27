@@ -202,7 +202,7 @@ KLINE Bool RBTreeIsRight(RBTree* rbtree)
 
 // 是否为左孩子节点
 // @param rbtree 红黑树
-KLINE bool_t RBTreeIsLeft(RBTree* rbtree)
+KLINE Bool RBTreeIsLeft(RBTree* rbtree)
 {
 	RBTree* parent;
 	if(NULL == rbtree)
@@ -672,7 +672,7 @@ KLINE RBTree* RBTreeFixRotate(RBRoot* rbroot, RBTree* rbtree)
 KLINE RBTree* RBTreeAdd(RBRoot* root, RBTree* rbtree, RBPathCMP cmper)
 {
 	RBTree* srcrb;
-	uint_t rets;
+	UInt rets;
 	if(NULL == root || NULL == rbtree || NULL == cmper)
 	{
 		return NULL;
@@ -719,7 +719,7 @@ KLINE RBTree* RBTreeAdd(RBRoot* root, RBTree* rbtree, RBPathCMP cmper)
 // 搜索节点
 // @param root  根节点
 // @param key 搜索键
-KLINE RBTree* RBTreeSerch(RBRoot* root, u32_t key)
+KLINE RBTree* RBTreeSerch(RBRoot* root, U32 key)
 {
 	RBTree* srcrb;
 	// uint_t rets;
@@ -733,7 +733,7 @@ KLINE RBTree* RBTreeSerch(RBRoot* root, u32_t key)
 		return NULL;
 	}
 	srcrb = root->Node;
-	whil(NULL != srcrb)
+	while(NULL != srcrb)
 	{
 		// rets = cmper(srcrb, rbtree);
 		if(key == srcrb->Flags.Hight)
@@ -764,7 +764,7 @@ KLINE RBTree* RBTreeAddAfterFix(RBRoot* rbroot, RBTree* rbtree)
 		return NULL;
 	}
 	node = rbtree;
-	whil((NULL != node) && (rbroot->Node != node) && (RBTreeColorIsRed(RBTreeParent(node)) == TRUE))
+	while((NULL != node) && (rbroot->Node != node) && (RBTreeColorIsRed(RBTreeParent(node)) == TRUE))
 	{
 		if(RBTreeIsLeft(RBTreeParent(node)) == TRUE)
 		{
@@ -1046,10 +1046,6 @@ KLINE RBTree* RBTreeMostLeft(RBRoot* root)
 		{
 			rbtree = rbtree->Left;
 		}
-		else if(NULL != rbtree->Right)
-		{
-			rbtree = rbtree->Right;
-		}
 		else
 		{
 			return rbtree;
@@ -1077,10 +1073,6 @@ KLINE RBTree* RBTreeMostRight(RBRoot* root)
 		if(NULL != rbtree->Right)
 		{
 			rbtree = rbtree->Right;
-		}
-		else if(NULL != rbtree->Left)
-		{
-			rbtree = rbtree->Left;
 		}
 		else
 		{
