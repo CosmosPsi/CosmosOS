@@ -125,6 +125,7 @@ private void VADInit(VAD* init);
 private void VAMInit(VAM* init);
 private void VMSInit(VMS* init);
 private VAD* VADIsOkForVMAlloc(VAM *vam, VAD* vad, Addr start, Size size, U64 access, UInt type);
+private VAD* FindVADForVMAlloc(VAM* vam, Addr start, Size size, U64 access, UInt type);
 
 public Bool KrlMmVMemInit();
 #endif

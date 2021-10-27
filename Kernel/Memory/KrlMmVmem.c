@@ -120,6 +120,42 @@ private VAD* VADIsOkForVMAlloc(VAM *vam, VAD* vad, Addr start, Size size, U64 ac
 	return NULL;
 }
 
+
+private VAD* FindVADForVMAlloc(VAM* vam, Addr start, Size size, U64 access, UInt type)
+{
+    VAD* vadcurrent = NULL;
+    VAD* curr = NULL;
+	Addr newend = NULL;
+	List* list = NULL;
+
+    curr = vam->CurrVAD;
+    newend = start + size;
+
+    IF_LTN_RETURN(size, MSAD_SIZE, NULL);
+    IF_LTN_RETURN(vam->IsAllocEnd, newend, NULL);
+
+	if (NULL != curr)
+	{
+		vadcurrent = VADIsOkForVMAlloc(vam, curr, start, size, access, type);
+		if(NULL != vadcurrent)
+		{
+            return vadcurrent;
+		}
+	}
+
+    ListForEach(list, &vam->VADLists)
+	{
+		curr = ListEntry(list, VAD, Lists);
+		vadcurrent = VADIsOkForVMAlloc(vam, curr, start, size, access, type);
+		if (NULL != vadcurrent)
+		{
+			return vadcurrent;
+		}
+	}
+
+    return NULL;
+}
+
 public Bool KrlMmVMemInit()
 {
     VBM* vboxmgr = NULL;
