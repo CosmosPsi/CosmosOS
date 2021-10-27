@@ -231,6 +231,18 @@ private Addr KrlVMemAllocRealize(VMS* vms, Addr start, Size size, U64 access, UI
     return vaddr;
 }
 
+public Addr KrlVMemAlloc(VMS* vms, Addr start, Size size, U64 access, UInt type)
+{
+    IF_NULL_RETURN_NULL(vms);
+    if(NULL != start)
+    {
+        IF_NEQ_RETURN(0, (start & (MSAD_SIZE - 1)), NULL);
+        IF_LTN_RETURN(start, MSAD_SIZE, NULL);
+        IF_LTN_RETURN(USER_VIRTUAL_ADDRESS_END, (start + size), NULL);
+    }
+    return KrlVMemAllocRealize(vms, start, size, access, type);
+}
+
 public Bool KrlMmVMemInit()
 {
     VBM* vboxmgr = NULL;
