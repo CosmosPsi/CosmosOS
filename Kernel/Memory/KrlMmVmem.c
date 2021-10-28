@@ -194,6 +194,28 @@ private UInt VADRBPathCMP(RBTree* srcrb, RBTree* cmprb)
     return RBERR;
 }
 
+private Addr VADInsertVAM(VAM* vam, VAD* currvad, VAD* newvad)
+{
+    RBTree* rbtree = NULL;
+    IF_NULL_RETURN_NULL(vam);
+    IF_NULL_RETURN_NULL(currvad);
+    IF_NULL_RETURN_NULL(newvad);
+    newvad->ParentVAM = vam;
+	
+    rbtree = RBTreeInsert(&vam->TRoot, &newvad->TNode, VADRBPathCMP);
+    IF_NULL_RETURN_NULL(rbtree);
+    IF_NEQ_RETURN(newvad, RBTreeEntry(rbtree, VAD, TNode), NULL);
+
+    vam->CurrVAD = newvad;
+	ListAdd(&newvad->Lists, &currvad->Lists);
+	if(ListIsLast(&newvad->Lists, &vam->VADLists) == TRUE)
+	{
+		vam->EndVAD = newvad;
+	}
+    vam->VADNr++;
+    return newvad->Start;
+}
+
 private Addr KrlVMemAllocRealizeCore(VMS* vms, VAM* vam, Addr start, Size size, U64 access, UInt type)
 {
     Addr vaddr = NULL;

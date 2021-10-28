@@ -131,6 +131,7 @@ private Bool DelVAD(VAD* vad);
 private VAD* VADIsOkForVMAlloc(VAM *vam, VAD* vad, Addr start, Size size, U64 access, UInt type);
 private VAD* FindVADForVMAlloc(VAM* vam, Addr start, Size size, U64 access, UInt type);
 private UInt VADRBPathCMP(RBTree* srcrb, RBTree* cmprb);
+private Addr VADInsertVAM(VAM* vam, VAD* currvad, VAD* newvad);
 private Addr KrlVMemAllocRealizeCore(VMS* vms, VAM* vam, Addr start, Size size, U64 access, UInt type);
 private Addr KrlVMemAllocRealize(VMS* vms, Addr start, Size size, U64 access, UInt type);
 public Addr KrlVMemAlloc(VMS* vms, Addr start, Size size, U64 access, UInt type);
