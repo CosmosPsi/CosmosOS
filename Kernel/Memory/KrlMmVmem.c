@@ -226,7 +226,7 @@ private Addr KrlVMemAllocRealize(VMS* vms, Addr start, Size size, U64 access, UI
     Addr vaddr = NULL;
     IF_NULL_RETURN_NULL(vms);
     KrlMmLocked(&vms->Lock);
-    vaddr = KrlVMemAllocRealizeCore(vms, &vms->VAManager, start, size, access, type);
+    vaddr = KrlVMemAllocRealizeCore(vms, &vms->VAManager, start, VADSIZE_ALIGN(size), access, type);
     KrlMmUnLock(&vms->Lock);
     return vaddr;
 }

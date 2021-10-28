@@ -11,6 +11,8 @@
 
 #define VPB_CACHE_MAX (0x1000)
 #define VPB_CACHE_MIN (0x40)
+#define VADSIZE_ALIGN(x) ALIGN(x, (typeof(x))0x1000)
+
 // Virtual Memory PMSAD(Page) Box Manager
 typedef struct VBM 
 {
