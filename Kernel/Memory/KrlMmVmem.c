@@ -171,6 +171,29 @@ private VAD* FindVADForVMAlloc(VAM* vam, Addr start, Size size, U64 access, UInt
     return NULL;
 }
 
+private UInt VADRBPathCMP(RBTree* srcrb, RBTree* cmprb)
+{
+    VAD* srcvad = NULL;
+    VAD* cmpvad = NULL;
+    IF_EQT_RETURN(srcrb, NULL, RBERR);
+    IF_EQT_RETURN(cmprb, NULL, RBERR);
+
+    srcvad = RBTreeEntry(srcrb, VAD, TNode);
+    cmpvad = RBTreeEntry(cmprb, VAD, TNode);
+
+    if((cmpvad->Start < srcvad->Start) && 
+            (cmpvad->End < srcvad->End) && (cmpvad->End <= srcvad->Start))
+    {
+        return RBLEFT;
+    }
+    else if((cmpvad->Start > srcvad->Start) && 
+            (cmpvad->End > srcvad->End) && (cmpvad->Start >= srcvad->End))
+    {
+        return RBRIGHT;
+    }
+    return RBERR;
+}
+
 private Addr KrlVMemAllocRealizeCore(VMS* vms, VAM* vam, Addr start, Size size, U64 access, UInt type)
 {
     Addr vaddr = NULL;
