@@ -82,6 +82,13 @@ private VAD* NewVAD()
 	return vad;
 }
 
+private Bool DelVAD(VAD* vad)
+{
+    IF_NULL_RETURN_FALSE(vad);
+	
+	return KrlMmDel((void *)vad);
+}
+
 private VAD* VADIsOkForVMAlloc(VAM *vam, VAD* vad, Addr start, Size size, U64 access, UInt type)
 {
 	VAD* nextvad = NULL;
@@ -206,15 +213,12 @@ private Addr KrlVMemAllocRealizeCore(VMS* vms, VAM* vam, Addr start, Size size, 
 	newvad->End = newvad->Start + (Addr)size;
 	newvad->Access = access;
 	newvad->MapType = type;
-	newvad->ParentVAM = vam;
-	vam->CurrVAD = newvad;
-	ListAdd(&newvad->Lists, &currvad->Lists);
-	if(ListIsLast(&newvad->Lists, &vam->VADLists) == TRUE)
-	{
-		vam->EndVAD = newvad;
-	}
-
-	vaddr = newvad->Start;
+	
+	vaddr = VADInsertVAM(vam, currvad, newvad);
+    if(NULL == vaddr)
+    {
+        IF_NEQ_DEAD(TRUE, DelVAD(newvad), "Del VAD fail\n");
+    }
 
 out:
     KrlMmUnLock(&vam->Lock);
