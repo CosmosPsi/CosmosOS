@@ -6,6 +6,7 @@
 #include "BaseType.h"
 #include "List.h"
 #include "HalBoot.h"
+#include "HalCPU.h"
 #include "HalSync.h"
 #include "HalMMU.h"
 #include "KrlLog.h"
@@ -214,6 +215,36 @@ private VAD* FindVADForVMAlloc(VAM* vam, Addr start, Size size, U64 access, UInt
     return NULL;
 }
 
+private UInt VADRBRePlace(RBTree* srcrb, RBTree* reprb)
+{
+    VAD* srcvad = NULL;
+    VAD* repvad = NULL;
+    if(NULL == srcrb || NULL == reprb)
+    {
+        return 1;
+    }
+    srcvad = RBTreeEntry(srcrb, VAD, TNode);
+    repvad = RBTreeEntry(reprb, VAD, TNode);
+    HalMemCopy((void*)repvad, (void*)srcvad, sizeof(VAD));
+    //srcrb->tr_flags.tr_hight = reprb->tr_flags.tr_hight;
+    return 0; 
+}
+
+private UInt VADRBDelAfter(RBTree* delrb)
+{
+    VAD* vad = NULL;
+    if(NULL == delrb)
+    {
+        return 1;
+    }
+    vad = RBTreeEntry(delrb, VAD, TNode);
+    if(DelVAD(vad) == FALSE)
+    {
+        return 2;
+    }
+    return 0;
+}
+
 private UInt VADRBPathCMP(RBTree* srcrb, RBTree* cmprb)
 {
     VAD* srcvad = NULL;
@@ -235,6 +266,20 @@ private UInt VADRBPathCMP(RBTree* srcrb, RBTree* cmprb)
         return RBRIGHT;
     }
     return RBERR;
+}
+
+private Bool VADReMoveVAM(VAM* vam, VAD* vad)
+{
+    RBTree* rbtree = NULL;
+    RBTree* tmprbtree = NULL;
+    IF_NULL_RETURN_FALSE(vam);
+    IF_NULL_RETURN_FALSE(vad);
+    tmprbtree = &vad->TNode;
+    ListDel(&vad->Lists);
+    rbtree = RBTreeDelete(&vam->TRoot, &vad->TNode, VADRBRePlace, VADRBDelAfter);
+    IF_NEQ_DEAD(tmprbtree, rbtree, "RBTreeDelete call fail\n");
+    vam->VADNr--;
+    return TRUE;
 }
 
 private Addr VADInsertVAM(VAM* vam, VAD* currvad, VAD* newvad)
