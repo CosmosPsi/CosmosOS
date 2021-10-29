@@ -397,6 +397,33 @@ private PMSAD* NewUserPMSADsForVMemMapping(VMS* vms, VPB* box)
 	return msad;
 }
 
+private Bool KrlVMemUnMappingRealize(VMS* vms, VAD* vad, Addr start, Addr end)
+{
+    Addr phyadr;
+	Bool rets = TRUE;
+	MMU* mmu = NULL;
+    VPB* box = NULL;
+    PMSAD* msad = NULL;
+    mmu = &vms->Mmu;
+	box = vad->PMSADBox;
+    IF_NULL_RETURN_FALSE(box);
+
+	for(Addr vadr = start; vadr < end; vadr += VMAP_MIN_SIZE)
+	{
+		phyadr = HalUnMMUTranslation(mmu, vadr);
+		if(NULL != phyadr)
+		{
+			if(DelUserPMSADsForVMemUnMapping(vms, box, PHYAddrRetPMSAD((U64)phyadr), phyadr) == FALSE)
+			{
+				rets = FALSE;
+
+			}
+		}
+	}
+
+	return rets;
+}
+
 private Bool KrlVMemFreeRealizeCore(VMS* vms, VAM* vam, Addr start, Size size)
 {
     Bool rets = FALSE;
