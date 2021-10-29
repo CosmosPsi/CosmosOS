@@ -153,6 +153,7 @@ private Bool VADReMoveVAM(VAM* vam, VAD* vad);
 private Addr VADInsertVAM(VAM* vam, VAD* currvad, VAD* newvad);
 private void SetEndAndCurVADForVMFree(VAM* vam, VAD* vad);
 private Bool DelUserPMSADsForVMemUnMapping(VMS* vms, VPB* box, PMSAD* msad, Addr phyadr);
+private PMSAD* NewUserPMSADsForVMemMapping(VMS* vms, VPB* box);
 private Bool KrlVMemFreeRealizeCore(VMS* vms, VAM* vam, Addr start, Size size);
 private Addr KrlVMemAllocRealizeCore(VMS* vms, VAM* vam, Addr start, Size size, U64 access, UInt type);
 private Bool KrlVMemFreeRealize(VMS* vms, Addr start, Size size);

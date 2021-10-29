@@ -381,6 +381,22 @@ out:
 	return rets;
 }
 
+private PMSAD* NewUserPMSADsForVMemMapping(VMS* vms, VPB* box)
+{
+	PMSAD* msad = NULL;
+    IF_NULL_RETURN_NULL(vms);
+    IF_NULL_RETURN_NULL(box);
+
+    msad = KrlMmAllocUserPMSADs(1);
+	IF_NULL_RETURN_NULL(msad);
+
+    KrlMmLocked(&box->Lock);
+    ListAdd(&msad->Lists, &box->PmsadLists);
+    box->PmsadNR++;
+    KrlMmUnLock(&box->Lock);
+	return msad;
+}
+
 private Bool KrlVMemFreeRealizeCore(VMS* vms, VAM* vam, Addr start, Size size)
 {
     Bool rets = FALSE;
