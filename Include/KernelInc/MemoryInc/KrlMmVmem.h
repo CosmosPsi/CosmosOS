@@ -128,6 +128,7 @@ private void VAMInit(VAM* init);
 private void VMSInit(VMS* init);
 private VAD* NewVAD();
 private Bool DelVAD(VAD* vad);
+private VAD* FindVADForVMFree(VAM* vam, Addr start, Size size);
 private VAD* VADIsOkForVMAlloc(VAM *vam, VAD* vad, Addr start, Size size, U64 access, UInt type);
 private VAD* FindVADForVMAlloc(VAM* vam, Addr start, Size size, U64 access, UInt type);
 private UInt VADRBPathCMP(RBTree* srcrb, RBTree* cmprb);

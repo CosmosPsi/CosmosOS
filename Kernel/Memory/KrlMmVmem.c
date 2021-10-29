@@ -89,6 +89,49 @@ private Bool DelVAD(VAD* vad)
 	return KrlMmDel((void *)vad);
 }
 
+private VAD* FindVADForVMFree(VAM* vam, Addr start, Size size)
+{
+	VAD* curr = NULL;
+	VAD* vad = NULL;
+    Addr newend = NULL;
+	List* list = NULL;
+	
+    newend = start + (Addr)size;
+    curr = vam->CurrVAD;
+	if (NULL != curr)
+	{
+		if((curr->Start) <= start && (newend <= curr->End))
+		{
+			return curr;
+		}
+	}
+    RBTree* srcrb;
+	if(NULL == vam->TRoot.Node)
+	{
+		return NULL;
+	}
+
+	srcrb = vam->TRoot.Node;
+	while(NULL != srcrb)
+	{
+	    vad = RBTreeEntry(srcrb, VAD, TNode);
+		if((vad->Start <= start) && (newend <= vad->End))
+		{
+			return vad;
+		}
+		if((vad->Start > start) && (vad->End > newend) && (newend < vad->Start))
+		{
+			srcrb = srcrb->Left;
+		}
+		else
+		{
+			srcrb = srcrb->Right;
+		}
+	}
+    
+	return NULL;
+}
+
 private VAD* VADIsOkForVMAlloc(VAM *vam, VAD* vad, Addr start, Size size, U64 access, UInt type)
 {
 	VAD* nextvad = NULL;
