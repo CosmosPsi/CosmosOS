@@ -136,6 +136,7 @@ private UInt VADRBDelAfter(RBTree* delrb);
 private UInt VADRBPathCMP(RBTree* srcrb, RBTree* cmprb);
 private Bool VADReMoveVAM(VAM* vam, VAD* vad);
 private Addr VADInsertVAM(VAM* vam, VAD* currvad, VAD* newvad);
+private void SetEndAndCurVADForVMFree(VAM* vam, VAD* vad);
 private Addr KrlVMemAllocRealizeCore(VMS* vms, VAM* vam, Addr start, Size size, U64 access, UInt type);
 private Addr KrlVMemAllocRealize(VMS* vms, Addr start, Size size, U64 access, UInt type);
 public Addr KrlVMemAlloc(VMS* vms, Addr start, Size size, U64 access, UInt type);

@@ -304,6 +304,32 @@ private Addr VADInsertVAM(VAM* vam, VAD* currvad, VAD* newvad)
     return newvad->Start;
 }
 
+private void SetEndAndCurVADForVMFree(VAM* vam, VAD* vad)
+{
+	VAD* prevvad = NULL;
+    VAD* nextvad = NULL;
+	if(ListIsLast(&vad->Lists, &vam->VADLists) == TRUE)
+	{
+		if(ListIsFirst(&vad->Lists, &vam->VADLists) == FALSE)
+		{
+			prevvad = ListPrevEntry(vad, VAD, Lists);
+			vam->EndVAD = prevvad;
+			vam->CurrVAD = prevvad;
+		}
+		else
+		{
+			vam->EndVAD = NULL;
+			vam->CurrVAD = NULL;
+		}
+	}
+	else
+	{
+		nextvad = ListNextEntry(vad, VAD, Lists);
+		vam->CurrVAD = nextvad;
+	}
+	return;
+}
+
 private Addr KrlVMemAllocRealizeCore(VMS* vms, VAM* vam, Addr start, Size size, U64 access, UInt type)
 {
     Addr vaddr = NULL;
@@ -357,6 +383,7 @@ out:
     KrlMmUnLock(&vam->Lock);
     return vaddr;
 }
+
 
 private Addr KrlVMemAllocRealize(VMS* vms, Addr start, Size size, U64 access, UInt type)
 {
