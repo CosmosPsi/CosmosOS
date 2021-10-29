@@ -447,7 +447,7 @@ private Bool KrlVMemFreeRealizeCore(VMS* vms, VAM* vam, Addr start, Size size)
 	}
     if((delvad->Start == start) && ((start + (Addr)size) == delvad->End))
     {
-        //还有页表的反向映射
+        KrlVMemUnMapping(vms, delvad, start, size);
         SetEndAndCurVADForVMFree(vam, delvad);
         VADReMoveVAM(vam, delvad);
         rets = TRUE;
@@ -457,7 +457,7 @@ private Bool KrlVMemFreeRealizeCore(VMS* vms, VAM* vam, Addr start, Size size)
     if((delvad->Start == start) && (delvad->End > (start + (Addr)size)))
 	{
 		delvad->Start = start + (Addr)size;
-        //还有页表的反向映射
+        KrlVMemUnMapping(vms, delvad, start, size);
 		rets = TRUE;
 		goto out;
 	}
@@ -465,7 +465,7 @@ private Bool KrlVMemFreeRealizeCore(VMS* vms, VAM* vam, Addr start, Size size)
     if((delvad->Start < start) && (delvad->End == (start + (Addr)size)))
 	{
 		delvad->End = start;
-        //还有页表的反向映射
+        KrlVMemUnMapping(vms, delvad, start, size);
 		rets = TRUE;
 		goto out;
 	}
@@ -488,7 +488,7 @@ private Bool KrlVMemFreeRealizeCore(VMS* vms, VAM* vam, Addr start, Size size)
 
 		KrlVPBCountInc(delvad->PMSADBox);
 		newvad->PMSADBox = delvad->PMSADBox;
-		// vma_del_unmapping(mm, delvad, start, size);
+        KrlVMemUnMapping(vms, delvad, start, size);
         VADInsertVAM(vam, delvad, newvad);
 		rets = TRUE;
 		goto out;
