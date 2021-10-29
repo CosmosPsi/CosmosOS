@@ -330,6 +330,75 @@ private void SetEndAndCurVADForVMFree(VAM* vam, VAD* vad)
 	return;
 }
 
+private Bool KrlVMemFreeRealizeCore(VMS* vms, VAM* vam, Addr start, Size size)
+{
+    Bool rets = FALSE;
+	VAD* newvad = NULL; 
+    VAD* delvad = NULL;
+    IF_NULL_RETURN_FALSE(vam);
+    KrlMmLocked(&vam->Lock);
+    delvad = FindVADForVMFree(vam, start, size);
+    if(NULL == delvad)
+	{
+		rets = FALSE;
+		goto out;
+	}
+    if((delvad->Start == start) && ((start + (Addr)size) == delvad->End))
+    {
+        //还有页表的反向映射
+        SetEndAndCurVADForVMFree(vam, delvad);
+        VADReMoveVAM(vam, delvad);
+        rets = TRUE;
+		goto out;
+    }
+
+    if((delvad->Start == start) && (delvad->End > (start + (Addr)size)))
+	{
+		delvad->Start = start + (Addr)size;
+        //还有页表的反向映射
+		rets = TRUE;
+		goto out;
+	}
+
+    if((delvad->Start < start) && (delvad->End == (start + (Addr)size)))
+	{
+		delvad->End = start;
+        //还有页表的反向映射
+		rets = TRUE;
+		goto out;
+	}
+
+    if ((delvad->Start < start) && (delvad->End > (start + (Addr)size)))
+	{
+		newvad = NewVAD();
+		if(NULL == newvad)
+		{
+			rets = FALSE;
+			goto out;
+		}
+
+		newvad->End = delvad->End;
+		newvad->Start = start + (Addr)size;
+		newvad->Access = delvad->Access;
+		newvad->MapType = delvad->MapType;
+		newvad->ParentVAM = vam;
+		delvad->End = start;
+
+		KrlVPBCountInc(delvad->PMSADBox);
+		newvad->PMSADBox = delvad->PMSADBox;
+		// vma_del_unmapping(mm, delvad, start, size);
+        VADInsertVAM(vam, delvad, newvad);
+		rets = TRUE;
+		goto out;
+	}
+
+    rets = FALSE;
+
+out:
+    KrlMmUnLock(&vam->Lock);
+    return rets;
+}
+
 private Addr KrlVMemAllocRealizeCore(VMS* vms, VAM* vam, Addr start, Size size, U64 access, UInt type)
 {
     Addr vaddr = NULL;
