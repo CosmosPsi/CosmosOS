@@ -155,6 +155,7 @@ private void SetEndAndCurVADForVMFree(VAM* vam, VAD* vad);
 private Bool DelUserPMSADsForVMemUnMapping(VMS* vms, VPB* box, PMSAD* msad, Addr phyadr);
 private PMSAD* NewUserPMSADsForVMemMapping(VMS* vms, VPB* box);
 private Bool KrlVMemUnMappingRealize(VMS* vms, VAD* vad, Addr start, Addr end);
+public Bool KrlVMemUnMapping(VMS* vms, VAD* vad, Addr start, Size size);
 private Bool KrlVMemFreeRealizeCore(VMS* vms, VAM* vam, Addr start, Size size);
 private Addr KrlVMemAllocRealizeCore(VMS* vms, VAM* vam, Addr start, Size size, U64 access, UInt type);
 private Bool KrlVMemFreeRealize(VMS* vms, Addr start, Size size);

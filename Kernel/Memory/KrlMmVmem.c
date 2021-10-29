@@ -421,6 +421,17 @@ private Bool KrlVMemUnMappingRealize(VMS* vms, VAD* vad, Addr start, Addr end)
 	return rets;
 }
 
+public Bool KrlVMemUnMapping(VMS* vms, VAD* vad, Addr start, Size size)
+{
+	Addr end = NULL;
+    IF_NULL_RETURN_FALSE(vms);
+    IF_NULL_RETURN_FALSE(vad);
+
+	end = start + (Addr)size;
+
+	return KrlVMemUnMappingRealize(vms, vad, start, end);
+}
+
 private Bool KrlVMemFreeRealizeCore(VMS* vms, VAM* vam, Addr start, Size size)
 {
     Bool rets = FALSE;
