@@ -12,6 +12,7 @@
 #define VPB_CACHE_MAX (0x1000)
 #define VPB_CACHE_MIN (0x40)
 #define VADSIZE_ALIGN(x) ALIGN(x, (typeof(x))0x1000)
+#define VMAP_MIN_SIZE (MSAD_SIZE)
 
 // Virtual Memory PMSAD(Page) Box Manager
 typedef struct VBM 
@@ -151,6 +152,7 @@ private UInt VADRBPathCMP(RBTree* srcrb, RBTree* cmprb);
 private Bool VADReMoveVAM(VAM* vam, VAD* vad);
 private Addr VADInsertVAM(VAM* vam, VAD* currvad, VAD* newvad);
 private void SetEndAndCurVADForVMFree(VAM* vam, VAD* vad);
+private Bool DelUserPMSADsForVMemUnMapping(VMS* vms, VPB* box, PMSAD* msad, Addr phyadr);
 private Bool KrlVMemFreeRealizeCore(VMS* vms, VAM* vam, Addr start, Size size);
 private Addr KrlVMemAllocRealizeCore(VMS* vms, VAM* vam, Addr start, Size size, U64 access, UInt type);
 private Bool KrlVMemFreeRealize(VMS* vms, Addr start, Size size);

@@ -330,6 +330,57 @@ private void SetEndAndCurVADForVMFree(VAM* vam, VAD* vad)
 	return;
 }
 
+private Bool DelUserPMSADsForVMemUnMapping(VMS* vms, VPB* box, PMSAD* msad, Addr phyadr)
+{
+	Bool rets = FALSE;
+	PMSAD* tmpmsad = NULL;
+    PMSAD* delmsad = NULL;
+	List* pos = NULL;
+
+    IF_NULL_RETURN_FALSE(vms);
+    IF_NULL_RETURN_FALSE(box);
+    IF_ZERO_RETURN_FALSE(phyadr);
+
+    KrlMmLocked(&box->Lock);
+
+	if(NULL != msad)
+	{
+		if(PMSADRetPAddr(msad) == phyadr)
+		{
+			delmsad = msad;
+			ListDel(&msad->Lists);
+			box->PmsadNR--;
+			rets = TRUE;
+			goto out;
+		}
+	}
+
+	ListForEach(pos, &box->PmsadLists)
+	{
+		tmpmsad = ListEntry(pos, PMSAD, Lists);
+		if (PMSADRetPAddr(tmpmsad) == phyadr)
+		{
+			delmsad = tmpmsad;
+			ListDel(&tmpmsad->Lists);
+			box->PmsadNR--;
+			rets = TRUE;
+			goto out;
+		}
+	}
+
+	delmsad = NULL;
+	rets = FALSE;
+
+out:
+    KrlMmUnLock(&box->Lock);
+
+	if(NULL != delmsad)
+	{
+        IF_NEQ_DEAD(TRUE, KrlMmFreeUserPMSADs(delmsad), "Free User PMSAD Fail\n");
+	}
+	return rets;
+}
+
 private Bool KrlVMemFreeRealizeCore(VMS* vms, VAM* vam, Addr start, Size size)
 {
     Bool rets = FALSE;
