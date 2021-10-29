@@ -473,6 +473,15 @@ private Addr KrlVMemAllocRealize(VMS* vms, Addr start, Size size, U64 access, UI
     return vaddr;
 }
 
+public Bool KrlVMemFree(VMS* vms, Addr start, Size size)
+{
+    IF_NULL_RETURN_FALSE(vms);
+    IF_NULL_RETURN_FALSE(size);
+    IF_LTNONE_RETRUN_FALSE(size);
+
+	return KrlVMemFreeRealize(vms, start, size);
+}
+
 public Addr KrlVMemAlloc(VMS* vms, Addr start, Size size, U64 access, UInt type)
 {
     IF_NULL_RETURN_NULL(vms);

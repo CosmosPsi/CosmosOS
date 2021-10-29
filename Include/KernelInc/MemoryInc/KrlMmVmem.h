@@ -155,6 +155,7 @@ private Bool KrlVMemFreeRealizeCore(VMS* vms, VAM* vam, Addr start, Size size);
 private Addr KrlVMemAllocRealizeCore(VMS* vms, VAM* vam, Addr start, Size size, U64 access, UInt type);
 private Bool KrlVMemFreeRealize(VMS* vms, Addr start, Size size);
 private Addr KrlVMemAllocRealize(VMS* vms, Addr start, Size size, U64 access, UInt type);
+public Bool KrlVMemFree(VMS* vms, Addr start, Size size);
 public Addr KrlVMemAlloc(VMS* vms, Addr start, Size size, U64 access, UInt type);
 public Bool KrlMmVMemInit();
 #endif
