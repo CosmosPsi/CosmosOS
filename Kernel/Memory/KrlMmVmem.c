@@ -413,11 +413,8 @@ private Bool KrlVMemUnMappingRealize(VMS* vms, VAD* vad, Addr start, Addr end)
 		phyadr = HalUnMMUTranslation(mmu, vadr);
 		if(NULL != phyadr)
 		{
-			if(DelUserPMSADsForVMemUnMapping(vms, box, PHYAddrRetPMSAD((U64)phyadr), phyadr) == FALSE)
-			{
-				rets = FALSE;
-
-			}
+			rets = DelUserPMSADsForVMemUnMapping(vms, box, PHYAddrRetPMSAD((U64)phyadr), phyadr);
+            IF_NEQ_DEAD(TRUE, rets, "Call DelUserPMSADsForVMemUnMapping Fail\n");
 		}
 	}
 
