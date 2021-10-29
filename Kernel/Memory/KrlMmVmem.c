@@ -453,6 +453,15 @@ out:
     return vaddr;
 }
 
+private Bool KrlVMemFreeRealize(VMS* vms, Addr start, Size size)
+{
+    Bool rets = FALSE;
+    IF_NULL_RETURN_NULL(vms);
+    KrlMmLocked(&vms->Lock);
+    rets = KrlVMemFreeRealizeCore(vms, &vms->VAManager, start, VADSIZE_ALIGN(size));
+    KrlMmUnLock(&vms->Lock);
+    return rets;
+}
 
 private Addr KrlVMemAllocRealize(VMS* vms, Addr start, Size size, U64 access, UInt type)
 {
