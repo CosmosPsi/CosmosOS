@@ -121,6 +121,20 @@ KLINE VBM* KrlMmGetRootVMemSPaceAddr()
     return &RootVMemSPace;
 }
 
+KLINE void KrlVPBCountInc(VPB* vpb)
+{
+    IF_NULL_RETURN(vpb);
+    RefCountInc(&vpb->Count);
+    return;
+}
+
+KLINE void KrlVPBCountDec(VPB* vpb)
+{
+    IF_NULL_RETURN(vpb);
+    RefCountDec(&vpb->Count);
+    return;
+}
+
 private void VBMInit(VBM* init);
 private void VPBInit(VPB* init);
 private void VADInit(VAD* init);
