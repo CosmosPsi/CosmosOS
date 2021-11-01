@@ -74,6 +74,15 @@ private void VMSInit(VMS* init)
     return;
 }
 
+private VPB* NewVPB()
+{
+    VPB* vpb = NULL;
+    vpb = (VPB*)KrlMmNew(sizeof(VPB));
+    IF_NULL_RETURN_NULL(vpb);
+    VPBInit(vpb);
+    return vpb;
+}
+
 private VAD* NewVAD()
 {
 	VAD* vad = NULL;

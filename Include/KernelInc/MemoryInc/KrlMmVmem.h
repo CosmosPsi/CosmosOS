@@ -141,6 +141,7 @@ private void VPBInit(VPB* init);
 private void VADInit(VAD* init);
 private void VAMInit(VAM* init);
 private void VMSInit(VMS* init);
+private VPB* NewVPB();
 private VAD* NewVAD();
 private Bool DelVAD(VAD* vad);
 private VAD* FindVADForVMFree(VAM* vam, Addr start, Size size);
