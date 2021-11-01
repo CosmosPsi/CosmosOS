@@ -83,6 +83,13 @@ private VPB* NewVPB()
     return vpb;
 }
 
+private Bool DelVPB(VPB* vpb)
+{
+    IF_NULL_RETURN_FALSE(vpb);
+	
+	return KrlMmDel((void*)vpb);
+}
+
 private VAD* NewVAD()
 {
 	VAD* vad = NULL;
@@ -96,7 +103,7 @@ private Bool DelVAD(VAD* vad)
 {
     IF_NULL_RETURN_FALSE(vad);
 	
-	return KrlMmDel((void *)vad);
+	return KrlMmDel((void*)vad);
 }
 
 private VAD* FindVADForVMFree(VAM* vam, Addr start, Size size)
