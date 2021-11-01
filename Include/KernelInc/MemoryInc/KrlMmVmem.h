@@ -145,6 +145,7 @@ private VPB* NewVPB();
 private Bool DelVPB(VPB* vpb);
 private VAD* NewVAD();
 private Bool DelVAD(VAD* vad);
+public Bool KrlVMemPutVPB(VPB* box);
 public VPB* KrlVMemGetVPB();
 private VAD* FindVADForVMFree(VAM* vam, Addr start, Size size);
 private VAD* VADIsOkForVMAlloc(VAM *vam, VAD* vad, Addr start, Size size, U64 access, UInt type);

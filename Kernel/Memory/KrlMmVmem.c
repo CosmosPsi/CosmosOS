@@ -106,10 +106,58 @@ private Bool DelVAD(VAD* vad)
 	return KrlMmDel((void*)vad);
 }
 
+public Bool KrlVMemPutVPB(VPB* box)
+{
+    VBM* boxmgr = NULL;
+	Bool rets = FALSE;
+
+    IF_NULL_RETURN_FALSE(box);
+    boxmgr = KrlMmGetVPBoxManagerAddr();
+    IF_NULL_RETURN_FALSE(boxmgr);
+
+	KrlMmLocked(&boxmgr->Lock);
+	
+	RefCountDec(&box->Count);
+	if(RefCountRead(&box->Count) >= 1)
+	{
+		rets = TRUE;
+		goto out;
+	}
+	
+	if(boxmgr->VPBCacheNR >= boxmgr->VPBCacheMax)
+	{
+		ListDel(&box->Lists);
+		if(DelVPB(box) == FALSE)
+		{
+			rets = FALSE;
+			goto out;
+		}
+		else
+		{
+			boxmgr->VPBNR--;
+			rets = TRUE;
+			goto out;
+		}
+	}
+
+	ListMove(&box->Lists, &boxmgr->VPBCacheHead);
+	boxmgr->VPBCacheNR++;
+	boxmgr->VPBNR--;
+	
+	rets = TRUE;
+out:
+	KrlMmUnLock(&boxmgr->Lock);
+	return rets;
+}
+
 public VPB* KrlVMemGetVPB()
 {
     VPB* box = NULL;
 	VBM* boxmgr = NULL;
+    
+    boxmgr = KrlMmGetVPBoxManagerAddr();
+    IF_NULL_RETURN_NULL(boxmgr);
+
 	KrlMmLocked(&boxmgr->Lock);
 	if(0 < boxmgr->VPBCacheNR)
 	{
