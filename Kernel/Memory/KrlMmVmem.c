@@ -106,6 +106,46 @@ private Bool DelVAD(VAD* vad)
 	return KrlMmDel((void*)vad);
 }
 
+public VPB* KrlVMemGetVPB()
+{
+    VPB* box = NULL;
+	VBM* boxmgr = NULL;
+	KrlMmLocked(&boxmgr->Lock);
+	if(0 < boxmgr->VPBCacheNR)
+	{
+		if(ListIsEmptyCareful(&boxmgr->VPBCacheHead) == FALSE)
+		{
+			box = ListFirstOne(&boxmgr->VPBCacheHead, VPB, Lists);
+			ListDel(&box->Lists);
+			boxmgr->VPBCacheNR--;
+			
+			VPBInit(box);
+			ListAdd(&box->Lists, &boxmgr->VPBHead);
+			boxmgr->VPBNR++;
+			RefCountInc(&box->Count);
+			box->ParentVBM = boxmgr;
+			//box = box;
+			goto out; 
+		}
+	}
+
+	box =NewVPB();
+	if(NULL == box)
+	{
+		box = NULL;
+		goto out;
+	}
+
+	ListAdd(&box->Lists, &boxmgr->VPBHead);
+	boxmgr->VPBNR++;
+	RefCountInc(&box->Count);
+	box->ParentVBM = boxmgr;
+
+out:
+	KrlMmUnLock(&boxmgr->Lock);	
+	return box;
+}
+
 private VAD* FindVADForVMFree(VAM* vam, Addr start, Size size)
 {
 	VAD* curr = NULL;
@@ -115,7 +155,7 @@ private VAD* FindVADForVMFree(VAM* vam, Addr start, Size size)
 	
     newend = start + (Addr)size;
     curr = vam->CurrVAD;
-	if (NULL != curr)
+	if(NULL != curr)
 	{
 		if((curr->Start) <= start && (newend <= curr->End))
 		{
@@ -209,7 +249,7 @@ private VAD* FindVADForVMAlloc(VAM* vam, Addr start, Size size, U64 access, UInt
     IF_LTN_RETURN(size, MSAD_SIZE, NULL);
     IF_LTN_RETURN(vam->IsAllocEnd, newend, NULL);
 
-	if (NULL != curr)
+	if(NULL != curr)
 	{
 		vadcurrent = VADIsOkForVMAlloc(vam, curr, start, size, access, type);
 		if(NULL != vadcurrent)
