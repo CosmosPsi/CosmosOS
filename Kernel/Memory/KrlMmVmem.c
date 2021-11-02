@@ -849,6 +849,21 @@ out:
 	return rets;
 }
 
+private Bool KrlVMemHandAddrAccessFailRealizeCore(VMS* vms, Addr vaddr, UInt errcode)
+{
+    VAM* vam = NULL;
+    vam = &vms->VAManager;
+    if(ACCESS_NOTMAP_FAIL == errcode)
+    {
+        return KrlVMemHandMapingFail(vms, vam, vaddr);
+    }
+    else if(ACCESS_PERMISSION_FAIL == errcode)
+    {
+        return KrlVMemHandPermissionFail(vms, vam, vaddr);
+    }
+    return FALSE;
+}
+
 public Bool KrlMmVMemInit()
 {
     VBM* vboxmgr = NULL;
