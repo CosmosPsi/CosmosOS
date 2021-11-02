@@ -864,6 +864,18 @@ private Bool KrlVMemHandAddrAccessFailRealizeCore(VMS* vms, Addr vaddr, UInt err
     return FALSE;
 }
 
+private Bool KrlVMemHandAddrAccessFailRealize(Addr vaddr, UInt errcode)
+{
+    VMS* vms = NULL;
+	Bool ret = FALSE;
+	
+    IF_LTN_RETURN(USER_VIRTUAL_ADDRESS_END, vaddr, FALSE);
+    IF_GTN_RETURN(0x1000, vaddr, FALSE);
+    vms = KrlMmGetCurrVMS();
+    IF_NULL_RETURN_FALSE(vms);
+    return KrlVMemHandAddrAccessFailRealizeCore(vms, vaddr, errcode);
+}
+
 public Bool KrlMmVMemInit()
 {
     VBM* vboxmgr = NULL;
