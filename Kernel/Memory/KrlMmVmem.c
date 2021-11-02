@@ -722,6 +722,45 @@ private VPB* ForMappingGetVPBOnVAD(VAD* vad)
 	return vad->PMSADBox;
 }
 
+private VAD* ForMappingFindVADOnVAM(VAM* vam, Addr vaddr)
+{
+    RBTree* srcrb = NULL;
+	VAD* curr = NULL;
+	VAD* vad = NULL;
+
+    curr = vam->CurrVAD;
+	if (NULL != curr)
+	{
+		if ((vaddr >= curr->Start) && (vaddr < curr->End))
+		{
+			return curr;
+		}
+	}
+	if(NULL == vam->TRoot.Node)
+	{
+		return NULL;
+	}
+
+	srcrb = vam->TRoot.Node;
+	while(NULL != srcrb)
+	{
+	    vad = RBTreeEntry(srcrb, VAD, TNode);
+		if((vad->Start <= vaddr) && (vaddr < vad->End))
+		{
+			return vad;
+		}
+		if((vad->Start > vaddr))
+		{
+			srcrb = srcrb->Left;
+		}
+		else
+		{
+			srcrb = srcrb->Right;
+		}
+	}
+	return NULL;
+}
+
 public Bool KrlMmVMemInit()
 {
     VBM* vboxmgr = NULL;
