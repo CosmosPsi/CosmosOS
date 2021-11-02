@@ -179,5 +179,6 @@ public Addr KrlVMemMapping(VMS* vms, VAD* vad, Addr start, Size size, U64 flags)
 private Bool KrlVMemHandMappingFail(VMS* vms, VAM* vam, Addr vaddr);
 private Bool KrlVMemHandAddrAccessFailRealizeCore(VMS* vms, Addr vaddr, UInt errcode);
 private Bool KrlVMemHandAddrAccessFailRealize(Addr vaddr, UInt errcode);
+public Bool KrlVMemHandAddrAccessFail(Addr vaddr, UInt errcode);
 public Bool KrlMmVMemInit();
 #endif

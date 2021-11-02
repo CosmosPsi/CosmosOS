@@ -876,6 +876,12 @@ private Bool KrlVMemHandAddrAccessFailRealize(Addr vaddr, UInt errcode)
     return KrlVMemHandAddrAccessFailRealizeCore(vms, vaddr, errcode);
 }
 
+public Bool KrlVMemHandAddrAccessFail(Addr vaddr, UInt errcode)
+{
+    IF_NULL_RETURN_FALSE(vaddr);
+    return KrlVMemHandAddrAccessFailRealize(vaddr, errcode);
+}
+
 public Bool KrlMmVMemInit()
 {
     VBM* vboxmgr = NULL;
