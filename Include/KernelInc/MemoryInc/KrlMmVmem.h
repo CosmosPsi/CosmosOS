@@ -14,6 +14,9 @@
 #define VADSIZE_ALIGN(x) ALIGN(x, (typeof(x))0x1000)
 #define VMAP_MIN_SIZE (MSAD_SIZE)
 
+#define ACCESS_PERMISSION_FAIL (1)
+#define ACCESS_NOTMAP_FAIL (2)
+
 // Virtual Memory PMSAD(Page) Box Manager
 typedef struct VBM 
 {
@@ -166,5 +169,6 @@ private Bool KrlVMemFreeRealize(VMS* vms, Addr start, Size size);
 private Addr KrlVMemAllocRealize(VMS* vms, Addr start, Size size, U64 access, UInt type);
 public Bool KrlVMemFree(VMS* vms, Addr start, Size size);
 public Addr KrlVMemAlloc(VMS* vms, Addr start, Size size, U64 access, UInt type);
+public VMS* KrlMmGetCurrVMS();
 public Bool KrlMmVMemInit();
 #endif

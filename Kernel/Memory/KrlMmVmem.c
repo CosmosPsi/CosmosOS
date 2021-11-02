@@ -200,7 +200,8 @@ private VAD* FindVADForVMFree(VAM* vam, Addr start, Size size)
 	VAD* vad = NULL;
     Addr newend = NULL;
 	List* list = NULL;
-	
+	RBTree* srcrb = NULL;
+    
     newend = start + (Addr)size;
     curr = vam->CurrVAD;
 	if(NULL != curr)
@@ -210,8 +211,8 @@ private VAD* FindVADForVMFree(VAM* vam, Addr start, Size size)
 			return curr;
 		}
 	}
-    RBTree* srcrb;
-	if(NULL == vam->TRoot.Node)
+	
+    if(NULL == vam->TRoot.Node)
 	{
 		return NULL;
 	}
@@ -698,6 +699,11 @@ public Addr KrlVMemAlloc(VMS* vms, Addr start, Size size, U64 access, UInt type)
         IF_LTN_RETURN(USER_VIRTUAL_ADDRESS_END, (start + size), NULL);
     }
     return KrlVMemAllocRealize(vms, start, size, access, type);
+}
+
+public VMS* KrlMmGetCurrVMS()
+{
+    return KrlMmGetRootVMemSPaceAddr();
 }
 
 public Bool KrlMmVMemInit()
