@@ -792,6 +792,14 @@ private Addr KrlVMemMappingRealizeCore(VMS* vms, VAD* vad, VPB* box, Addr start,
     return phyadr;
 }
 
+private Addr KrlVMemMappingRealize(VMS* vms, VAD* vad, VPB* box, Addr start, Size size, U64 flags)
+{
+	PMSAD* usermsad;
+	Addr end = NULL;
+    end = start + (Addr)size;
+    return KrlVMemMappingRealizeCore(vms, vad, box, start, end, flags);
+}
+
 public Bool KrlMmVMemInit()
 {
     VBM* vboxmgr = NULL;
