@@ -761,6 +761,11 @@ private VAD* ForMappingFindVADOnVAM(VAM* vam, Addr vaddr)
 	return NULL;
 }
 
+private Bool KrlVMemHandPermissionFail(VMS* vms, VAM* vam, Addr vaddr)
+{
+    return FALSE;
+}
+
 public Bool KrlMmVMemInit()
 {
     VBM* vboxmgr = NULL;
