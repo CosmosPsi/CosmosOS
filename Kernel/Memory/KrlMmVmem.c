@@ -812,6 +812,43 @@ public Addr KrlVMemMapping(VMS* vms, VAD* vad, Addr start, Size size, U64 flags)
 	return KrlVMemMappingRealize(vms, vad, box, start, size, flags);
 }
 
+private Bool KrlVMemHandMappingFail(VMS* vms, VAM* vam, Addr vaddr)
+{
+    Bool rets = FALSE;
+	Addr phyadrs = NULL;
+    VAD* vad = NULL;
+	VPB* box = NULL;
+
+    KrlMmLocked(&vam->Lock);
+	vad = ForMappingFindVADOnVAM(vam, vaddr);
+    if(NULL == vad)
+    {
+        rets = FALSE;
+        goto out;
+    }
+
+	box = ForMappingGetVPBOnVAD(vad);
+	if(NULL == box)
+	{
+		rets = FALSE;
+		goto out;
+	}
+
+	phyadrs = KrlVMemMapping(vms, vad, vaddr, VMAP_MIN_SIZE, (0 | PML4E_US | PML4E_RW | PML4E_P));
+	if (NULL == phyadrs)
+	{
+		rets = FALSE;
+		goto out;
+	}
+	
+	//vma_full_textbin(mm, kmvd, vadrs);//骚操作
+	rets = TRUE;
+
+out:
+	KrlMmUnLock(&vam->Lock);
+	return rets;
+}
+
 public Bool KrlMmVMemInit()
 {
     VBM* vboxmgr = NULL;
