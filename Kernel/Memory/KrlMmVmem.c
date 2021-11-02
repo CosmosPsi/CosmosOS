@@ -706,7 +706,7 @@ public VMS* KrlMmGetCurrVMS()
     return KrlMmGetRootVMemSPaceAddr();
 }
 
-private VPB* ForMapingGetVPBOnVAD(VAD* vad)
+private VPB* ForMappingGetVPBOnVAD(VAD* vad)
 {
 	VPB* box = NULL;
 	IF_NULL_RETURN_NULL(vad);

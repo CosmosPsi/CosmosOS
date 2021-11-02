@@ -170,6 +170,6 @@ private Addr KrlVMemAllocRealize(VMS* vms, Addr start, Size size, U64 access, UI
 public Bool KrlVMemFree(VMS* vms, Addr start, Size size);
 public Addr KrlVMemAlloc(VMS* vms, Addr start, Size size, U64 access, UInt type);
 public VMS* KrlMmGetCurrVMS();
-private VPB* ForMapingGetVPBOnVAD(VAD* vad);
+private VPB* ForMappingGetVPBOnVAD(VAD* vad);
 public Bool KrlMmVMemInit();
 #endif
