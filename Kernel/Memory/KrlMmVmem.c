@@ -800,6 +800,18 @@ private Addr KrlVMemMappingRealize(VMS* vms, VAD* vad, VPB* box, Addr start, Siz
     return KrlVMemMappingRealizeCore(vms, vad, box, start, end, flags);
 }
 
+public Addr KrlVMemMapping(VMS* vms, VAD* vad, Addr start, Size size, U64 flags)
+{
+	VPB* box = NULL;
+    IF_NULL_RETURN_NULL(vms);
+    IF_NULL_RETURN_NULL(vad);
+    IF_NULL_RETURN_NULL(start);
+
+    box = vad->PMSADBox;
+    IF_NULL_RETURN_NULL(box);
+	return KrlVMemMappingRealize(vms, vad, box, start, size, flags);
+}
+
 public Bool KrlMmVMemInit()
 {
     VBM* vboxmgr = NULL;
