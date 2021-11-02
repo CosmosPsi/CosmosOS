@@ -706,6 +706,22 @@ public VMS* KrlMmGetCurrVMS()
     return KrlMmGetRootVMemSPaceAddr();
 }
 
+private VPB* ForMapingGetVPBOnVAD(VAD* vad)
+{
+	VPB* box = NULL;
+	IF_NULL_RETURN_NULL(vad);
+
+	if(NULL != vad->PMSADBox)
+	{
+		return vad->PMSADBox;
+	}
+	box = KrlVMemGetVPB();
+	IF_NULL_RETURN_NULL(box);
+
+	vad->PMSADBox = box;
+	return vad->PMSADBox;
+}
+
 public Bool KrlMmVMemInit()
 {
     VBM* vboxmgr = NULL;
