@@ -173,5 +173,6 @@ public VMS* KrlMmGetCurrVMS();
 private VPB* ForMappingGetVPBOnVAD(VAD* vad);
 private VAD* ForMappingFindVADOnVAM(VAM* vam, Addr vaddr);
 private Bool KrlVMemHandPermissionFail(VMS* vms, VAM* vam, Addr vaddr);
+private Addr KrlVMemMappingRealizeCore(VMS* vms, VAD* vad, VPB* box, Addr start, Addr end, U64 flags);
 public Bool KrlMmVMemInit();
 #endif

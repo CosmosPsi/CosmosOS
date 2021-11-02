@@ -766,6 +766,32 @@ private Bool KrlVMemHandPermissionFail(VMS* vms, VAM* vam, Addr vaddr)
     return FALSE;
 }
 
+private Addr KrlVMemMappingRealizeCore(VMS* vms, VAD* vad, VPB* box, Addr start, Addr end, U64 flags)
+{
+    Addr phyadr = NULL;
+	Bool rets = TRUE;
+	MMU* mmu = NULL;
+    PMSAD* msad = NULL;
+    mmu = &vms->Mmu;
+	box = vad->PMSADBox;
+    IF_NULL_RETURN_NULL(box);
+
+	for(Addr vadr = start; vadr < end; vadr += VMAP_MIN_SIZE)
+	{
+        msad = NewUserPMSADsForVMemMapping(vms, box);
+        if(NULL != msad)
+        {
+            phyadr = PMSADRetPAddr(msad);
+            if(HalMMUTranslation(mmu, vadr, phyadr, flags) == FALSE)
+            {
+                rets = DelUserPMSADsForVMemUnMapping(vms, box, msad, phyadr);
+                IF_NEQ_DEAD(TRUE, rets, "Call DelUserPMSADsForVMemUnMapping Fail\n");
+            }
+        }
+	}
+    return phyadr;
+}
+
 public Bool KrlMmVMemInit()
 {
     VBM* vboxmgr = NULL;
