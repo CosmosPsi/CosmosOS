@@ -17,4 +17,10 @@ typedef struct ELOCK
     // SEM
 }ELock;
 
+typedef struct EXECUTORHEAD
+{
+     UInt ExecutorNR;
+     List ExecutorLists;
+}ExecutorHead;
+
 #endif
