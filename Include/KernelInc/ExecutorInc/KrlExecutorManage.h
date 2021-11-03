@@ -23,4 +23,18 @@ typedef struct EXECUTORHEAD
      List ExecutorLists;
 }ExecutorHead;
 
+typedef struct EXECUTORBOX
+{
+    ELock Lock;
+	U64 Status;
+	U64 Flags;
+    ExecutorHead NewHead;
+    ExecutorHead RunHead;
+    ExecutorHead SleepHead;
+    ExecutorHead BlockHead;
+    ExecutorHead WaitHead;
+    ExecutorHead DeadHead;
+    ExecutorHead CacheHead;
+}ExecutorBox;
+
 #endif
