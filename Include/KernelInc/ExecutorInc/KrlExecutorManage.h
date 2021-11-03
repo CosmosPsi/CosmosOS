@@ -46,4 +46,13 @@ typedef struct EXECUTORNODE
     ExecutorBox ExecutorBoxor;
 }ExecutorNode;
 
+typedef struct GEXECUTORMANAGE
+{
+    ELock Lock;
+	U64 Status;
+	U64 Flags;
+    ExecutorNode DefaultExecutorNode;
+    ExecutorNode ExecutorNodePtrArr[EXECUTORNODE_MAX];
+}GExecutorManage;
+
 #endif
