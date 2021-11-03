@@ -37,4 +37,13 @@ typedef struct EXECUTORBOX
     ExecutorHead CacheHead;
 }ExecutorBox;
 
+typedef struct EXECUTORNODE
+{
+    ELock Lock;
+	U64 Status;
+	U64 Flags;
+    UInt ExecutorNR;
+    ExecutorBox ExecutorBoxor;
+}ExecutorNode;
+
 #endif
