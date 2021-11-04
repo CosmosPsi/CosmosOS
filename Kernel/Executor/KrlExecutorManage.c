@@ -25,6 +25,21 @@ private void ExecutorHeadInit(ExecutorHead* init)
     return;
 }
 
+private void ExecutorBoxInit(ExecutorBox* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ELockInit(&init->Lock);
+    ExecutorHeadInit(&init->NewHead);
+    ExecutorHeadInit(&init->RunHead);
+    ExecutorHeadInit(&init->SleepHead);
+    ExecutorHeadInit(&init->BlockHead);
+    ExecutorHeadInit(&init->WaitHead);
+    ExecutorHeadInit(&init->DeadHead);
+    ExecutorHeadInit(&init->CacheHead);
+    return;
+}
+
 public void KrlExLocked(ELock* lock)
 {
     IF_NULL_DEAD(lock);
