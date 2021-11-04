@@ -74,6 +74,10 @@ SECTIONS
         .mem.data ALIGN(4) : AT(ADDR(.mem.data)-VIRTUAL_ADDRESS) { *(.mem.data) }
  	EndMEMData = .;
 
+    BeginExecutorData = .;
+        .executor.data ALIGN(4) : AT(ADDR(.executor.data)-VIRTUAL_ADDRESS) { *(.executor.data) }
+ 	EndExecutorData = .;
+    
 	BeginData = .;
         .data ALIGN(4) : AT(ADDR(.data)-VIRTUAL_ADDRESS) { *(.data) *(.bss) }
  	EndData = .;
