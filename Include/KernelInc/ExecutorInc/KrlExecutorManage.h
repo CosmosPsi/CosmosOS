@@ -51,7 +51,7 @@ typedef struct GEXECUTORMANAGE
     ELock Lock;
 	U64 Status;
 	U64 Flags;
-    ExecutorNode DefaultExecutorNode;
+    ExecutorNode* DefaultExecutorNode;
     ExecutorNode ExecutorNodePtrArr[EXECUTORNODE_MAX];
 }GExecutorManage;
 
