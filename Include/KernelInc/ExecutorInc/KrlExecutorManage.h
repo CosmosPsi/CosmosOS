@@ -57,5 +57,6 @@ typedef struct GEXECUTORMANAGE
 
 
 private void ELockInit(ELock* init);
-
+public void KrlExLocked(ELock* lock);
+public void KrlExUnLock(ELock* lock);
 #endif

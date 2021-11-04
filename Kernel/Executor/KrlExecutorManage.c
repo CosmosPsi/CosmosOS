@@ -15,3 +15,16 @@ private void ELockInit(ELock* init)
     return;
 }
 
+public void KrlExLocked(ELock* lock)
+{
+    IF_NULL_DEAD(lock);
+    HalSPinLock(&lock->Locks);
+    return;
+}
+
+public void KrlExUnLock(ELock* lock)
+{
+    IF_NULL_DEAD(lock);
+    HalUnSPinLock(&lock->Locks);
+    return;
+}
