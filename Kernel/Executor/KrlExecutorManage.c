@@ -40,6 +40,15 @@ private void ExecutorBoxInit(ExecutorBox* init)
     return;
 }
 
+private void ExecutorNodeInit(ExecutorNode* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ELockInit(&init->Lock);
+    ExecutorBoxInit(&init->ExecutorBoxor);
+    return;
+}
+
 public void KrlExLocked(ELock* lock)
 {
     IF_NULL_DEAD(lock);
