@@ -55,6 +55,10 @@ typedef struct GEXECUTORMANAGE
     ExecutorNode ExecutorNodePtrArr[EXECUTORNODE_MAX];
 }GExecutorManage;
 
+KLINE GExecutorManage* KrlExGetGExecutorManageDataAddr()
+{
+    return &GExecutorManageData;
+}
 
 private void ELockInit(ELock* init);
 public void KrlExLocked(ELock* lock);
