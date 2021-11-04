@@ -60,6 +60,11 @@ KLINE GExecutorManage* KrlExGetGExecutorManageDataAddr()
     return &GExecutorManageData;
 }
 
+KLINE ExecutorNode* KrlExGetDefaultExecutorNodeAddr()
+{
+    return &DefaultExecutorNode;
+}
+
 private void ELockInit(ELock* init);
 private void ExecutorHeadInit(ExecutorHead* init);
 private void ExecutorBoxInit(ExecutorBox* init);

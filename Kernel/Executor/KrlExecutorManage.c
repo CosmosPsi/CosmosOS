@@ -9,6 +9,7 @@
 #include "KrlExecutorManage.h"
 
 DefinedExecutorData(GExecutorManage, GExecutorManageData);
+DefinedExecutorData(ExecutorNode, DefaultExecutorNode);
 
 private void ELockInit(ELock* init)
 {
