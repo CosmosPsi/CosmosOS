@@ -72,3 +72,20 @@ public void KrlExUnLock(ELock* lock)
     return;
 }
 
+public Bool KrlExecutorManageInit()
+{
+    GExecutorManage* gexm = NULL;
+    ExecutorNode* exnode = NULL;
+    gexm = KrlExGetGExecutorManageDataAddr();
+    IF_NULL_RETURN_FALSE(gexm);
+
+    exnode = KrlExGetDefaultExecutorNodeAddr();
+    IF_NULL_RETURN_FALSE(exnode);
+    
+    GExecutorManageInit(gexm);
+    ExecutorNodeInit(exnode);
+
+    gexm->DefaultExecutorNode = exnode;
+    
+    return TRUE;
+}
