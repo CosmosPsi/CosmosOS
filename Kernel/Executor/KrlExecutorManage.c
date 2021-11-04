@@ -8,6 +8,8 @@
 #include "HalSync.h"
 #include "KrlExecutorManage.h"
 
+DefinedExecutorData(GExecutorManage, GExecutorManageData);
+
 private void ELockInit(ELock* init)
 {
     IF_NULL_RETURN(init);

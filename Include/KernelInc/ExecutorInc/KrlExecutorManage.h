@@ -9,7 +9,7 @@
 
 #define EXECUTORNODE_MAX (64)
 #define EXECUTORDATA_SECTION __attribute__((section(".executor.data")))
-#define DefinedEXECUTORData(vartype,varname) EXECUTORDATA_SECTION vartype varname
+#define DefinedExecutorData(vartype,varname) EXECUTORDATA_SECTION vartype varname
 
 typedef struct ELOCK
 {
