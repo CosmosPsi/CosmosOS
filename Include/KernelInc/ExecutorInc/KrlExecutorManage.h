@@ -64,6 +64,7 @@ private void ELockInit(ELock* init);
 private void ExecutorHeadInit(ExecutorHead* init);
 private void ExecutorBoxInit(ExecutorBox* init);
 private void ExecutorNodeInit(ExecutorNode* init);
+private void GExecutorManageInit(GExecutorManage* init);
 public void KrlExLocked(ELock* lock);
 public void KrlExUnLock(ELock* lock);
 #endif

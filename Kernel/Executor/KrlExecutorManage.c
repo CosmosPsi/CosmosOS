@@ -49,6 +49,14 @@ private void ExecutorNodeInit(ExecutorNode* init)
     return;
 }
 
+private void GExecutorManageInit(GExecutorManage* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ELockInit(&init->Lock);
+    return;
+}
+
 public void KrlExLocked(ELock* lock)
 {
     IF_NULL_DEAD(lock);
