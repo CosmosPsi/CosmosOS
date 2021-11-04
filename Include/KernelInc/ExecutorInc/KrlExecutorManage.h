@@ -55,4 +55,7 @@ typedef struct GEXECUTORMANAGE
     ExecutorNode ExecutorNodePtrArr[EXECUTORNODE_MAX];
 }GExecutorManage;
 
+
+private void ELockInit(ELock* init);
+
 #endif
