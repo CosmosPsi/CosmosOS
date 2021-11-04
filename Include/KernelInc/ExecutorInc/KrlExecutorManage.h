@@ -23,6 +23,8 @@ typedef struct EXECUTORHEAD
      List ExecutorLists;
 }ExecutorHead;
 
+
+
 typedef struct EXECUTORBOX
 {
     ELock Lock;
@@ -61,6 +63,7 @@ KLINE GExecutorManage* KrlExGetGExecutorManageDataAddr()
 }
 
 private void ELockInit(ELock* init);
+private void ExecutorHeadInit(ExecutorHead* init);
 public void KrlExLocked(ELock* lock);
 public void KrlExUnLock(ELock* lock);
 #endif

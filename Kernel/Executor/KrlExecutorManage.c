@@ -17,6 +17,14 @@ private void ELockInit(ELock* init)
     return;
 }
 
+private void ExecutorHeadInit(ExecutorHead* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ListInit(&init->ExecutorLists);
+    return;
+}
+
 public void KrlExLocked(ELock* lock)
 {
     IF_NULL_DEAD(lock);
@@ -30,3 +38,4 @@ public void KrlExUnLock(ELock* lock)
     HalUnSPinLock(&lock->Locks);
     return;
 }
+
