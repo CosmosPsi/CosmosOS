@@ -40,5 +40,20 @@ typedef struct THREADBOX
     ThreadHead CacheHead;
 }ThreadBox;
 
+typedef struct EXECUTOR
+{
+    List Lists;
+    ELock Lock;
+	U64 Status;
+	U64 Flags;
+    UInt Type;
+	UInt RunStatus;
+    ExAffiliation Affiliation;
+    ThreadBox ExThreadBox;
+    VMS ExeVMS;   
+    void* Res;
+    void* Priv;
+    void* Ext;
+}Executor;
 
 #endif
