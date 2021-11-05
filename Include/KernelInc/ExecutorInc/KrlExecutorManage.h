@@ -6,7 +6,7 @@
 #ifndef _KRLEXECUTORMANAGEHEAD
 #define _KRLEXECUTORMANAGEHEAD
 #include "HalSync.h"
-
+#include "KrlExecutor.h"
 #define EXECUTORNODE_MAX (64)
 #define EXECUTORDATA_SECTION __attribute__((section(".executor.data")))
 #define DefinedExecutorData(vartype,varname) EXECUTORDATA_SECTION vartype varname
@@ -44,7 +44,7 @@ typedef struct EXECUTORNODE
 	U64 Status;
 	U64 Flags;
     UInt ExecutorNR;
-    Executor* CurrExecutor;
+    Executor* CurrRunExecutor;
     ExecutorBox ExecutorBoxor;
 }ExecutorNode;
 
