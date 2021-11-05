@@ -19,6 +19,11 @@ typedef struct EXAFFILIATION
     //Group
 }ExAffiliation;
 
+typedef struct THREADHEAD
+{
+     UInt ThreadNR;
+     List ThreadLists;
+}ThreadHead;
 
 
 #endif
