@@ -8,6 +8,15 @@
 
 #include "KrlExecutorManage.h"
 
+#define EXECUTOR_INIT_STATUS (0)
+#define EXECUTOR_NEW_STATUS (2)
+#define EXECUTOR_RUN_STATUS (4)
+#define EXECUTOR_SLEEP_STATUS (8)
+#define EXECUTOR_BLOCK_STATUS (16)
+#define EXECUTOR_WAIT_STATUS (32)
+#define EXECUTOR_DEAD_STATUS (64)
+#define EXECUTOR_CACHE_STATUS (128)
+
 typedef struct EXAFFILIATION
 {
     UInt CPUID;
