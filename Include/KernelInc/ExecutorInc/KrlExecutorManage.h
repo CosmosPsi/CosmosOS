@@ -28,6 +28,7 @@ typedef struct EXECUTORBOX
     ELock Lock;
 	U64 Status;
 	U64 Flags;
+    UInt ExecutorSumNR;
     ExecutorHead NewHead;
     ExecutorHead RunHead;
     ExecutorHead SleepHead;
@@ -54,6 +55,9 @@ typedef struct GEXECUTORMANAGE
     ExecutorNode* DefaultExecutorNode;
     ExecutorNode ExecutorNodePtrArr[EXECUTORNODE_MAX];
 }GExecutorManage;
+
+DefinedExecutorData(GExecutorManage, GExecutorManageData);
+DefinedExecutorData(ExecutorNode, DefaultExecutorNode);
 
 KLINE GExecutorManage* KrlExGetGExecutorManageDataAddr()
 {
