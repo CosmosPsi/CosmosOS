@@ -59,7 +59,7 @@ typedef struct EXECUTOR
 	UInt RunStatus;
     ExAffiliation Affiliation;
     ThreadBox ExThreadBox;
-    VMS ExeVMS;   
+    VMS ExVMS;   
     void* Res;
     void* Priv;
     void* Ext;
