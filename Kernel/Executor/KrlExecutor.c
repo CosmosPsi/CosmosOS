@@ -32,3 +32,11 @@ private void ExAffiliationInit(ExAffiliation* init)
     INIT_OBJOFPTR_ZERO(init);
     return;
 }
+
+private void ThreadHeadInit(ThreadHead* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ListInit(&init->ThreadLists);
+    return;
+}
