@@ -74,9 +74,10 @@ typedef struct EXECUTOR
     ThreadBox ExThreadBox;
     VMS ExVMS;
     ExResourceBox ResourceBox;
-    void* Res;
     void* Priv;
     void* Ext;
 }Executor;
+
+private void ExNameInit(ExName* init);
 
 #endif
