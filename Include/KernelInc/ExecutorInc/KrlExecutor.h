@@ -24,6 +24,10 @@ typedef struct EXNAME
     Char  NameArr[EXNAME_CHARS_MAX];
 }ExName;
 
+typedef struct EXRESOURCEBOX
+{
+    void* Res;
+}ExResourceBox;
 
 typedef struct EXAFFILIATION
 {
@@ -68,7 +72,8 @@ typedef struct EXECUTOR
     ExName Name;
     ExAffiliation Affiliation;
     ThreadBox ExThreadBox;
-    VMS ExVMS;   
+    VMS ExVMS;
+    ExResourceBox ResourceBox;
     void* Res;
     void* Priv;
     void* Ext;
