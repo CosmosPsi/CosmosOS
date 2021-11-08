@@ -17,6 +17,14 @@
 #define EXECUTOR_DEAD_STATUS (64)
 #define EXECUTOR_CACHE_STATUS (128)
 
+#define EXNAME_CHARS_MAX (64)
+typedef struct EXNAME
+{
+    Char* NamePtr;
+    Char  NameArr[EXNAME_CHARS_MAX];
+}ExName;
+
+
 typedef struct EXAFFILIATION
 {
     UInt CPUID;
@@ -57,6 +65,7 @@ typedef struct EXECUTOR
 	U64 Flags;
     UInt Type;
 	UInt RunStatus;
+    ExName Name;
     ExAffiliation Affiliation;
     ThreadBox ExThreadBox;
     VMS ExVMS;   
