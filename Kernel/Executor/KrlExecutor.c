@@ -79,3 +79,13 @@ public Bool KrlExSetAffiliationExNode(Executor* executor, ExecutorNode* exnode)
     KrlExUnLock(&executor->Lock);
     return TRUE;
 }
+
+public Bool KrlExSetAffiliationExBox(Executor* executor, ExecutorBox* exbox)
+{
+    IF_NULL_RETURN_FALSE(executor);
+    IF_NULL_RETURN_FALSE(exbox);
+    KrlExLocked(&executor->Lock);
+    executor->Affiliation.ExecutorBoxPtr = exbox;
+    KrlExUnLock(&executor->Lock);
+    return TRUE;
+}
