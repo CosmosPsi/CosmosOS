@@ -55,3 +55,17 @@ private void ThreadBoxInit(ThreadBox* init)
     ThreadHeadInit(&init->CacheHead);
     return;
 }
+
+private void ExecutorInit(Executor* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ListInit(&init->Lists);
+    ELockInit(&init->Lock);
+    ExNameInit(&init->Name);
+    ExAffiliationInit(&init->Affiliation);
+    ThreadBoxInit(&init->ExThreadBox);
+    VMSInit(&init->ExVMS);
+    ExResourceBoxInit(&init->ResourceBox);
+    return;
+}

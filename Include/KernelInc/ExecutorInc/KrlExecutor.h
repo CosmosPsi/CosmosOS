@@ -83,5 +83,6 @@ private void ExResourceBoxInit(ExResourceBox* init);
 private void ExAffiliationInit(ExAffiliation* init);
 private void ThreadHeadInit(ThreadHead* init);
 private void ThreadBoxInit(ThreadBox* init);
+private void ExecutorInit(Executor* init);
 
 #endif
