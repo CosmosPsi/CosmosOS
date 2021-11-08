@@ -80,5 +80,6 @@ typedef struct EXECUTOR
 
 private void ExNameInit(ExName* init);
 private void ExResourceBoxInit(ExResourceBox* init);
+private void ExAffiliationInit(ExAffiliation* init);
 
 #endif

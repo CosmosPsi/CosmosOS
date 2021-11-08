@@ -25,3 +25,10 @@ private void ExResourceBoxInit(ExResourceBox* init)
     INIT_OBJOFPTR_ZERO(init);
     return;
 }
+
+private void ExAffiliationInit(ExAffiliation* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    return;
+}
