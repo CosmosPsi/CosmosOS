@@ -79,5 +79,6 @@ typedef struct EXECUTOR
 }Executor;
 
 private void ExNameInit(ExName* init);
+private void ExResourceBoxInit(ExResourceBox* init);
 
 #endif

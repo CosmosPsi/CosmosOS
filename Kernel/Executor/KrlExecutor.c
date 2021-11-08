@@ -19,3 +19,9 @@ private void ExNameInit(ExName* init)
     return;
 }
 
+private void ExResourceBoxInit(ExResourceBox* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    return;
+}
