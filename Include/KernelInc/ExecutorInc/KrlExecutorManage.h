@@ -79,5 +79,6 @@ public void KrlExLocked(ELock* lock);
 public void KrlExUnLock(ELock* lock);
 private Bool KrlExAddExecutorToExecutorHead(GExecutorManage* gexem, ExecutorNode* exnode, ExecutorBox* box, ExecutorHead* exhead, Executor* executor);
 private Bool KrlExDefaultAddExecutorRealizeCore(GExecutorManage* gexem, ExecutorNode* exnode, Executor* executor);
+private Bool KrlExDefaultAddExecutorRealize(Executor* executor);
 public Bool KrlExecutorManageInit();
 #endif

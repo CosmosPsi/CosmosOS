@@ -119,6 +119,26 @@ private Bool KrlExDefaultAddExecutorRealizeCore(GExecutorManage* gexem, Executor
     return rets;
 }
 
+private Bool KrlExDefaultAddExecutorRealize(Executor* executor)
+{
+    Bool rets = FALSE;
+    GExecutorManage* gexm = NULL;
+    ExecutorNode* exnode = NULL;
+    gexm = KrlExGetGExecutorManageDataAddr();
+    IF_NULL_RETURN_FALSE(gexm);
+
+    exnode = KrlExGetDefaultExecutorNodeAddr();
+    IF_NULL_RETURN_FALSE(exnode);
+    KrlExLocked(&gexm->Lock);
+    KrlExLocked(&exnode->Lock);
+
+    rets = KrlExDefaultAddExecutorRealizeCore(gexm, exnode, executor);
+
+    KrlExUnLock(&exnode->Lock);
+    KrlExUnLock(&gexm->Lock);
+    return rets;
+}
+
 public Bool KrlExecutorManageInit()
 {
     GExecutorManage* gexm = NULL;
