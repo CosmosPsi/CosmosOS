@@ -40,3 +40,18 @@ private void ThreadHeadInit(ThreadHead* init)
     ListInit(&init->ThreadLists);
     return;
 }
+
+private void ThreadBoxInit(ThreadBox* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ELockInit(&init->Lock);
+    ThreadHeadInit(&init->NewHead);
+    ThreadHeadInit(&init->RunHead);
+    ThreadHeadInit(&init->SleepHead);
+    ThreadHeadInit(&init->BlockHead);
+    ThreadHeadInit(&init->WaitHead);
+    ThreadHeadInit(&init->DeadHead);
+    ThreadHeadInit(&init->CacheHead);
+    return;
+}
