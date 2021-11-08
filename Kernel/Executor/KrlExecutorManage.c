@@ -86,6 +86,39 @@ private Bool KrlExAddExecutorToExecutorHead(GExecutorManage* gexem, ExecutorNode
     return TRUE;
 }
 
+private Bool KrlExDefaultAddExecutorRealizeCore(GExecutorManage* gexem, ExecutorNode* exnode, Executor* executor)
+{
+    Bool rets = FALSE;
+    switch(executor->RunStatus)
+    {
+    case EXECUTOR_NEW_STATUS:
+        rets = KrlExAddExecutorToExecutorHead(gexem, exnode, &exnode->ExecutorBoxor, &exnode->ExecutorBoxor.NewHead, executor);
+        break;
+    case EXECUTOR_RUN_STATUS:
+        rets = KrlExAddExecutorToExecutorHead(gexem, exnode, &exnode->ExecutorBoxor, &exnode->ExecutorBoxor.RunHead, executor);
+        break;
+    case EXECUTOR_SLEEP_STATUS:
+        rets = KrlExAddExecutorToExecutorHead(gexem, exnode, &exnode->ExecutorBoxor, &exnode->ExecutorBoxor.SleepHead, executor);
+        break;
+    case EXECUTOR_BLOCK_STATUS:
+        rets = KrlExAddExecutorToExecutorHead(gexem, exnode, &exnode->ExecutorBoxor, &exnode->ExecutorBoxor.BlockHead, executor);
+        break;
+    case EXECUTOR_WAIT_STATUS:
+        rets = KrlExAddExecutorToExecutorHead(gexem, exnode, &exnode->ExecutorBoxor, &exnode->ExecutorBoxor.WaitHead, executor);
+        break;
+    case EXECUTOR_DEAD_STATUS:
+        rets = KrlExAddExecutorToExecutorHead(gexem, exnode, &exnode->ExecutorBoxor, &exnode->ExecutorBoxor.DeadHead, executor);        
+        break;
+    case EXECUTOR_CACHE_STATUS:
+        rets = KrlExAddExecutorToExecutorHead(gexem, exnode, &exnode->ExecutorBoxor, &exnode->ExecutorBoxor.CacheHead, executor);
+        break;
+    default:
+        rets = FALSE;
+        break;
+    }
+    return rets;
+}
+
 public Bool KrlExecutorManageInit()
 {
     GExecutorManage* gexm = NULL;
