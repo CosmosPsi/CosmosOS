@@ -139,6 +139,12 @@ private Bool KrlExDefaultAddExecutorRealize(Executor* executor)
     return rets;
 }
 
+public Bool KrlExDefaultAddExecutor(Executor* executor)
+{
+    IF_NULL_RETURN_FALSE(executor);
+    return KrlExDefaultAddExecutorRealize(executor);
+}
+
 public Bool KrlExecutorManageInit()
 {
     GExecutorManage* gexm = NULL;
