@@ -77,5 +77,6 @@ private void ExecutorNodeInit(ExecutorNode* init);
 private void GExecutorManageInit(GExecutorManage* init);
 public void KrlExLocked(ELock* lock);
 public void KrlExUnLock(ELock* lock);
+private Bool KrlExAddExecutorToExecutorHead(GExecutorManage* gexem, ExecutorNode* exnode, ExecutorBox* box, ExecutorHead* exhead, Executor* executor);
 public Bool KrlExecutorManageInit();
 #endif

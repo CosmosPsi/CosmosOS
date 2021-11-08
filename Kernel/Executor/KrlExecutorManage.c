@@ -7,6 +7,7 @@
 #include "List.h"
 #include "HalSync.h"
 #include "KrlExecutorManage.h"
+#include "KrlExecutor.h"
 
 DefinedExecutorData(GExecutorManage, GExecutorManageData);
 DefinedExecutorData(ExecutorNode, DefaultExecutorNode);
@@ -70,6 +71,19 @@ public void KrlExUnLock(ELock* lock)
     IF_NULL_DEAD(lock);
     HalUnSPinLock(&lock->Locks);
     return;
+}
+
+private Bool KrlExAddExecutorToExecutorHead(GExecutorManage* gexem, ExecutorNode* exnode, ExecutorBox* box, ExecutorHead* exhead, Executor* executor)
+{
+    KrlExLocked(&box->Lock);
+    ListAdd(&executor->Lists, &exhead->ExecutorLists);
+    exhead->ExecutorNR++;
+    box->ExecutorSumNR++;
+    exnode->ExecutorNR++;
+    KrlExUnLock(&box->Lock);
+    KrlExSetAffiliationExBox(executor, box);
+    KrlExSetAffiliationExNode(executor, exnode);
+    return TRUE;
 }
 
 public Bool KrlExecutorManageInit()
