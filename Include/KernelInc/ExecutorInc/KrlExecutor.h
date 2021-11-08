@@ -84,5 +84,6 @@ private void ExAffiliationInit(ExAffiliation* init);
 private void ThreadHeadInit(ThreadHead* init);
 private void ThreadBoxInit(ThreadBox* init);
 private void ExecutorInit(Executor* init);
+public Bool KrlExSetAffiliationExNode(Executor* executor, ExecutorNode* exnode);
 
 #endif

@@ -69,3 +69,13 @@ private void ExecutorInit(Executor* init)
     ExResourceBoxInit(&init->ResourceBox);
     return;
 }
+
+public Bool KrlExSetAffiliationExNode(Executor* executor, ExecutorNode* exnode)
+{
+    IF_NULL_RETURN_FALSE(executor);
+    IF_NULL_RETURN_FALSE(exnode);
+    KrlExLocked(&executor->Lock);
+    executor->Affiliation.ExecutorNodePtr = exnode;
+    KrlExUnLock(&executor->Lock);
+    return TRUE;
+}
