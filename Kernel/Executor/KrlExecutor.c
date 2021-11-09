@@ -76,8 +76,17 @@ private Executor* NewExecutor()
 
     executor = (Executor*)KrlMmNew(sizeof(Executor));
     IF_NULL_RETURN_NULL(executor);
-    
+
     ExecutorInit(executor);
+    return executor;
+}
+
+private Executor* KrlExCreateExecutorRealizeCore(Executor* executor)
+{
+    Bool rets = FALSE;
+    IF_NULL_RETURN_NULL(executor);
+    rets = KrlExDefaultAddExecutor(executor);
+    IF_EQT_RETURN(FALSE, rets, NULL);
     return executor;
 }
 
