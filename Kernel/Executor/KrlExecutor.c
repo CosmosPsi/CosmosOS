@@ -90,6 +90,14 @@ private Executor* KrlExCreateExecutorRealizeCore(Executor* executor)
     return executor;
 }
 
+private Executor* KrlExCreateExecutorRealize()
+{
+    Executor* executor = NULL;
+    executor = NewExecutor();
+    IF_NULL_RETURN_NULL(executor);
+    return KrlExCreateExecutorRealizeCore(executor);
+}
+
 public Bool KrlExSetAffiliationExNode(Executor* executor, ExecutorNode* exnode)
 {
     IF_NULL_RETURN_FALSE(executor);

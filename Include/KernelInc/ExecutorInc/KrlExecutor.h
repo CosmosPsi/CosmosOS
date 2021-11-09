@@ -86,6 +86,7 @@ private void ThreadBoxInit(ThreadBox* init);
 private void ExecutorInit(Executor* init);
 private Executor* NewExecutor();
 private Executor* KrlExCreateExecutorRealizeCore(Executor* executor);
+private Executor* KrlExCreateExecutorRealize();
 public Bool KrlExSetAffiliationExNode(Executor* executor, ExecutorNode* exnode);
 public Bool KrlExSetAffiliationExBox(Executor* executor, ExecutorBox* exbox);
 
