@@ -70,6 +70,17 @@ private void ExecutorInit(Executor* init)
     return;
 }
 
+private Executor* NewExecutor()
+{
+    Executor* executor = NULL;
+
+    executor = (Executor*)KrlMmNew(sizeof(Executor));
+    IF_NULL_RETURN_NULL(executor);
+    
+    ExecutorInit(executor);
+    return executor;
+}
+
 public Bool KrlExSetAffiliationExNode(Executor* executor, ExecutorNode* exnode)
 {
     IF_NULL_RETURN_FALSE(executor);
