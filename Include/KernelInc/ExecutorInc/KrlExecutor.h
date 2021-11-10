@@ -26,7 +26,7 @@ typedef struct EXNAME
 
 typedef struct EXRESOURCEBOX
 {
-    void* Res;
+    ExecutorRes* Res;
 }ExResourceBox;
 
 typedef struct EXAFFILIATION
