@@ -36,4 +36,6 @@ typedef struct EXECUTORRES
     void* ResHandArr[EXRES_NR_MAX];
 }ExecutorRes;
 
+private void ERMInit(ERM* init);
+
 #endif
