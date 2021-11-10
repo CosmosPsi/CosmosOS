@@ -47,6 +47,13 @@ private ExecutorRes* NewExecutorRes()
     return res;
 }
 
+private Bool DelExecutorRes(ExecutorRes* res)
+{
+    IF_NULL_RETURN_FALSE(res);
+	
+	return KrlMmDel((void*)res);
+}
+
 public Bool KrlExecutorResInit()
 {
     ERM* erm = NULL;
