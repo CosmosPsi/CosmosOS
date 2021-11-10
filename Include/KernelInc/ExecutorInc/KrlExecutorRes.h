@@ -46,6 +46,7 @@ private void ERMInit(ERM* init);
 private void ExecutorResInit(ExecutorRes* init);
 private ExecutorRes* NewExecutorRes();
 private Bool DelExecutorRes(ExecutorRes* res);
+public ExecutorRes* KrlExGetExecutorRes();
 public Bool KrlExecutorResInit();
 
 #endif

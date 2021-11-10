@@ -54,6 +54,48 @@ private Bool DelExecutorRes(ExecutorRes* res)
 	return KrlMmDel((void*)res);
 }
 
+public ExecutorRes* KrlExGetExecutorRes()
+{
+    ExecutorRes* res = NULL;
+	ERM* resmgr = NULL;
+    
+    resmgr = KrlExGetERMDataAddr();
+    IF_NULL_RETURN_NULL(resmgr);
+
+	KrlExLocked(&resmgr->Lock);
+	if(0 < resmgr->ERCacheNR)
+	{
+		if(ListIsEmptyCareful(&resmgr->ERCacheHead) == FALSE)
+		{
+			res = ListFirstOne(&resmgr->ERCacheHead, ExecutorRes, Lists);
+			ListDel(&res->Lists);
+			resmgr->ERCacheNR--;
+			
+			ExecutorResInit(res);
+			ListAdd(&res->Lists, &resmgr->ERHead);
+			resmgr->ERNR++;
+			RefCountInc(&res->Count);
+			//res = res;
+			goto out; 
+		}
+	}
+
+	res = NewExecutorRes();
+	if(NULL == res)
+	{
+		res = NULL;
+		goto out;
+	}
+
+	ListAdd(&res->Lists, &resmgr->ERHead);
+	resmgr->ERNR++;
+	RefCountInc(&res->Count);
+
+out:
+	KrlExUnLock(&resmgr->Lock);	
+	return res;
+}
+
 public Bool KrlExecutorResInit()
 {
     ERM* erm = NULL;
