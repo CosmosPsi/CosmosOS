@@ -24,3 +24,13 @@ private void TransferInit(Transfer* init)
     return;
 }
 
+private void TransferNodeInit(TransferNode* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ListInit(&init->Lists);
+    ELockInit(&init->Lock);
+    ListInit(&init->TransferLists);
+    RBRootInit(&init->Root);
+    return;
+}
