@@ -34,6 +34,7 @@ private void ExecutorResInit(ExecutorRes* init)
     INIT_OBJOFPTR_ZERO(init);
     ListInit(&init->Lists);
     ELockInit(&init->Lock);
+    RefCountInit(&init->Count);
     return;
 }
 
