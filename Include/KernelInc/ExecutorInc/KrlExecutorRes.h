@@ -31,6 +31,7 @@ typedef struct EXECUTORRES
     ELock Lock;
 	U64 Status;
 	U64 Flags;
+    RefCount Count;
     UInt CurrResIndex;
     UInt NextResIndex;
     void* ResHandArr[EXRES_NR_MAX];
