@@ -38,6 +38,15 @@ private void ExecutorResInit(ExecutorRes* init)
     return;
 }
 
+private ExecutorRes* NewExecutorRes()
+{
+    ExecutorRes* res = NULL;
+    res = (ExecutorRes*)KrlMmNew(sizeof(ExecutorRes));
+    IF_NULL_RETURN_NULL(res);
+    ExecutorResInit(res);
+    return res;
+}
+
 public Bool KrlExecutorResInit()
 {
     ERM* erm = NULL;

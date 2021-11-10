@@ -44,6 +44,7 @@ KLINE ERM* KrlExGetERMDataAddr()
 
 private void ERMInit(ERM* init);
 private void ExecutorResInit(ExecutorRes* init);
+private ExecutorRes* NewExecutorRes();
 public Bool KrlExecutorResInit();
 
 #endif
