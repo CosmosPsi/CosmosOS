@@ -36,3 +36,12 @@ private void ExecutorResInit(ExecutorRes* init)
     ELockInit(&init->Lock);
     return;
 }
+
+public Bool KrlExecutorResInit()
+{
+    ERM* erm = NULL;
+    erm = KrlExGetERMDataAddr();
+    IF_NULL_RETURN_FALSE(erm);
+    ERMInit(erm);
+    return TRUE;
+}
