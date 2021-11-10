@@ -37,5 +37,6 @@ typedef struct EXECUTORRES
 }ExecutorRes;
 
 private void ERMInit(ERM* init);
+private void ExecutorResInit(ExecutorRes* init);
 
 #endif

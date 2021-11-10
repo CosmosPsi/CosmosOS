@@ -17,10 +17,20 @@ private void ERMInit(ERM* init)
 {
     IF_NULL_RETURN(init);
     INIT_OBJOFPTR_ZERO(init);
+    ELockInit(&init->Lock);
     ListInit(&init->Lists);
     ListInit(&init->ERHead);
     ListInit(&init->ERCacheHead);
     init->ERCacheMin = ER_CACHE_MIN;
     init->ERCacheMax = ER_CACHE_MAX;
+    return;
+}
+
+private void ExecutorResInit(ExecutorRes* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ListInit(&init->Lists);
+    ELockInit(&init->Lock);
     return;
 }
