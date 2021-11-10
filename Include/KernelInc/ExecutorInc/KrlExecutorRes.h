@@ -25,4 +25,15 @@ typedef struct ERM
 	void* Ext;
 }ERM;
 
+typedef struct EXECUTORRES
+{
+    List Lists;
+    ELock Lock;
+	U64 Status;
+	U64 Flags;
+    UInt CurrResIndex;
+    UInt NextResIndex;
+    void* ResHandArr[EXRES_NR_MAX];
+}ExecutorRes;
+
 #endif
