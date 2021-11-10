@@ -36,6 +36,11 @@ typedef struct EXECUTORRES
     void* ResHandArr[EXRES_NR_MAX];
 }ExecutorRes;
 
+KLINE ERM* KrlExGetERMDataAddr()
+{
+    return &ERMData;
+}
+
 private void ERMInit(ERM* init);
 private void ExecutorResInit(ExecutorRes* init);
 
