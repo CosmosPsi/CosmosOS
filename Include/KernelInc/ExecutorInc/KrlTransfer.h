@@ -24,7 +24,6 @@ typedef struct TRANSFERNODE
     void* Ext;
 }TransferNode;
 
-
 typedef struct TRANSFER
 {
     List Lists;
@@ -33,5 +32,14 @@ typedef struct TRANSFER
     RBTree Node;
     void* Thread;
 }Transfer;
+
+typedef struct TRANSFERMANAGE
+{
+    ELock Lock;
+    UInt Status;
+	UInt Flags;
+    TransferNode DefaultTransferNode;
+    TransferNode* TransferNodeArr[TRANSFER_NR_MAX];
+}TransferManage;
 
 #endif
