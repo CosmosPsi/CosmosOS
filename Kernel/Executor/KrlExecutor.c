@@ -10,6 +10,7 @@
 #include "KrlMmPool.h"
 #include "KrlMmVmem.h"
 #include "KrlExecutorManage.h"
+#include "KrlExecutorRes.h"
 #include "KrlExecutor.h"
 
 private void ExNameInit(ExName* init)
@@ -84,7 +85,11 @@ private Executor* NewExecutor()
 private Executor* KrlExCreateExecutorRealizeCore(Executor* executor)
 {
     Bool rets = FALSE;
+    ExecutorRes* res = NULL;
     IF_NULL_RETURN_NULL(executor);
+    res = KrlExGetExecutorRes();
+    IF_NULL_RETURN_FALSE(res);
+    executor->ResourceBox.Res = res;
     rets = KrlExDefaultAddExecutor(executor);
     IF_EQT_RETURN(FALSE, rets, NULL);
     return executor;
