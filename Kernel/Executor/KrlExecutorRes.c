@@ -13,6 +13,8 @@
 #include "KrlExecutor.h"
 #include "KrlExecutorRes.h"
 
+DefinedExecutorData(ERM, ERMData);
+
 private void ERMInit(ERM* init)
 {
     IF_NULL_RETURN(init);
