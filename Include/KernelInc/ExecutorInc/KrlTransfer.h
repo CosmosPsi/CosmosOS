@@ -25,5 +25,13 @@ typedef struct TRANSFERNODE
 }TransferNode;
 
 
+typedef struct TRANSFER
+{
+    List Lists;
+	UInt Status;
+	UInt Flags;
+    RBTree Node;
+    void* Thread;
+}Transfer;
 
 #endif
