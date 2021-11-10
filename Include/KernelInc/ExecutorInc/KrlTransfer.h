@@ -42,5 +42,7 @@ typedef struct TRANSFERMANAGE
 
 private void TransferInit(Transfer* init);
 private void TransferNodeInit(TransferNode* init);
+private void TransferManageInit(TransferManage* init);
+
 
 #endif

@@ -34,3 +34,12 @@ private void TransferNodeInit(TransferNode* init)
     RBRootInit(&init->Root);
     return;
 }
+
+private void TransferManageInit(TransferManage* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ELockInit(&init->Lock);
+    TransferNodeInit(&init->DefaultTransferNode);
+    return;
+}
