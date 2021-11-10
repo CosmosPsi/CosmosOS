@@ -47,6 +47,7 @@ private void ExecutorResInit(ExecutorRes* init);
 private ExecutorRes* NewExecutorRes();
 private Bool DelExecutorRes(ExecutorRes* res);
 public ExecutorRes* KrlExGetExecutorRes();
+public Bool KrlExPutExecutorRes(ExecutorRes* res);
 public Bool KrlExecutorResInit();
 
 #endif

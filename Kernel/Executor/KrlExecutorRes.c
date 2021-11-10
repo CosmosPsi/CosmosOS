@@ -96,6 +96,50 @@ out:
 	return res;
 }
 
+public Bool KrlExPutExecutorRes(ExecutorRes* res)
+{
+    ERM* resmgr = NULL;
+	Bool rets = FALSE;
+
+    IF_NULL_RETURN_FALSE(res);
+    resmgr = KrlExGetERMDataAddr();
+    IF_NULL_RETURN_FALSE(resmgr);
+
+	KrlExLocked(&resmgr->Lock);
+	
+	RefCountDec(&res->Count);
+	if(RefCountRead(&res->Count) >= 1)
+	{
+		rets = TRUE;
+		goto out;
+	}
+	
+	if(resmgr->ERCacheNR >= resmgr->ERCacheMax)
+	{
+		ListDel(&res->Lists);
+		if(DelExecutorRes(res) == FALSE)
+		{
+			rets = FALSE;
+			goto out;
+		}
+		else
+		{
+			resmgr->ERNR--;
+			rets = TRUE;
+			goto out;
+		}
+	}
+
+	ListMove(&res->Lists, &resmgr->ERCacheHead);
+	resmgr->ERCacheNR++;
+	resmgr->ERNR--;
+	
+	rets = TRUE;
+out:
+	KrlExUnLock(&resmgr->Lock);
+	return rets;
+}
+
 public Bool KrlExecutorResInit()
 {
     ERM* erm = NULL;
