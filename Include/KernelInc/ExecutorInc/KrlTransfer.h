@@ -8,7 +8,14 @@
 
 #define TRANSFER_NR_MAX (64)
 
-typedef struct TRANSFER Transfer;
+typedef struct TRANSFER
+{
+    List Lists;
+	UInt Status;
+	UInt Flags;
+    RBTree Node;
+    void* Thread;
+}Transfer;
 
 typedef struct TRANSFERNODE
 {
@@ -24,15 +31,6 @@ typedef struct TRANSFERNODE
     void* Ext;
 }TransferNode;
 
-typedef struct TRANSFER
-{
-    List Lists;
-	UInt Status;
-	UInt Flags;
-    RBTree Node;
-    void* Thread;
-}Transfer;
-
 typedef struct TRANSFERMANAGE
 {
     ELock Lock;
@@ -41,5 +39,7 @@ typedef struct TRANSFERMANAGE
     TransferNode DefaultTransferNode;
     TransferNode* TransferNodeArr[TRANSFER_NR_MAX];
 }TransferManage;
+
+private void TransferInit(Transfer* init);
 
 #endif
