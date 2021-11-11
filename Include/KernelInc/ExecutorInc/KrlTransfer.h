@@ -48,6 +48,7 @@ KLINE TransferManage* KrlTrGetTransferManageDataAddr()
 private void TransferInit(Transfer* init);
 private void TransferNodeInit(TransferNode* init);
 private void TransferManageInit(TransferManage* init);
+private Bool KrlTransferAddRealizeCore(TransferNode* node, Transfer* transfer);
 public Bool KrlTransferInit();
 
 

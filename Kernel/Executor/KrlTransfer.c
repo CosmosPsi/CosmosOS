@@ -45,6 +45,15 @@ private void TransferManageInit(TransferManage* init)
     return;
 }
 
+private Bool KrlTransferAddRealizeCore(TransferNode* node, Transfer* transfer)
+{
+    KrlExLocked(&node->Lock);
+    ListAdd(&transfer->Lists, &node->TransferLists);
+    node->TransferNR++;
+    KrlExUnLock(&node->Lock);
+    return TRUE;
+}
+
 public Bool KrlTransferInit()
 {
     TransferManage* tmd = NULL;
