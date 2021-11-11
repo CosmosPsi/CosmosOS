@@ -45,6 +45,19 @@ private void TransferManageInit(TransferManage* init)
     return;
 }
 
+private Bool KrlTransferDelRealizeCore(TransferNode* node, Transfer* transfer)
+{
+    IF_NEQ_RETURN(node, transfer->ParentNode, FALSE);
+    IF_LTN_RETURN(node->TransferNR, 1, FALSE);
+    
+    KrlExLocked(&node->Lock);
+    ListDel(&transfer->Lists);
+    transfer->ParentNode = NULL;
+    node->TransferNR--;
+    KrlExUnLock(&node->Lock);
+    return TRUE;
+}
+
 private Bool KrlTransferAddRealizeCore(TransferNode* node, Transfer* transfer)
 {
     KrlExLocked(&node->Lock);
