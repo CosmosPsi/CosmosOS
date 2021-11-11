@@ -48,6 +48,14 @@ KLINE TransferManage* KrlTrGetTransferManageDataAddr()
     return &TransferManageData;
 }
 
+KLINE TransferNode* KrlTrGetDefaultTransferNodeAddr()
+{
+    TransferManage* tmd = NULL;
+    tmd = KrlTrGetTransferManageDataAddr();
+    IF_NULL_RETURN_NULL(tmd);
+    return &tmd->DefaultTransferNode;
+}
+
 private void TransferInit(Transfer* init);
 private void TransferNodeInit(TransferNode* init);
 private void TransferManageInit(TransferManage* init);
