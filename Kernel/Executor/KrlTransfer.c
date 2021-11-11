@@ -82,6 +82,13 @@ private Bool KrlTransferAddRealize(TransferNode* node, Transfer* transfer)
     return KrlTransferAddRealizeCore(node, transfer);
 }
 
+public Bool KrlTransferDel(TransferNode* node, Transfer* transfer)
+{
+    IF_NULL_RETURN_FALSE(node);
+    IF_NULL_RETURN_FALSE(transfer);
+    return KrlTransferDelRealize(node, transfer);
+}
+
 public Bool KrlTransferAdd(TransferNode* node, Transfer* transfer)
 {
     IF_NULL_RETURN_FALSE(node);
