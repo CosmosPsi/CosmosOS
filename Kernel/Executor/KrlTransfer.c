@@ -49,6 +49,7 @@ private Bool KrlTransferAddRealizeCore(TransferNode* node, Transfer* transfer)
 {
     KrlExLocked(&node->Lock);
     ListAdd(&transfer->Lists, &node->TransferLists);
+    transfer->ParentNode = node;
     node->TransferNR++;
     KrlExUnLock(&node->Lock);
     return TRUE;
