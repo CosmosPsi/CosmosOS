@@ -61,6 +61,7 @@ private void TransferNodeInit(TransferNode* init);
 private void TransferManageInit(TransferManage* init);
 private Bool KrlTransferDelRealizeCore(TransferNode* node, Transfer* transfer);
 private Bool KrlTransferAddRealizeCore(TransferNode* node, Transfer* transfer);
+private Bool KrlTransferDelDefaultRealize(Transfer* transfer);
 private Bool KrlTransferDelRealize(TransferNode* node, Transfer* transfer);
 private Bool KrlTransferAddDefaultRealize(Transfer* transfer);
 private Bool KrlTransferAddRealize(TransferNode* node, Transfer* transfer);
