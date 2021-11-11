@@ -8,12 +8,15 @@
 
 #define TRANSFER_NR_MAX (64)
 
+typedef struct TRANSFERNODE{}TransferNode;
+
 typedef struct TRANSFER
 {
     List Lists;
 	UInt Status;
 	UInt Flags;
     RBTree Node;
+    TransferNode* ParentNode;
     void* Thread;
 }Transfer;
 
