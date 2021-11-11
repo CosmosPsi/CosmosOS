@@ -49,7 +49,7 @@ private Bool KrlTransferDelRealizeCore(TransferNode* node, Transfer* transfer)
 {
     IF_NEQ_RETURN(node, transfer->ParentNode, FALSE);
     IF_LTN_RETURN(node->TransferNR, 1, FALSE);
-    
+
     KrlExLocked(&node->Lock);
     ListDel(&transfer->Lists);
     transfer->ParentNode = NULL;
@@ -66,6 +66,13 @@ private Bool KrlTransferAddRealizeCore(TransferNode* node, Transfer* transfer)
     node->TransferNR++;
     KrlExUnLock(&node->Lock);
     return TRUE;
+}
+
+private Bool KrlTransferDelRealize(TransferNode* node, Transfer* transfer)
+{
+    IF_NULL_RETURN_FALSE(node);
+    IF_NULL_RETURN_FALSE(transfer);
+    return KrlTransferDelRealizeCore(node, transfer);
 }
 
 private Bool KrlTransferAddRealize(TransferNode* node, Transfer* transfer)
