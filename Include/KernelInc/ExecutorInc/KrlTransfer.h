@@ -40,6 +40,11 @@ typedef struct TRANSFERMANAGE
     TransferNode* TransferNodeArr[TRANSFER_NR_MAX];
 }TransferManage;
 
+KLINE TransferManage* KrlTrGetTransferManageDataAddr()
+{
+    return &TransferManageData;
+}
+
 private void TransferInit(Transfer* init);
 private void TransferNodeInit(TransferNode* init);
 private void TransferManageInit(TransferManage* init);
