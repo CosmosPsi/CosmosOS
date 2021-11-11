@@ -15,6 +15,7 @@
 #include "KrlExecutorRes.h"
 #include "KrlTransfer.h"
 
+DefinedExecutorData(TransferManage, TransferManageData);
 private void TransferInit(Transfer* init)
 {
     IF_NULL_RETURN(init);
