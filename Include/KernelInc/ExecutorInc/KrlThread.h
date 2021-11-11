@@ -16,5 +16,12 @@ typedef struct TAFFILIATION
     //Group
 }TAffiliation;
 
+typedef struct TCONTEXT
+{
+    Addr KrlStackAddr;
+    Size KrlStackSize;
+
+}TContext;
+
 
 #endif
