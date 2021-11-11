@@ -23,5 +23,20 @@ typedef struct TCONTEXT
 
 }TContext;
 
+typedef struct THREAD
+{
+    List Lists;
+    ELock Lock;
+	U64 Status;
+	U64 Flags;
+    U64 ID;
+	UInt RunStatus;
+	UInt RunMode;
+    TAffiliation Affiliation;
+    Transfer ThreadTransfer;
+    TContext ThreadContext;
+    void* Priv;
+    void* Ext;
+}Thread;
 
 #endif
