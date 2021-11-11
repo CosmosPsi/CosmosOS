@@ -44,3 +44,14 @@ private void TransferManageInit(TransferManage* init)
     TransferNodeInit(&init->DefaultTransferNode);
     return;
 }
+
+public Bool KrlTransferInit()
+{
+    TransferManage* tmd = NULL;
+
+    tmd = KrlTrGetTransferManageDataAddr();
+    IF_NULL_RETURN_FALSE(tmd);
+    
+    TransferManageInit(tmd);
+    return TRUE;
+}
