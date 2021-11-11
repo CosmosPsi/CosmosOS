@@ -61,6 +61,13 @@ private Bool KrlTransferAddRealize(TransferNode* node, Transfer* transfer)
     return KrlTransferAddRealizeCore(node, transfer);
 }
 
+public Bool KrlTransferAdd(TransferNode* node, Transfer* transfer)
+{
+    IF_NULL_RETURN_FALSE(node);
+    IF_NULL_RETURN_FALSE(transfer);
+    return KrlTransferAddRealize(node, transfer);
+}
+
 public Bool KrlTransferInit()
 {
     TransferManage* tmd = NULL;
