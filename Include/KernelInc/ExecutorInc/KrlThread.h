@@ -20,7 +20,7 @@ typedef struct TCONTEXT
 {
     Addr KrlStackAddr;
     Size KrlStackSize;
-
+    Addr FunStartAddr;
 }TContext;
 
 typedef struct THREAD
