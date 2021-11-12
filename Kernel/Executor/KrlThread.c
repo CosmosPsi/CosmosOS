@@ -56,3 +56,8 @@ private Thread* NewThread()
     ThreadInit(thread);
     return thread;
 }
+
+private Thread* KrlExCreateThreadRealizeCore()
+{
+    return NewThread();
+}
