@@ -51,6 +51,7 @@ private void TContextInit(TContext* init);
 private void ThreadInit(Thread* init);
 private Bool DelThread(Thread* thread);
 private Thread* NewThread();
+private Bool KrlExNewThreadKernelStack(Thread* thread);
 private Thread* KrlExCreateThreadRealizeCore();
 private Thread* KrlExCreateThreadRealize();
 public Thread* KrlExCreateThread();

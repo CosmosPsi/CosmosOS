@@ -8,6 +8,7 @@
 #include "RBTree.h"
 #include "HalSync.h"
 #include "KrlMmManage.h"
+#include "KrlMmAlloc.h"
 #include "KrlMmPool.h"
 #include "KrlMmVmem.h"
 #include "KrlExecutorManage.h"
@@ -15,6 +16,7 @@
 #include "KrlExecutorRes.h"
 #include "KrlTransfer.h"
 #include "KrlThread.h"
+#include "KrlLog.h"
 
 private void TAffiliationInit(TAffiliation* init)
 {
@@ -57,9 +59,37 @@ private Thread* NewThread()
     return thread;
 }
 
+private Bool KrlExNewThreadKernelStack(Thread* thread)
+{
+    Addr kstack = NULL;
+    PMSAD* msad = NULL; 
+    IF_NULL_RETURN_FALSE(thread);
+    msad = KrlMmAllocKernPMSADs(THREAD_KERNELSTACK_PMSADNR);
+    IF_NULL_RETURN_FALSE(msad);
+    kstack = PMSADRetVAddr(msad);
+    IF_NULL_RETURN_FALSE(kstack);
+    thread->ThreadContext.KrlStackAddr = kstack;
+    thread->ThreadContext.KrlStackSize = THREAD_KERNELSTACK_SIZE;
+    thread->ThreadContext.KrlStackTop = ((kstack + (THREAD_KERNELSTACK_SIZE - 1)) & ~0x0fUL);
+    thread->ThreadContext.KrlStackPmsad = msad;
+    return TRUE;
+}
+
 private Thread* KrlExCreateThreadRealizeCore()
 {
-    return NewThread();
+    Thread* thread = NULL;
+    Bool rets = FALSE;
+    thread = NewThread();
+    IF_NULL_RETURN_NULL(thread);
+    rets = KrlExNewThreadKernelStack(thread);
+    if(FALSE == rets)
+    {
+        if(DelThread(thread) == FALSE)
+        {
+            KrlErrorCrashDead("KrlExCreateThreadRealizeCore is Fail\n");            
+        }
+    }
+    return thread;
 }
 
 private Thread* KrlExCreateThreadRealize()
