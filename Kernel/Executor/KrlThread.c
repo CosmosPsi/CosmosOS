@@ -42,6 +42,12 @@ private void ThreadInit(Thread* init)
     return;
 }
 
+private Bool DelThread(Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(thread);
+    return KrlMmDel((void*)thread);
+}
+
 private Thread* NewThread()
 {
     Thread* thread = NULL;
