@@ -66,3 +66,8 @@ private Thread* KrlExCreateThreadRealize()
 {
     return KrlExCreateThreadRealizeCore();
 }
+
+public Thread* KrlExCreateThread()
+{
+    return KrlExCreateThreadRealize();
+} 
