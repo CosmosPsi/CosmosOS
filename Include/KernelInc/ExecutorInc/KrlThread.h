@@ -44,5 +44,5 @@ typedef struct THREAD
 private void TAffiliationInit(TAffiliation* init);
 private void TContextInit(TContext* init);
 private void ThreadInit(Thread* init);
-
+private Thread* NewThread();
 #endif

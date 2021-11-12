@@ -41,3 +41,12 @@ private void ThreadInit(Thread* init)
     TContextInit(&init->ThreadContext);
     return;
 }
+
+private Thread* NewThread()
+{
+    Thread* thread = NULL;
+    thread = (Thread*)KrlMmNew(sizeof(Thread));
+    IF_NULL_RETURN_NULL(thread);
+    ThreadInit(thread);
+    return thread;
+}
