@@ -29,3 +29,15 @@ private void TContextInit(TContext* init)
     INIT_OBJOFPTR_ZERO(init);
     return;
 }
+
+private void ThreadInit(Thread* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ListInit(&init->Lists);
+    ELockInit(&init->Lock);
+    TAffiliationInit(&init->Affiliation);
+    TransferInitForThread(&init->ThreadTransfer, init);
+    TContextInit(&init->ThreadContext);
+    return;
+}
