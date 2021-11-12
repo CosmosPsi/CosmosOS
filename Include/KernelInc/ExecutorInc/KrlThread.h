@@ -47,5 +47,6 @@ private void ThreadInit(Thread* init);
 private Bool DelThread(Thread* thread);
 private Thread* NewThread();
 private Thread* KrlExCreateThreadRealizeCore();
+private Thread* KrlExCreateThreadRealize();
 
 #endif
