@@ -6,6 +6,9 @@
 #ifndef _KRLTHREADHEAD
 #define _KRLTHREADHEAD
 
+#define THREAD_KERNELSTACK_SIZE (0x2000)
+#define THREAD_KERNELSTACK_PMSADNR (THREAD_KERNELSTACK_SIZE >> MSAD_PADR_SLBITS)
+
 typedef struct TAFFILIATION
 {
     UInt CPUID;
@@ -19,7 +22,9 @@ typedef struct TAFFILIATION
 typedef struct TCONTEXT
 {
     Addr KrlStackAddr;
+    Addr KrlStackTop;
     Size KrlStackSize;
+    PMSAD* KrlStackPmsad;
     Addr FunStartAddr;
     Addr NextStartAddr;
     Addr NextStackAddr;
