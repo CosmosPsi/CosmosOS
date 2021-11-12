@@ -41,4 +41,6 @@ typedef struct THREAD
     void* Ext;
 }Thread;
 
+private void TAffiliationInit(TAffiliation* init);
+
 #endif
