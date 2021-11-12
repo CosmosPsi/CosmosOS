@@ -21,6 +21,8 @@ typedef struct TCONTEXT
     Addr KrlStackAddr;
     Size KrlStackSize;
     Addr FunStartAddr;
+    Addr NextStartAddr;
+    Addr NextStackAddr;
 }TContext;
 
 typedef struct THREAD
