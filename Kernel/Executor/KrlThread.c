@@ -88,6 +88,7 @@ private Thread* KrlExCreateThreadRealizeCore()
         {
             KrlErrorCrashDead("KrlExCreateThreadRealizeCore is Fail\n");            
         }
+        return NULL;
     }
     return thread;
 }
