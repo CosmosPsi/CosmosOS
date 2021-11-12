@@ -22,3 +22,10 @@ private void TAffiliationInit(TAffiliation* init)
     INIT_OBJOFPTR_ZERO(init);
     return;
 }
+
+private void TContextInit(TContext* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    return;
+}

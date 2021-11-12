@@ -42,5 +42,6 @@ typedef struct THREAD
 }Thread;
 
 private void TAffiliationInit(TAffiliation* init);
+private void TContextInit(TContext* init);
 
 #endif
