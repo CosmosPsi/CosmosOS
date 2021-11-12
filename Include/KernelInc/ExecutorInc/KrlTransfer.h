@@ -17,7 +17,7 @@ typedef struct TRANSFER
 	UInt Flags;
     RBTree Node;
     TransferNode* ParentNode;
-    void* Thread;
+    Thread* Thread;
 }Transfer;
 
 typedef struct TRANSFERNODE
@@ -69,6 +69,7 @@ public Bool KrlTransferDelDefault(Transfer* transfer);
 public Bool KrlTransferDel(TransferNode* node, Transfer* transfer);
 public Bool KrlTransferAddDefault(Transfer* transfer);
 public Bool KrlTransferAdd(TransferNode* node, Transfer* transfer);
+public Bool TransferInitForThread(Transfer* init, Thread* thread);
 public Bool KrlTransferInit();
 
 

@@ -13,6 +13,7 @@
 #include "KrlExecutorManage.h"
 #include "KrlExecutor.h"
 #include "KrlExecutorRes.h"
+#include "KrlThread.h"
 #include "KrlTransfer.h"
 
 DefinedExecutorData(TransferManage, TransferManageData);
@@ -127,6 +128,15 @@ public Bool KrlTransferAdd(TransferNode* node, Transfer* transfer)
     IF_NULL_RETURN_FALSE(node);
     IF_NULL_RETURN_FALSE(transfer);
     return KrlTransferAddRealize(node, transfer);
+}
+
+public Bool TransferInitForThread(Transfer* init, Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(init);
+    IF_NULL_RETURN_FALSE(thread);
+    TransferInit(init);
+    init->Thread = thread;
+    return TRUE;
 }
 
 public Bool KrlTransferInit()
