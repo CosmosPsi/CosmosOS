@@ -515,5 +515,6 @@ private void CPULoadIDT(IDTPTR* idtptr);
 private void CPULoadTr(U16 trindx);
 private Bool CPUInitIDT();
 private Bool CPUInitGDT();
+public UInt HalCPUID();
 public Bool HalCPUInit();
 #endif
