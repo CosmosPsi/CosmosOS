@@ -44,6 +44,13 @@ private void ThreadInit(Thread* init)
     return;
 }
 
+public void TRunEnvInit(TRunEnv* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    return;
+}
+
 private Bool DelThread(Thread* thread)
 {
     IF_NULL_RETURN_FALSE(thread);
