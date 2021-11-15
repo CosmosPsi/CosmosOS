@@ -7,6 +7,7 @@
 #include "List.h"
 #include "RBTree.h"
 #include "HalSync.h"
+#include "HalCPU.h"
 #include "KrlMmManage.h"
 #include "KrlMmPool.h"
 #include "KrlMmVmem.h"
@@ -15,6 +16,7 @@
 #include "KrlExecutorRes.h"
 #include "KrlThread.h"
 #include "KrlTransfer.h"
+#include "KrlLog.h"
 
 DefinedExecutorData(TransferManage, TransferManageData);
 private void TransferInit(Transfer* init)
@@ -43,6 +45,7 @@ private void TransferManageInit(TransferManage* init)
     INIT_OBJOFPTR_ZERO(init);
     ELockInit(&init->Lock);
     TransferNodeInit(&init->DefaultTransferNode);
+    init->TransferNodeArr[0] = &init->DefaultTransferNode;
     return;
 }
 
@@ -137,6 +140,18 @@ public Bool TransferInitForThread(Transfer* init, Thread* thread)
     TransferInit(init);
     init->Thread = thread;
     return TRUE;
+}
+
+public TransferNode* KrlExGetCurrentCPUTransferNode()
+{
+    TransferManage* tmd = NULL;
+    TransferNode* node = NULL;
+    UInt cpu = 0;
+    tmd = KrlTrGetTransferManageDataAddr();
+    IF_NULL_RETURN_NULL(tmd);
+    cpu = HalCPUID();
+    node = tmd->TransferNodeArr[cpu];
+    return node;
 }
 
 public Bool KrlTransferInit()
