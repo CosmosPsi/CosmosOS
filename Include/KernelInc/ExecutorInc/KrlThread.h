@@ -46,6 +46,16 @@ typedef struct THREAD
     void* Ext;
 }Thread;
 
+typedef struct TRUNENV
+{
+    UInt Status;
+    UInt Flags;
+    Addr RunStart;
+    U64 CPUMode;
+    UInt Authority;
+    UInt Priority;
+}TRunEnv;
+
 private void TAffiliationInit(TAffiliation* init);
 private void TContextInit(TContext* init);
 private void ThreadInit(Thread* init);
