@@ -101,4 +101,12 @@ private Thread* KrlExCreateThreadRealize()
 public Thread* KrlExCreateThread()
 {
     return KrlExCreateThreadRealize();
-} 
+}
+
+public Thread* KrlExGetCurrentThread()
+{
+    Transfer* transfer = NULL;
+    transfer = KrlExGetCurrentTransfer();
+    IF_NULL_RETURN_NULL(transfer);
+    return KrlTrGetThreadForTransfer(transfer);
+}

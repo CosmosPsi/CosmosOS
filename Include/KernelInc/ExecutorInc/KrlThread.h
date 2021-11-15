@@ -55,5 +55,6 @@ private Bool KrlExNewThreadKernelStack(Thread* thread);
 private Thread* KrlExCreateThreadRealizeCore();
 private Thread* KrlExCreateThreadRealize();
 public Thread* KrlExCreateThread();
+public Thread* KrlExGetCurrentThread();
 
 #endif
