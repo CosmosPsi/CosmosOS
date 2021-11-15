@@ -56,6 +56,13 @@ KLINE TransferNode* KrlTrGetDefaultTransferNodeAddr()
     return &tmd->DefaultTransferNode;
 }
 
+KLINE Thread* KrlTrGetThreadForTransfer(Transfer* transfer)
+{
+    IF_NULL_RETURN_NULL(transfer);
+    IF_EQT_DEAD(NULL, transfer->Thread, "Transfer Thread is NULL\n");
+    return transfer->Thread;
+}
+
 private void TransferInit(Transfer* init);
 private void TransferNodeInit(TransferNode* init);
 private void TransferManageInit(TransferManage* init);
