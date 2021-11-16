@@ -48,6 +48,7 @@
 #define U_DS_IDX	0x23
 #define K_TAR_IDX	0x28
 #define UMOD_EFLAGS	0x1202
+#define KMOD_EFLAGS	0x202
 
 #define KERNEL_CPU_MODE (1)
 #define USER_CPU_MODE (4)
