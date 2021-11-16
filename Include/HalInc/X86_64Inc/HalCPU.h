@@ -544,6 +544,7 @@ private void CPULoadTr(U16 trindx);
 private Bool CPUInitIDT();
 private Bool CPUInitGDT();
 public UInt HalCPUID();
+public void HalCPULoadContextRegisterToRun(Addr stack);
 public Addr HalCPUInitContextRegisterInStack(Addr stacktop, Size size, Addr start, UInt mode, CPUFlg cpuflags, Addr userstack);
 public Bool HalCPUInit();
 #endif

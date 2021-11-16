@@ -292,6 +292,42 @@ public UInt HalCPUID()
     return 0;
 }
 
+public void HalCPULoadContextRegisterToRun(Addr stack)
+{
+    IF_NULL_RETURN(stack);
+    __asm__ __volatile__(
+        "movq %[NEXT_RSP],%%rsp\n\t"
+        "popq %%r14\n\t"
+        "movw %%r14w,%%gs\n\t"
+        "popq %%r14\n\t"
+        "movw %%r14w,%%fs\n\t"
+        "popq %%r14\n\t"
+        "movw %%r14w,%%es\n\t"
+        "popq %%r14\n\t"
+        "movw %%r14w,%%ds\n\t"
+        "popq %%r15\n\t"
+        "popq %%r14\n\t"
+        "popq %%r13\n\t"
+        "popq %%r12\n\t"
+        "popq %%r11\n\t"
+        "popq %%r10\n\t"
+        "popq %%r9\n\t"
+        "popq %%r8\n\t"
+        "popq %%rdi\n\t"
+        "popq %%rsi\n\t"
+        "popq %%rbp\n\t"
+        "popq %%rdx\n\t"
+        "popq %%rcx\n\t"
+        "popq %%rbx\n\t"
+        "popq %%rax\n\t"
+        "iretq\n\t"
+
+        :
+        : [NEXT_RSP] "r"(stack)
+        : "memory");
+    return;
+}
+
 public Addr HalCPUInitContextRegisterInStack(Addr stacktop, Size size, Addr start, UInt mode, CPUFlg cpuflags, Addr userstack)
 {
     StackREGContext* c = NULL;
