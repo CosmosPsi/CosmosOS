@@ -292,7 +292,7 @@ public UInt HalCPUID()
     return 0;
 }
 
-public Addr HalInitCPURegisterInStack(Addr stacktop, Size size, Addr start, UInt mode, CPUFlg cpuflags, Addr userstack)
+public Addr HalCPUInitContextRegisterInStack(Addr stacktop, Size size, Addr start, UInt mode, CPUFlg cpuflags, Addr userstack)
 {
     StackREGContext* c = NULL;
     IF_ZERO_RETURN_NULL(stacktop);
@@ -303,7 +303,7 @@ public Addr HalInitCPURegisterInStack(Addr stacktop, Size size, Addr start, UInt
 
     c = (StackREGContext*)(stacktop - sizeof(StackREGContext));
     INIT_OBJOFPTR_ZERO(c);
-    
+
     if(USER_CPU_MODE == mode)
     {
         c->RIP = (UInt)start;
