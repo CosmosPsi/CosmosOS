@@ -7,6 +7,7 @@
 #include "List.h"
 #include "RBTree.h"
 #include "HalSync.h"
+#include "HalCPU.h"
 #include "KrlMmManage.h"
 #include "KrlMmAlloc.h"
 #include "KrlMmPool.h"
@@ -117,3 +118,28 @@ public Thread* KrlExGetCurrentThread()
     IF_NULL_RETURN_NULL(transfer);
     return KrlTrGetThreadForTransfer(transfer);
 }
+
+private Bool KrlExThreadInitKernelStackRealizeCore(Thread* thread, TRunEnv* env)
+{
+    Addr next = NULL;
+    CPUFlg flags = 0;
+    Addr userstack = 0;
+    if(KERNEL_CPU_MODE == env->CPUMode)
+    {
+        flags = KMOD_EFLAGS;
+        userstack = thread->ThreadContext.KrlStackTop;
+    }
+    else if(USER_CPU_MODE == env->CPUMode)
+    {
+        flags = UMOD_EFLAGS;
+        userstack = USER_VIRTUAL_ADDRESS_END;
+    }
+    next = HalCPUInitContextRegisterInStack(thread->ThreadContext.KrlStackTop, 
+                    thread->ThreadContext.KrlStackSize, env->RunStart, 
+                        env->CPUMode, flags, userstack);
+    IF_ZERO_RETURN_FALSE(next);
+    thread->ThreadContext.NextStackAddr = next;
+    thread->ThreadContext.NextStartAddr = env->RunStart;
+    return TRUE;
+}
+
