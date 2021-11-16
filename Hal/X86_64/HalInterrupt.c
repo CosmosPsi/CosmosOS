@@ -4,6 +4,8 @@
                 彭东
 **********************************************************/
 #include "BaseType.h"
+#include "List.h"
+#include "HalSync.h"
 #include "HalInterrupt.h"
 
 DefinedCPUInterData(IERSDT, IERSDTable);

@@ -14,7 +14,7 @@ typedef DrvStus (*IODCallBack)(UInt inr, void* device, void* kistacktop);
 //Interrupt exception request service descriptor
 typedef struct IERSD
 {
-    SPinLock  lock;
+    SPinLock  Lock;
     U32       Flags;
     U32       Status;
     UInt      Prity;        //中断优先级
