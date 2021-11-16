@@ -153,3 +153,10 @@ private Bool KrlExThreadInitKernelStackRealize(Thread* thread, TRunEnv* env)
     IF_ZERO_RETURN_FALSE(env->CPUMode);
     return KrlExThreadInitKernelStackRealizeCore(thread, env);
 }
+
+public Bool KrlExThreadInitKernelStack(Thread* thread, TRunEnv* env)
+{
+    IF_NULL_RETURN_FALSE(thread);
+    IF_NULL_RETURN_FALSE(env);
+    return KrlExThreadInitKernelStackRealize(thread, env);
+}
