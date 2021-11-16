@@ -143,3 +143,13 @@ private Bool KrlExThreadInitKernelStackRealizeCore(Thread* thread, TRunEnv* env)
     return TRUE;
 }
 
+private Bool KrlExThreadInitKernelStackRealize(Thread* thread, TRunEnv* env)
+{
+    IF_ZERO_RETURN_FALSE(thread->ThreadContext.KrlStackAddr);
+    IF_ZERO_RETURN_FALSE(thread->ThreadContext.KrlStackTop);
+    IF_ZERO_RETURN_FALSE(thread->ThreadContext.KrlStackSize);
+    IF_NULL_RETURN_FALSE(thread->ThreadContext.KrlStackPmsad);
+    IF_ZERO_RETURN_FALSE(env->RunStart);
+    IF_ZERO_RETURN_FALSE(env->CPUMode);
+    return KrlExThreadInitKernelStackRealizeCore(thread, env);
+}

@@ -68,5 +68,6 @@ private Thread* KrlExCreateThreadRealize();
 public Thread* KrlExCreateThread();
 public Thread* KrlExGetCurrentThread();
 private Bool KrlExThreadInitKernelStackRealizeCore(Thread* thread, TRunEnv* env);
+private Bool KrlExThreadInitKernelStackRealize(Thread* thread, TRunEnv* env);
 
 #endif
