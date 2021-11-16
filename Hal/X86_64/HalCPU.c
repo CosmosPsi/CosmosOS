@@ -292,6 +292,44 @@ public UInt HalCPUID()
     return 0;
 }
 
+public Addr HalInitCPURegisterInStack(Addr stacktop, Size size, U64 start, U64 mode, CPUFlg cpuflags, U64 userstack)
+{
+    StackREGContext* c = NULL;
+    IF_ZERO_RETURN_NULL(stacktop);
+    IF_ZERO_RETURN_NULL(size);
+    IF_ZERO_RETURN_NULL(start);
+    IF_ZERO_RETURN_NULL(mode);
+    c = (StackREGContext*)(stacktop - sizeof(StackREGContext));
+    INIT_OBJOFPTR_ZERO(c);
+    if(USER_CPU_MODE == mode)
+    {
+        c->RIP = (UInt)start;
+        c->CS = U_CS_IDX;
+        c->RFLAGS = (UInt)cpuflags;
+        c->RSP = (UInt)userstack;
+        c->SS = U_DS_IDX;
+        c->DS = U_DS_IDX;
+        c->ES = U_DS_IDX;
+        c->FS = U_DS_IDX;
+        c->GS = U_DS_IDX;
+        return (Addr)c;
+    }
+    else if(KERNEL_CPU_MODE == mode)
+    {
+        c->RIP = (UInt)start;
+        c->CS = K_CS_IDX;
+        c->RFLAGS = (UInt)cpuflags;
+        c->RSP = (UInt)stacktop;
+        c->SS = 0;
+        c->DS = K_DS_IDX;
+        c->ES = K_DS_IDX;
+        c->FS = K_DS_IDX;
+        c->GS = K_DS_IDX;
+        return (Addr)c;
+    }
+    return NULL;
+}
+
 public Bool HalCPUInit()
 {
     CPUInitGDT();

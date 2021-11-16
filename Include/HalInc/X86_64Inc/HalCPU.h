@@ -49,7 +49,8 @@
 #define K_TAR_IDX	0x28
 #define UMOD_EFLAGS	0x1202
 
-
+#define KERNEL_CPU_MODE (1)
+#define USER_CPU_MODE (4)
 
 /* GDT */
 /* 描述符索引 */
@@ -543,5 +544,6 @@ private void CPULoadTr(U16 trindx);
 private Bool CPUInitIDT();
 private Bool CPUInitGDT();
 public UInt HalCPUID();
+public Addr HalInitCPURegisterInStack(Addr stacktop, Size size, U64 start, U64 mode, CPUFlg cpuflags, U64 userstack);
 public Bool HalCPUInit();
 #endif
