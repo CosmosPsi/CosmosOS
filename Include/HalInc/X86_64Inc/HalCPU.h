@@ -199,6 +199,33 @@ typedef struct IDT
 
 typedef void (*IDTHandler)();
 
+typedef struct STACKREGCONTEXT
+{
+	UInt GS;
+	UInt FS;
+	UInt ES;
+	UInt DS;
+	UInt R15;
+	UInt R14;
+	UInt R13;
+	UInt R12;
+	UInt R11;
+	UInt R10;
+	UInt R9;
+	UInt R8;
+	UInt RDI;
+	UInt RSI;
+	UInt RBP;
+	UInt RDX;
+	UInt RCX;
+	UInt RBX;
+	UInt RAX;
+	UInt RIP;
+	UInt CS;
+	UInt RFLAGS;
+	UInt RSP;
+	UInt SS;
+}StackREGContext;
 
 KLINE void HalOutU8(const U16 port, const U8 val)
 {
