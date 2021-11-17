@@ -147,3 +147,23 @@ public Executor* KrlExGetCPUIdleExecutor()
     IF_EQT_DEAD(NULL, executor, "CPUIdle Executor is NULL\n");
     return executor;
 }
+
+public Executor* KrlExGetCurrentRunExecutor()
+{
+    UInt cpuid = 0;
+    GExecutorManage* gexm = NULL;
+    ExecutorNode* exnode = NULL;
+    Executor* executor = NULL;
+    
+    gexm = KrlExGetGExecutorManageDataAddr();
+    IF_NULL_RETURN_FALSE(gexm);
+
+    cpuid = HalCPUID();
+    IF_GTN_DEAD(cpuid, (EXECUTORNODE_MAX - 1), "CPUID GNT EXECUTORNODE_MAX\n");
+
+    exnode = gexm->ExecutorNodePtrArr[cpuid];
+    IF_EQT_DEAD(NULL, exnode, "Executor node is NULL\n");
+    executor = exnode->CurrRunExecutor;
+    IF_EQT_DEAD(NULL, executor, "Current Run Executor is NULL\n");
+    return executor;
+}
