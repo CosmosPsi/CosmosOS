@@ -63,6 +63,7 @@ public void TRunEnvInit(TRunEnv* init);
 private Bool DelThread(Thread* thread);
 private Thread* NewThread();
 private Bool KrlExNewThreadKernelStack(Thread* thread);
+private Bool KrlExDelThreadKernelStack(Thread* thread);
 private Thread* KrlExCreateThreadRealizeCore();
 private Thread* KrlExCreateThreadRealize();
 public Thread* KrlExCreateThread();

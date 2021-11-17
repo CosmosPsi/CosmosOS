@@ -83,6 +83,15 @@ private Bool KrlExNewThreadKernelStack(Thread* thread)
     return TRUE;
 }
 
+private Bool KrlExDelThreadKernelStack(Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(thread);
+    IF_NULL_RETURN_FALSE(thread->ThreadContext.KrlStackPmsad);
+    IF_NEQ_DEAD(TRUE, KrlMmFreeKernPMSADs(thread->ThreadContext.KrlStackPmsad), "Free Kernel Stack Fail\n");
+    INIT_OBJOFPTR_ZERO(&thread->ThreadContext);
+    return TRUE;
+}
+
 private Thread* KrlExCreateThreadRealizeCore()
 {
     Thread* thread = NULL;
