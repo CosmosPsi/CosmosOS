@@ -124,6 +124,11 @@ private Thread* KrlExCreateThreadRealize()
     return KrlExCreateThreadRealizeCore();
 }
 
+private Bool KrlExDestroyThreadRealize(Thread* thread)
+{
+    return KrlExDestroyThreadRealizeCore(thread);
+}
+
 public Thread* KrlExCreateThread()
 {
     return KrlExCreateThreadRealize();
@@ -201,3 +206,37 @@ public Bool KrlExThreadInitRunEnv(Thread* thread, TRunEnv* env)
     return KrlExThreadInitRunEnvRealize(thread, env); 
 }
 
+private Bool KrlExCreateThreadInitRunEnvRealizeCore(TRunEnv* env)
+{
+    Thread* thread = NULL;
+    Bool rets = FALSE;
+
+    thread = KrlExCreateThread();
+    IF_NULL_RETURN_NULL(thread);
+    rets = KrlExThreadInitRunEnv(thread, env);
+    if(FALSE == rets)
+    {
+
+    }
+
+    rets = KrlTransferAddDefault(&thread->ThreadTransfer);
+    if(FALSE == rets)
+    {
+
+    }
+    return TRUE;
+}
+
+private Bool KrlExCreateThreadInitRunEnvRealize(TRunEnv* env)
+{
+    IF_ZERO_RETURN_FALSE(env->RunStart);
+    IF_ZERO_RETURN_FALSE(env->Flags);
+    IF_ZERO_RETURN_FALSE(env->CPUMode);
+    return KrlExCreateThreadInitRunEnvRealizeCore(env);
+}
+
+public Bool KrlExCreateThreadInitRunEnv(TRunEnv* env)
+{
+    IF_NULL_RETURN_NULL(env);
+    return KrlExCreateThreadInitRunEnvRealize(env);
+}
