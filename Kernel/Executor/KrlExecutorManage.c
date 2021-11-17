@@ -5,6 +5,7 @@
 **********************************************************/
 #include "BaseType.h"
 #include "List.h"
+#include "HalCPU.h"
 #include "HalSync.h"
 #include "KrlExecutorManage.h"
 #include "KrlExecutor.h"
@@ -145,6 +146,15 @@ public Bool KrlExDefaultAddExecutor(Executor* executor)
     return KrlExDefaultAddExecutorRealize(executor);
 }
 
+private Bool KrlExAddCPUIdleExecutorRealizeCore(GExecutorManage* gexem, ExecutorNode* exnode, Executor* executor)
+{
+    IF_NULL_RETURN_FALSE(gexem);
+    exnode->CPUIdleExecutor = executor;
+    KrlExSetAffiliationExNode(executor, exnode);
+    return TRUE;
+}
+
+
 public Bool KrlExecutorManageInit()
 {
     GExecutorManage* gexm = NULL;
@@ -160,6 +170,6 @@ public Bool KrlExecutorManageInit()
 
     gexm->DefaultExecutorNode = exnode;
     gexm->ExecutorNodePtrArr[0] = gexm->DefaultExecutorNode;
-    
+
     return TRUE;
 }
