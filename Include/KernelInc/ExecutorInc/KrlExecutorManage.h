@@ -55,7 +55,7 @@ typedef struct GEXECUTORMANAGE
 	U64 Status;
 	U64 Flags;
     ExecutorNode* DefaultExecutorNode;
-    ExecutorNode ExecutorNodePtrArr[EXECUTORNODE_MAX];
+    ExecutorNode* ExecutorNodePtrArr[EXECUTORNODE_MAX];
 }GExecutorManage;
 
 DefinedExecutorData(GExecutorManage, GExecutorManageData);
