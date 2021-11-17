@@ -127,3 +127,23 @@ public Bool KrlExSetAffiliationExBox(Executor* executor, ExecutorBox* exbox)
     KrlExUnLock(&executor->Lock);
     return TRUE;
 }
+
+public Executor* KrlExGetCPUIdleExecutor()
+{
+    UInt cpuid = 0;
+    GExecutorManage* gexm = NULL;
+    ExecutorNode* exnode = NULL;
+    Executor* executor = NULL;
+    
+    gexm = KrlExGetGExecutorManageDataAddr();
+    IF_NULL_RETURN_FALSE(gexm);
+
+    cpuid = HalCPUID();
+    IF_GTN_DEAD(cpuid, (EXECUTORNODE_MAX - 1), "CPUID GNT EXECUTORNODE_MAX\n");
+
+    exnode = gexm->ExecutorNodePtrArr[cpuid];
+    IF_EQT_DEAD(NULL, exnode, "Executor node is NULL\n");
+    executor = exnode->CPUIdleExecutor;
+    IF_EQT_DEAD(NULL, executor, "CPUIdle Executor is NULL\n");
+    return executor;
+}
