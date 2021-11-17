@@ -178,6 +178,12 @@ private Bool KrlExAddCPUIdleExecutorRealize(Executor* executor)
     return rets;
 }
 
+public Bool KrlExAddCPUIdleExecutor(Executor* executor)
+{
+    IF_NULL_RETURN_FALSE(executor);
+
+    return KrlExDefaultAddExecutorRealize(executor);
+}
 
 public Bool KrlExecutorManageInit()
 {
