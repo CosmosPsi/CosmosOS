@@ -51,7 +51,7 @@ private void TransferManageInit(TransferManage* init)
 
 private Bool KrlTransferDelRealizeCore(TransferNode* node, Transfer* transfer)
 {
-    IF_NEQ_RETURN(node, transfer->ParentNode, FALSE);
+    IF_NEQ_RETURN(node, transfer->ParentNode, TRUE);
     IF_LTN_RETURN(node->TransferNR, 1, FALSE);
 
     KrlExLocked(&node->Lock);
@@ -86,7 +86,6 @@ private Bool KrlTransferDelDefaultRealize(Transfer* transfer)
 
 private Bool KrlTransferDelRealize(TransferNode* node, Transfer* transfer)
 {
-    IF_NULL_RETURN_FALSE(node);
     IF_NULL_RETURN_FALSE(transfer);
     return KrlTransferDelRealizeCore(node, transfer);
 }
@@ -115,7 +114,6 @@ public Bool KrlTransferDelDefault(Transfer* transfer)
 
 public Bool KrlTransferDel(Transfer* transfer)
 {
-    IF_NULL_RETURN_FALSE(transfer->ParentNode);
     IF_NULL_RETURN_FALSE(transfer);
     return KrlTransferDelRealize(transfer->ParentNode, transfer);
 }
