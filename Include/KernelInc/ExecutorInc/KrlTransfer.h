@@ -73,7 +73,7 @@ private Bool KrlTransferDelRealize(TransferNode* node, Transfer* transfer);
 private Bool KrlTransferAddDefaultRealize(Transfer* transfer);
 private Bool KrlTransferAddRealize(TransferNode* node, Transfer* transfer);
 public Bool KrlTransferDelDefault(Transfer* transfer);
-public Bool KrlTransferDel(TransferNode* node, Transfer* transfer);
+public Bool KrlTransferDel(Transfer* transfer);
 public Bool KrlTransferAddDefault(Transfer* transfer);
 public Bool KrlTransferAdd(TransferNode* node, Transfer* transfer);
 public Bool TransferInitForThread(Transfer* init, Thread* thread);

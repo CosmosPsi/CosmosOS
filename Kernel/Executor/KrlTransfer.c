@@ -79,9 +79,9 @@ private Bool KrlTransferDelDefaultRealize(Transfer* transfer)
     IF_NULL_RETURN_FALSE(transfer);
 
     node = KrlTrGetDefaultTransferNodeAddr();
-    IF_NULL_RETURN_FALSE(node);
+    IF_NEQ_RETURN(node, transfer->ParentNode, FALSE);
 
-    return KrlTransferDel(node, transfer);
+    return KrlTransferDel(transfer);
 }
 
 private Bool KrlTransferDelRealize(TransferNode* node, Transfer* transfer)
@@ -113,11 +113,11 @@ public Bool KrlTransferDelDefault(Transfer* transfer)
     return KrlTransferDelDefaultRealize(transfer);
 }
 
-public Bool KrlTransferDel(TransferNode* node, Transfer* transfer)
+public Bool KrlTransferDel(Transfer* transfer)
 {
-    IF_NULL_RETURN_FALSE(node);
+    IF_NULL_RETURN_FALSE(transfer->ParentNode);
     IF_NULL_RETURN_FALSE(transfer);
-    return KrlTransferDelRealize(node, transfer);
+    return KrlTransferDelRealize(transfer->ParentNode, transfer);
 }
 
 public Bool KrlTransferAddDefault(Transfer* transfer)
