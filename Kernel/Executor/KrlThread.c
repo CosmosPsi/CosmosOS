@@ -134,6 +134,12 @@ public Thread* KrlExCreateThread()
     return KrlExCreateThreadRealize();
 }
 
+public Bool KrlExDestroyThread(Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(thread);
+    return KrlExDestroyThreadRealize(thread);
+}
+
 public Thread* KrlExGetCurrentThread()
 {
     Transfer* transfer = NULL;
@@ -204,39 +210,4 @@ public Bool KrlExThreadInitRunEnv(Thread* thread, TRunEnv* env)
     IF_NULL_RETURN_FALSE(thread);
     IF_NULL_RETURN_FALSE(env);
     return KrlExThreadInitRunEnvRealize(thread, env); 
-}
-
-private Bool KrlExCreateThreadInitRunEnvRealizeCore(TRunEnv* env)
-{
-    Thread* thread = NULL;
-    Bool rets = FALSE;
-
-    thread = KrlExCreateThread();
-    IF_NULL_RETURN_NULL(thread);
-    rets = KrlExThreadInitRunEnv(thread, env);
-    if(FALSE == rets)
-    {
-
-    }
-
-    rets = KrlTransferAddDefault(&thread->ThreadTransfer);
-    if(FALSE == rets)
-    {
-
-    }
-    return TRUE;
-}
-
-private Bool KrlExCreateThreadInitRunEnvRealize(TRunEnv* env)
-{
-    IF_ZERO_RETURN_FALSE(env->RunStart);
-    IF_ZERO_RETURN_FALSE(env->Flags);
-    IF_ZERO_RETURN_FALSE(env->CPUMode);
-    return KrlExCreateThreadInitRunEnvRealizeCore(env);
-}
-
-public Bool KrlExCreateThreadInitRunEnv(TRunEnv* env)
-{
-    IF_NULL_RETURN_NULL(env);
-    return KrlExCreateThreadInitRunEnvRealize(env);
 }
