@@ -154,6 +154,30 @@ private Bool KrlExAddCPUIdleExecutorRealizeCore(GExecutorManage* gexem, Executor
     return TRUE;
 }
 
+private Bool KrlExAddCPUIdleExecutorRealize(Executor* executor)
+{
+    Bool rets = FALSE;
+    UInt cpuid = 0;
+    GExecutorManage* gexm = NULL;
+    ExecutorNode* exnode = NULL;
+    gexm = KrlExGetGExecutorManageDataAddr();
+    IF_NULL_RETURN_FALSE(gexm);
+
+    cpuid = HalCPUID();
+    IF_GTN_RETURN(cpuid, (EXECUTORNODE_MAX - 1), FALSE);
+
+    exnode = gexm->ExecutorNodePtrArr[cpuid];
+    IF_NULL_RETURN_FALSE(exnode);
+    KrlExLocked(&gexm->Lock);
+    KrlExLocked(&exnode->Lock);
+
+    rets = KrlExAddCPUIdleExecutorRealizeCore(gexm, exnode, executor);
+
+    KrlExUnLock(&exnode->Lock);
+    KrlExUnLock(&gexm->Lock);
+    return rets;
+}
+
 
 public Bool KrlExecutorManageInit()
 {

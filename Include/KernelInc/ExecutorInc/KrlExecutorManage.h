@@ -83,5 +83,6 @@ private Bool KrlExDefaultAddExecutorRealizeCore(GExecutorManage* gexem, Executor
 private Bool KrlExDefaultAddExecutorRealize(Executor* executor);
 public Bool KrlExDefaultAddExecutor(Executor* executor);
 private Bool KrlExAddCPUIdleExecutorRealizeCore(GExecutorManage* gexem, ExecutorNode* exnode, Executor* executor);
+private Bool KrlExAddCPUIdleExecutorRealize(Executor* executor);
 public Bool KrlExecutorManageInit();
 #endif
