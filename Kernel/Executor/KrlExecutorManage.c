@@ -159,6 +159,7 @@ public Bool KrlExecutorManageInit()
     ExecutorNodeInit(exnode);
 
     gexm->DefaultExecutorNode = exnode;
+    gexm->ExecutorNodePtrArr[0] = gexm->DefaultExecutorNode;
     
     return TRUE;
 }
