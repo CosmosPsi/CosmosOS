@@ -110,6 +110,15 @@ private Thread* KrlExCreateThreadRealizeCore()
     return thread;
 }
 
+private Bool KrlExDestroyThreadRealizeCore(Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(thread);
+    IF_NEQ_RETURN(TRUE, KrlTransferDel(&thread->ThreadTransfer), FALSE);
+    IF_NEQ_RETURN(TRUE, KrlExDelThreadKernelStack(thread), FALSE);
+    IF_NEQ_DEAD(TRUE, DelThread(thread), "Del Thread is Fail\n");
+    return TRUE;
+}
+
 private Thread* KrlExCreateThreadRealize()
 {
     return KrlExCreateThreadRealizeCore();
@@ -191,3 +200,4 @@ public Bool KrlExThreadInitRunEnv(Thread* thread, TRunEnv* env)
     IF_NULL_RETURN_FALSE(env);
     return KrlExThreadInitRunEnvRealize(thread, env); 
 }
+
