@@ -79,5 +79,6 @@ private Bool KrlExThreadInitRunEnvRealize(Thread* thread, TRunEnv* env);
 public Bool KrlExThreadInitRunEnv(Thread* thread, TRunEnv* env);
 private Bool KrlExCreateThreadInitRunEnvRealizeCore(TRunEnv* env);
 private Bool KrlExCreateThreadInitRunEnvRealize(TRunEnv* env);
+public Bool KrlExCreateThreadInitRunEnv(TRunEnv* env);
 
 #endif

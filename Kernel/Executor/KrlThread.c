@@ -242,3 +242,9 @@ private Bool KrlExCreateThreadInitRunEnvRealize(TRunEnv* env)
     IF_ZERO_RETURN_FALSE(env->CPUMode);
     return KrlExCreateThreadInitRunEnvRealizeCore(env);
 }
+
+public Bool KrlExCreateThreadInitRunEnv(TRunEnv* env)
+{
+    IF_NULL_RETURN_NULL(env);
+    return KrlExCreateThreadInitRunEnvRealize(env);
+}
