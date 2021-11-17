@@ -211,3 +211,26 @@ public Bool KrlExThreadInitRunEnv(Thread* thread, TRunEnv* env)
     IF_NULL_RETURN_FALSE(env);
     return KrlExThreadInitRunEnvRealize(thread, env); 
 }
+
+private Bool KrlExCreateThreadInitRunEnvRealizeCore(TRunEnv* env)
+{
+    Thread* thread = NULL;
+    Bool rets = FALSE;
+
+    thread = KrlExCreateThread();
+    IF_NULL_RETURN_NULL(thread);
+    rets = KrlExThreadInitRunEnv(thread, env);
+    if(FALSE == rets)
+    {
+        KrlExDestroyThread(thread);
+        return FALSE;
+    }
+
+    rets = KrlTransferAddDefault(&thread->ThreadTransfer);
+    if(FALSE == rets)
+    {
+        KrlExDestroyThread(thread);
+        return FALSE;
+    }
+    return TRUE;
+}

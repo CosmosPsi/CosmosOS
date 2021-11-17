@@ -77,5 +77,6 @@ public Bool KrlExThreadInitKernelStack(Thread* thread, TRunEnv* env);
 private Bool KrlExThreadInitRunEnvRealizeCore(Thread* thread, TRunEnv* env);
 private Bool KrlExThreadInitRunEnvRealize(Thread* thread, TRunEnv* env);
 public Bool KrlExThreadInitRunEnv(Thread* thread, TRunEnv* env);
+private Bool KrlExCreateThreadInitRunEnvRealizeCore(TRunEnv* env);
 
 #endif
