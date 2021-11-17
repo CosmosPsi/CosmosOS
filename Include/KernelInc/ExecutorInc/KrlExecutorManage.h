@@ -45,6 +45,7 @@ typedef struct EXECUTORNODE
 	U64 Flags;
     UInt ExecutorNR;
     Executor* CurrRunExecutor;
+    Executor* CPUIdleExecutor;
     ExecutorBox ExecutorBoxor;
 }ExecutorNode;
 
