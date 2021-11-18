@@ -8,6 +8,7 @@
 #include "RBTree.h"
 #include "HalSync.h"
 #include "HalCPU.h"
+#include "HalMMU.h"
 #include "KrlMmManage.h"
 #include "KrlMmAlloc.h"
 #include "KrlMmPool.h"
@@ -247,4 +248,21 @@ public Bool KrlExCreateThreadInitRunEnv(TRunEnv* env)
 {
     IF_NULL_RETURN_NULL(env);
     return KrlExCreateThreadInitRunEnvRealize(env);
+}
+
+private void KrlExAfterThreadDoTransfer(Thread* curr, Thread* next)
+{
+    KrlExSetCurrentTransfer(&next->ThreadTransfer);
+
+    //next->td_context.ctx_nexttss = &x64tss[cpuid];
+    //x64tss[cpuid].rsp0 = next->td_krlstktop;
+    //next->td_context.ctx_nexttss->rsp0 = next->td_krlstktop;
+
+    HalMMULoad(&(next->Affiliation.ExecutorPtr->ExVMS.Mmu));
+    if (next->RunStatus == THREAD_NEW_STATUS)
+    {
+        next->RunStatus = THREAD_RUN_STATUS;
+        HalCPULoadContextRegisterToRun(next);
+    }
+    return;
 }
