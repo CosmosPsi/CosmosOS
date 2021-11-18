@@ -292,7 +292,7 @@ public UInt HalCPUID()
     return 0;
 }
 
-public void HalCPUSaveToNewContext(void* curr, void* next, Addr outstack, Addr instack, void* callbackfun)
+public void HalCPUSaveToNewContext(void* curr, void* next, Addr* outstack, Addr* instack, void* callbackfun)
 {
     __asm__ __volatile__(
         "pushfq \n\t"
@@ -313,8 +313,8 @@ public void HalCPUSaveToNewContext(void* curr, void* next, Addr outstack, Addr i
         "pushq %%r14\n\t"
         "pushq %%r15\n\t"
 
-        "movq %%rsp,%[PREV_RSP] \n\t"
-        "movq %[NEXT_RSP],%%rsp \n\t"
+        "movq %%rsp,[%[PREV_RSP]] \n\t"
+        "movq [%[NEXT_RSP]],%%rsp \n\t"
         "callq %[CALLBACK]\n\t"
 
         "popq %%r15\n\t"
@@ -333,8 +333,8 @@ public void HalCPUSaveToNewContext(void* curr, void* next, Addr outstack, Addr i
         "popq %%rbx\n\t"
         "popq %%rax\n\t"
         "popfq \n\t"
-        : [PREV_RSP] "=m"(outstack)
-        : [NEXT_RSP] "m"(instack), "D"(curr), "S"(next), [CALLBACK] "R"(callbackfun)
+        : [PREV_RSP] "=r"(outstack)
+        : [NEXT_RSP] "r"(instack), "D"(curr), "S"(next), [CALLBACK] "r"(callbackfun)
         : "memory");
 
     return;
