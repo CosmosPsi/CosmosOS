@@ -230,6 +230,31 @@ private void KrlTransferCurrentToNext(Transfer* curr, Transfer* next)
     return;
 }
 
+private void KrlTransferRealizeCore()
+{
+    TransferManage* tmd = NULL;
+    TransferNode* node = NULL;
+    Transfer* curr = NULL;
+    Transfer* next = NULL;
+
+    UInt cpu = 0;
+    
+    tmd = KrlTrGetTransferManageDataAddr();
+    IF_NULL_RETURN(tmd);
+
+    cpu = HalCPUID();
+    IF_GTN_DEAD(cpu, (TRANSFER_NR_MAX - 1), "CPUID GNT TRANSFER_NR_MAX\n");
+
+    node = tmd->TransferNodeArr[cpu];
+    IF_EQT_DEAD(NULL, node, "Transfer Node is NULL\n");
+
+    curr = KrlExGetCurrentTransfer();
+    next = KrlExGetNextRunTransferOnTransferNode(node);
+    
+    KrlTransferCurrentToNext(curr, next);
+    return;
+}
+
 public Bool KrlTransferInit()
 {
     TransferManage* tmd = NULL;
