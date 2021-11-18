@@ -255,6 +255,11 @@ private void KrlTransferRealizeCore()
     return;
 }
 
+private void KrlTransferRealize()
+{
+    return KrlTransferRealizeCore();
+}
+
 public Bool KrlTransferInit()
 {
     TransferManage* tmd = NULL;
