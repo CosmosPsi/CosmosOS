@@ -51,7 +51,8 @@ private void TransferManageInit(TransferManage* init)
 
 private Bool KrlTransferDelRealizeCore(TransferNode* node, Transfer* transfer)
 {
-    IF_NEQ_RETURN(node, transfer->ParentNode, TRUE);
+    IF_EQT_RETURN(NULL, transfer->ParentNode, TRUE);
+    IF_NEQ_RETURN(node, transfer->ParentNode, FALSE);
     IF_LTN_RETURN(node->TransferNR, 1, FALSE);
 
     KrlExLocked(&node->Lock);
@@ -159,6 +160,13 @@ public Transfer* KrlExGetCurrentTransfer()
     IF_EQT_DEAD(currnode, NULL, "Current CPU TransferNode is NULL\n");
     IF_EQT_DEAD(currnode->CurrTransfer, NULL, "Current Transfer is NULL\n");
     return currnode->CurrTransfer;
+}
+
+public Transfer* KrlExGetCPUIdleTransfer(TransferNode* node)
+{
+    IF_EQT_DEAD(node, NULL, "TransferNode is NULL\n");
+    IF_EQT_DEAD(node->CPUIdleTransfer, NULL, "CPUIdle Transfer is NULL\n");
+    return node->CPUIdleTransfer;
 }
 
 public Bool KrlTransferInit()
