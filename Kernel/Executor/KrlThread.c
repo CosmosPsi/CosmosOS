@@ -281,3 +281,10 @@ private Bool KrlExThreadDoTransferRealize(Thread* curr, Thread* next)
 {
     return KrlExThreadDoTransferRealizeCore(curr, next);
 }
+
+public Bool KrlExThreadDoTransfer(Thread* curr, Thread* next)
+{
+    IF_NULL_RETURN_FALSE(curr);
+    IF_NULL_RETURN_FALSE(next);
+    return KrlExThreadDoTransferRealize(curr, next);
+}
