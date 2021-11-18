@@ -266,3 +266,14 @@ private void KrlExAfterThreadDoTransfer(Thread* curr, Thread* next)
     }
     return;
 }
+
+private Bool KrlExThreadDoTransferRealizeCore(Thread* curr, Thread* next)
+{
+    Addr* outstack = NULL;
+    Addr* instack = NULL;
+    outstack = &(curr->ThreadContext.NextStackAddr);
+    instack = &(next->ThreadContext.NextStackAddr);
+    HalCPUSaveToNewContext(curr, next, outstack, instack, KrlExAfterThreadDoTransfer);
+    return TRUE;    
+}
+
