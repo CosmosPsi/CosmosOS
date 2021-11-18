@@ -218,6 +218,18 @@ public Transfer* KrlExGetNextRunTransferOnTransferNode(TransferNode* node)
     return KrlExGetCPUIdleTransfer(node);
 }
 
+private void KrlTransferCurrentToNext(Transfer* curr, Transfer* next)
+{
+    Thread* currthread = NULL;
+    Thread* nextthread = NULL;
+    IF_NULL_RETURN(curr);
+    IF_NULL_RETURN(next);
+    currthread = KrlTrGetThreadForTransfer(curr);
+    nextthread = KrlTrGetThreadForTransfer(curr);
+    KrlExThreadDoTransfer(currthread, nextthread);
+    return;
+}
+
 public Bool KrlTransferInit()
 {
     TransferManage* tmd = NULL;
