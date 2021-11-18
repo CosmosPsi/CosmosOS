@@ -90,5 +90,6 @@ private Bool KrlExCreateThreadInitRunEnvRealize(TRunEnv* env);
 public Bool KrlExCreateThreadInitRunEnv(TRunEnv* env);
 private void KrlExAfterThreadDoTransfer(Thread* curr, Thread* next);
 private Bool KrlExThreadDoTransferRealizeCore(Thread* curr, Thread* next);
+private Bool KrlExThreadDoTransferRealize(Thread* curr, Thread* next);
 
 #endif

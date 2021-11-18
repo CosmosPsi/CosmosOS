@@ -277,3 +277,7 @@ private Bool KrlExThreadDoTransferRealizeCore(Thread* curr, Thread* next)
     return TRUE;    
 }
 
+private Bool KrlExThreadDoTransferRealize(Thread* curr, Thread* next)
+{
+    return KrlExThreadDoTransferRealizeCore(curr, next);
+}
