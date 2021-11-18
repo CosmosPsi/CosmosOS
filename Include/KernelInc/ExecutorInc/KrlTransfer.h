@@ -81,6 +81,7 @@ public Bool TransferInitForThread(Transfer* init, Thread* thread);
 public TransferNode* KrlExGetCurrentCPUTransferNode();
 public Transfer* KrlExGetCurrentTransfer();
 public Transfer* KrlExGetCPUIdleTransfer(TransferNode* node);
+public Transfer* KrlExGetCurrentCPUIdleTransfer();
 public Bool KrlTransferInit();
 
 

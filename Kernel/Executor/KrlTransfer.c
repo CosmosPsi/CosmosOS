@@ -169,6 +169,15 @@ public Transfer* KrlExGetCPUIdleTransfer(TransferNode* node)
     return node->CPUIdleTransfer;
 }
 
+public Transfer* KrlExGetCurrentCPUIdleTransfer()
+{
+    TransferNode* currnode = NULL;
+    currnode = KrlExGetCurrentCPUTransferNode();
+    IF_EQT_DEAD(currnode, NULL, "Current CPU TransferNode is NULL\n");
+    IF_EQT_DEAD(currnode->CPUIdleTransfer, NULL, "CPUIdle Transfer is NULL\n");
+    return currnode->CPUIdleTransfer;
+}
+
 public Bool KrlTransferInit()
 {
     TransferManage* tmd = NULL;
