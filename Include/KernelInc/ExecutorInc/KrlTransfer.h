@@ -83,6 +83,7 @@ public Transfer* KrlExGetCurrentTransfer();
 public Transfer* KrlExGetCPUIdleTransfer(TransferNode* node);
 public Transfer* KrlExGetCurrentCPUIdleTransfer();
 private Transfer* PickTransferOnTransferNode(TransferNode* node);
+public Transfer* KrlExGetNextRunTransferOnTransferNode(TransferNode* node);
 public Bool KrlTransferInit();
 
 

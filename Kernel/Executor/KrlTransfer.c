@@ -194,6 +194,18 @@ private Transfer* PickTransferOnTransferNode(TransferNode* node)
     return transfer;
 }
 
+public Transfer* KrlExGetNextRunTransferOnTransferNode(TransferNode* node)
+{
+    Transfer* transfer = NULL;
+    IF_EQT_DEAD(NULL, node, "Transfer Node is NULL\n");
+    transfer = PickTransferOnTransferNode(node);
+    if(NULL != transfer)
+    {
+        return transfer;
+    }
+    return KrlExGetCPUIdleTransfer(node);
+}
+
 public Bool KrlTransferInit()
 {
     TransferManage* tmd = NULL;
