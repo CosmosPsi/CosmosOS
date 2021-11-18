@@ -88,6 +88,7 @@ public Transfer* KrlExGetNextRunTransferOnTransferNode(TransferNode* node);
 private void KrlTransferCurrentToNext(Transfer* curr, Transfer* next);
 private void KrlTransferRealizeCore();
 private void KrlTransferRealize();
+public void KrlTransfer();
 public Bool KrlTransferInit();
 
 

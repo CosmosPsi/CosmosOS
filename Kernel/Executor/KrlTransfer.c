@@ -260,6 +260,11 @@ private void KrlTransferRealize()
     return KrlTransferRealizeCore();
 }
 
+public void KrlTransfer()
+{
+    return KrlTransferRealize();
+}
+
 public Bool KrlTransferInit()
 {
     TransferManage* tmd = NULL;
