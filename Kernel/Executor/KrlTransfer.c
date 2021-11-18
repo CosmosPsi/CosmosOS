@@ -178,6 +178,22 @@ public Transfer* KrlExGetCurrentCPUIdleTransfer()
     return currnode->CPUIdleTransfer;
 }
 
+private Transfer* PickTransferOnTransferNode(TransferNode* node)
+{
+    Transfer* transfer = NULL; 
+    IF_NULL_RETURN_NULL(node);
+    if(ListIsEmptyCareful(&node->TransferLists) == TRUE)
+    {
+        return NULL;
+    }
+    transfer = ListFirstOne(&node->TransferLists, Transfer, Lists);
+    if(KrlTransferDelRealizeCore(node, transfer) == FALSE)
+    {
+        return NULL;
+    }
+    return transfer;
+}
+
 public Bool KrlTransferInit()
 {
     TransferManage* tmd = NULL;

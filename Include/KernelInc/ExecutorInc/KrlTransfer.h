@@ -82,6 +82,7 @@ public TransferNode* KrlExGetCurrentCPUTransferNode();
 public Transfer* KrlExGetCurrentTransfer();
 public Transfer* KrlExGetCPUIdleTransfer(TransferNode* node);
 public Transfer* KrlExGetCurrentCPUIdleTransfer();
+private Transfer* PickTransferOnTransferNode(TransferNode* node);
 public Bool KrlTransferInit();
 
 
