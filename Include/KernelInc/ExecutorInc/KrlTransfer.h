@@ -30,6 +30,7 @@ typedef struct TRANSFERNODE
     List TransferLists;
     RBRoot Root;
     Transfer* CurrTransfer;
+    Transfer* CPUIdleTransfer;
     void* Priv; 
     void* Ext;
 }TransferNode;
