@@ -167,3 +167,25 @@ public Executor* KrlExGetCurrentRunExecutor()
     IF_EQT_DEAD(NULL, executor, "Current Run Executor is NULL\n");
     return executor;
 }
+
+public Bool KrlExSetCurrentRunExecutor(Executor* executor)
+{
+    UInt cpuid = 0;
+    GExecutorManage* gexm = NULL;
+    ExecutorNode* exnode = NULL;
+    IF_NULL_RETURN_FALSE(executor);
+    cpuid = executor->Affiliation.CPUID;
+    IF_GTN_RETURN(cpuid, (EXECUTORNODE_MAX - 1), FALSE);
+
+    gexm = KrlExGetGExecutorManageDataAddr();
+    IF_NULL_RETURN_FALSE(gexm);
+
+    exnode = gexm->ExecutorNodePtrArr[cpuid];
+    IF_NULL_RETURN_FALSE(exnode);
+
+    KrlExLocked(&exnode->Lock);
+    exnode->CurrRunExecutor = executor; 
+    KrlExUnLock(&exnode->Lock);
+
+    return TRUE;
+}

@@ -92,4 +92,5 @@ public Bool KrlExSetAffiliationExNode(Executor* executor, ExecutorNode* exnode);
 public Bool KrlExSetAffiliationExBox(Executor* executor, ExecutorBox* exbox);
 public Executor* KrlExGetCPUIdleExecutor();
 public Executor* KrlExGetCurrentRunExecutor();
+public Bool KrlExSetCurrentRunExecutor(Executor* executor);
 #endif
