@@ -39,6 +39,7 @@
 #define DEVCLASSMAX 256
 #define GDTMAX 10
 #define IDTMAX 256
+#define TSSARRMAX 64
 #define STACKMAX 0x400
 
 
@@ -186,7 +187,7 @@ typedef struct X64TSS
 
 typedef struct TSS
 {
-    X64TSS TSSArr[1];
+    X64TSS TSSArr[TSSARRMAX];
 }TSS;
 
 typedef struct GDT
