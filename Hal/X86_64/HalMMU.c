@@ -1207,10 +1207,13 @@ public Bool HalMMUInitExecutorTDireArr(MMU* mmu)
 {
 	Bool rets = FALSE;
 	Addr vcr3 = NULL;
-	if(NULL == mmu)
-	{
-		return FALSE;
-	}
+    MachStartInfo* msi = NULL;
+
+	IF_NULL_RETURN_FALSE(mmu);
+
+    msi = HalGetMachStartInfoAddr();
+    IF_NULL_RETURN_FALSE(msi);
+
 	HalSPinLock(&mmu->Lock);
 
 	if(MMUNewTDireArr(mmu) == NULL)
@@ -1219,7 +1222,7 @@ public Bool HalMMUInitExecutorTDireArr(MMU* mmu)
 		goto OUTLable;
 	}
 
-	vcr3 = HalPAddrToVAddr(kmachbsp.mb_pml4padr);
+	vcr3 = HalPAddrToVAddr(msi->TDireArrPAddr);
 
 	HalMemCopy((void*)vcr3, (void*)mmu->TDireArrPtr, sizeof(TDireArr));
 	
