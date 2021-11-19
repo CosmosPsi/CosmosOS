@@ -41,7 +41,7 @@
 #define KRNL_MAP_VIRTADDRESS_END (KRNL_MAP_VIRTADDRESS_START+KRNL_MAP_VIRTADDRESS_SIZE)
 #define KRNL_ADDR_ERROR 0xf800000000000
 
-#define MSI_PADR ((MachStartInfio*)(0x100000))
+#define MSI_PADR ((MachStartInfo*)(0x100000))
 
 #define BFH_RW_R 1
 #define BFH_RW_W 2
@@ -65,6 +65,8 @@
 #define RAM_AREACON 5
 
 #define MSI_MAGIC (U64)((((U64)'C')<<56)|(((U64)'o')<<48)|(((U64)'s')<<40)|(((U64)'m')<<32)|(((U64)'o')<<24)|(((U64)'s')<<16)|(((U64)'O')<<8)|((U64)'S'))
+
+#define DefinedBootData(vartype,varname) __attribute__((section(".boot.data"))) vartype varname
 
 //Machine start-up information
 typedef struct MACHSTARTINFO
@@ -152,6 +154,7 @@ typedef struct KIMAGEINFO
     U64 EndMagic;
     U64 Rescv;
 }KImageInfo;
+public Bool MachStartInfoCopyInit(MachStartInfo* copy, MachStartInfo* init);
 public MachStartInfo* HalGetMachStartInfoAddr();
 public Addr HalBootAllocMem(Size size);
 public E820Map* HalBootGetNextE820();

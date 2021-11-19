@@ -14,9 +14,20 @@
 #include "HalInterface.h"
 #include "KrlInit.h"
 
+DefinedBootData(MachStartInfo, MachStartInfoData);
+
+public Bool MachStartInfoCopyInit(MachStartInfo* copy, MachStartInfo* init)
+{
+    IF_NULL_RETURN_FALSE(copy);
+    IF_NULL_RETURN_FALSE(init);
+    INIT_OBJOFPTR_ZERO(init);
+    HalMemCopy((void*)copy, (void*)init, sizeof(MachStartInfo));
+    return TRUE;
+}
+
 public MachStartInfo* HalGetMachStartInfoAddr()
 {
-    return (MachStartInfo*)HalPAddrToVAddr((Addr)MSI_PADR);
+    return &MachStartInfoData;
 }
 
 public Addr HalBootAllocMem(Size size)
@@ -61,6 +72,7 @@ public E820Map* HalBootGetNextE820()
 
 private Bool HalBootInit()
 {
+    MachStartInfoCopyInit(MSI_PADR, HalGetMachStartInfoAddr());
     HalFirmwareInit();    
 	HalCPUInit();
 	HalMMUInit();
