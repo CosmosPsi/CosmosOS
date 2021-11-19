@@ -41,6 +41,7 @@ public void __attribute__((optnone)) HalDead(UInt count)
     }
     return;
 }
+
 public Addr HalVAddrToPAddr(Addr kvaddr)
 {
     if (kvaddr < KRNL_MAP_VIRTADDRESS_START || kvaddr > KRNL_MAP_VIRTADDRESS_END)
@@ -152,6 +153,14 @@ private void CPULoadTr(U16 trindx)
     return;    
 }
 
+private Bool CPUInitTSS()
+{
+    TSS* tss = NULL;
+    tss = HalGetTSSTableAddr();
+    IF_NULL_RETURN_FALSE(tss);
+    INIT_OBJOFPTR_ZERO(tss);
+    return TRUE;
+}
 
 private Bool CPUInitIDT()
 {
@@ -421,5 +430,6 @@ public Bool HalCPUInit()
 {
     CPUInitGDT();
     CPUInitIDT();
+    CPUInitTSS();
     return TRUE;
 }

@@ -548,6 +548,7 @@ private Bool SetOneX64TSSAttrInSegmentDesc(SegmentDesc* desc, U64 base, U32 limi
 private void CPULoadGDT(GDTPTR* gdtptr);
 private void CPULoadIDT(IDTPTR* idtptr);
 private void CPULoadTr(U16 trindx);
+private Bool CPUInitTSS();
 private Bool CPUInitIDT();
 private Bool CPUInitGDT();
 public UInt HalCPUID();
