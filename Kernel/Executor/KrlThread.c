@@ -252,11 +252,17 @@ public Bool KrlExCreateThreadInitRunEnv(TRunEnv* env)
 
 private void KrlExAfterThreadDoTransfer(Thread* curr, Thread* next)
 {
+    X64TSS* x64tss = NULL;
+    UInt cpuid = 0;
+
+    cpuid = HalCPUID();
+    x64tss = HalCPUGetX64TssOnCPUID(cpuid);
+    IF_EQT_DEAD(NULL, x64tss, "x64tss is NULL\n");
+
     KrlExSetCurrentTransfer(&next->ThreadTransfer);
 
-    //next->td_context.ctx_nexttss = &x64tss[cpuid];
-    //x64tss[cpuid].rsp0 = next->td_krlstktop;
-    //next->td_context.ctx_nexttss->rsp0 = next->td_krlstktop;
+    next->ThreadContext.Tss = x64tss;
+    next->ThreadContext.Tss->RSP0 = next->ThreadContext.KrlStackTop;
 
     HalMMULoad(&(next->Affiliation.ExecutorPtr->ExVMS.Mmu));
     if (next->RunStatus == THREAD_NEW_STATUS)
