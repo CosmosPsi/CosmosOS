@@ -278,7 +278,7 @@ private PMSAD* MMUNewTDireArr(MMU* mmulocked)
 		return NULL;
 	}
 
-	tdirearr = (TDireArr*)PMSADRetVaddr(msa);
+	tdirearr = (TDireArr*)PMSADRetVaddr(msad);
 
     TDireArrInit(tdirearr);
 
@@ -383,10 +383,10 @@ private Bool MMUDelSDireArr(MMU* mmulocked, SDireArr* sdirearr, PMSAD* msad)
 			return TRUE;
 		}
 	}
-	ListForEach(pos, &mmulocked->mud_sdirhead)
+	ListForEach(pos, &mmulocked->SDirHead)
 	{
 		tmpmsad = ListEntry(pos, PMSAD, Lists);
-		if(PMSADRetPAddr(tmpmsa) == tblphyadr)
+		if(PMSADRetPAddr(tmpmsad) == tblphyadr)
 		{
 			list_del(&tmpmsad->Lists);
 			if(HalExPPutKrlOnePMSAD(tmpmsad) == FALSE)
@@ -636,7 +636,7 @@ private MDireArr* MMUTranslationMDire(MMU* mmulocked, IDireArr* idirearr, Addr v
 		return mdirearr;
 	}
 
-	msa = MMUNewMDireArr(mmulocked);
+	msad = MMUNewMDireArr(mmulocked);
 	if(NULL == msad)
 	{
 		*outmsad = NULL;
@@ -737,7 +737,7 @@ private Bool MMUUnTranslationSDire(MMU* mmulocked, TDireArr* tdirearr, PMSAD* ms
 
 	tindex = TDireIndex(vaddr);
 	
-	tdire = tdirearr->tde_arr[tindex];
+	tdire = tdirearr->TDEArr[tindex];
 	if(SDireIsHave(&tdire) == FALSE)
 	{
 		return TRUE;
@@ -896,8 +896,8 @@ public void HalMMULoad(MMU* mmu)
 		goto out;
 	}
 
-	mmu->CR3.Entry = HalVAddrToPAddr((Addr)mmu->TDireArrPtr);
-	HalWriteCR3((UInt)(mmu->CR3.Entry));
+	mmu->Cr3.Entry = HalVAddrToPAddr((Addr)mmu->TDireArrPtr);
+	HalWriteCR3((UInt)(mmu->Cr3.Entry));
 
 out:
     HalUnSPinLock(&mmu->Lock);	
@@ -918,8 +918,8 @@ private void HalMMUInnerRefresh(MMU* mmulocked)
 		return;
 	}
 
-	mmulocked->CR3.Entry = HalVAddrToPAddr((Addr)mmulocked->TDireArrPtr);
-	HalWriteCR3((UInt)(mmulocked->CR3.Entry));
+	mmulocked->Cr3.Entry = HalVAddrToPAddr((Addr)mmulocked->TDireArrPtr);
+	HalWriteCR3((UInt)(mmulocked->Cr3.Entry));
 	return;
 }
 
@@ -973,7 +973,7 @@ ERRLabelIDireArr:
 	MMUUnTranslationIDire(mmu, sdirearr, NULL, vaddr);
 ERRLabelSDireArr:
 	MMUUnTranslationSDire(mmu, mmu->TDireArrPtr, NULL, vaddr);
-OUtLabel:
+OUTLabel:
 	HalMMUInnerRefresh(mmu);	
 	HalUnSPinLock(&mmu->Lock);
 	return retadr;
@@ -983,7 +983,7 @@ public Addr HalUnMMUTranslation(MMU* mmu, Addr vaddr)
 {
 	if(NULL == mmu)
 	{
-		return EPARAM;
+		return NULL;
 	}
 	return HalUnMMUTranslationCore(mmu, vaddr);
 }
@@ -1034,7 +1034,7 @@ private Bool HalMMUTranslationCore(MMU* mmu, Addr vaddr, Addr paddr, U64 flags)
 	{
 		rets = TRUE;
 		HalMMUInnerRefresh(mmu);
-		goto out;
+		goto OUTLabel;
 	}
 
 	rets = FALSE;
@@ -1071,7 +1071,7 @@ private Bool MMUCleanMDireArrAllPMSAD(MMU* mmulocked)
 	}
 	ListForEachDeleteOneList(pos, &mmulocked->MDirHead)
 	{
-		msad = ListEntry(pos, PMSAD, md_list);
+		msad = ListEntry(pos, PMSAD, Lists);
 		ListDel(&msad->Lists);
 		if(HalExPPutKrlOnePMSAD(msad) == FALSE)
 		{
@@ -1149,7 +1149,7 @@ private Bool MMUCleanTDireArrAllPMSAD(MMU* mmulocked)
 	return TRUE;
 }
 
-public Bool HalMMUClean()
+public Bool HalMMUClean(MMU* mmu)
 {
 	Bool  rets = FALSE;
 	Addr pcr3 = NULL, vcr3 = NULL;

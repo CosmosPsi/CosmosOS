@@ -296,7 +296,7 @@ private Bool MMUCleanMDireArrAllPMSAD(MMU* mmulocked);
 private Bool MMUCleanIDireArrAllPMSAD(MMU* mmulocked);
 private Bool MMUCleanSDireArrAllPMSAD(MMU* mmulocked);
 private Bool MMUCleanTDireArrAllPMSAD(MMU* mmulocked);
-public Bool HalMMUClean();
+public Bool HalMMUClean(MMU* mmu);
 public Bool HalMMUInitExecutorTDireArr(MMU* mmu);
 public Bool HalMMUEnable();
 public Bool HalMMUDisable();
