@@ -36,6 +36,7 @@ typedef struct TCONTEXT
     Addr FunStartAddr;
     Addr NextStartAddr;
     Addr NextStackAddr;
+    X64TSS* Tss;
 }TContext;
 
 typedef struct THREAD
