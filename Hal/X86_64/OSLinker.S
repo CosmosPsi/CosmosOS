@@ -26,6 +26,10 @@ SECTIONS
         .entry64.text ALIGN(4) : AT(ADDR(.entry64.text)-VIRTUAL_ADDRESS){ *(.entry64.text) }
 	EndEntry64Text = .;
     
+    BeginBootData = .;
+        .boot.data ALIGN(4) : AT(ADDR(.boot.data)-VIRTUAL_ADDRESS){ *(.boot.data) }
+	EndBootData = .;
+
     BeginCPUCoreArchData = .;
         .cpu.core.arch.data ALIGN(4) : AT(ADDR(.cpu.core.arch.data)-VIRTUAL_ADDRESS){ *(.cpu.core.arch.data) }
 	EndCPUCoreArchData = .;
