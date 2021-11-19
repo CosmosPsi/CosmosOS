@@ -426,6 +426,17 @@ public Addr HalCPUInitContextRegisterInStack(Addr stacktop, Size size, Addr star
     return NULL;
 }
 
+public X64TSS* HalCPUGetX64TssOnCPUID(UInt cpuid)
+{
+    TSS* tss = NULL;
+
+    IF_GTN_RETURN(cpuid, TSSARRMAX, NULL);
+    tss = HalGetTSSTableAddr();
+    IF_NULL_RETURN_NULL(tss);
+    
+    return &tss->TSSArr[cpuid];
+}
+
 public Bool HalCPUInit()
 {
     CPUInitGDT();

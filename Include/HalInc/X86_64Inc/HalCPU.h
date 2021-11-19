@@ -555,5 +555,6 @@ public UInt HalCPUID();
 public void HalCPUSaveToNewContext(void* curr, void* next, Addr* outstack, Addr* instack, void* callbackfun);
 public void HalCPULoadContextRegisterToRun(Addr stack);
 public Addr HalCPUInitContextRegisterInStack(Addr stacktop, Size size, Addr start, UInt mode, CPUFlg cpuflags, Addr userstack);
+public X64TSS* HalCPUGetX64TssOnCPUID(UInt cpuid);
 public Bool HalCPUInit();
 #endif
