@@ -83,7 +83,7 @@ typedef struct GRAPH
 {
     U32 Mode;
     U32 X;
-    U32 y;
+    U32 Y;
     U32 FramPHYAddr;
     U32 OnePixBits;
     U32 VBEModeNR;
@@ -102,8 +102,8 @@ typedef struct GRAPH
     U32 NextCharsX;
     U32 NextCharsY;
     U32 LineSZ;
-    vbeinfo_t vbeinfo;
-    vbeominfo_t vminfo;
+    VBEInfo VbeInfo;
+    VBEOMInfo VMInfo;
 }__attribute__((packed)) Graph;
 
 typedef struct BMFHEAD
@@ -118,14 +118,14 @@ typedef struct BMFHEAD
 typedef struct BITMINFO
 {
     U32 BISize;
-    s32_t BIWidth;
-    s32_t BIHigh;
+    S32 BIWidth;
+    S32 BIHigh;
     U16 BIPlanes;
     U16 BIBCount;
     U32 BIComp;
     U32 BISZImg;
-    s32_t BIXPelsper;
-    s32_t BIYPelsper;
+    S32 BIXPelsper;
+    S32 BIYPelsper;
     U32 BIClrUserd;
     U32 BIClrImport;
 }__attribute__((packed)) BitMInfo;
@@ -190,7 +190,7 @@ typedef struct GRAPHOPS
     SInt (*GOpIoCtrl)(void* dev,void* out,UInt iocode);
     void   (*GOpFlush)(void* dev);
     SInt (*GOpSetBank)(void* dev, SInt bnr);
-    Pixl (*GOpReadpix)(void* dev,UInt x,UInt y);
+    Pixl (*GOpReadPix)(void* dev,UInt x,UInt y);
     void   (*GOpWritePix)(void* dev,Pixl pix,UInt x,UInt y);
     Pixl (*GOpDXReadPix)(void* dev,UInt x,UInt y);
     void   (*GOpDXWritePix)(void* dev,Pixl pix,UInt x,UInt y);
@@ -260,6 +260,7 @@ typedef struct DEFGRAPH
 #define VBE_DISPI_ENABLED (0x01)
 #define VBE_DISPI_LFB_ENABLED (0x40)
 
+public DefGraph* HalGetDefGraphDataAddr();
 private void DefGraphInit();
 private Pixl SetDefFontPx(Pixl px);
 private void SetNextCharsXY(U64 x, U64 y);
