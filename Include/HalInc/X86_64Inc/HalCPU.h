@@ -534,6 +534,11 @@ KLINE void HalWriteCR3(UInt val)
     return;
 }
 
+KLINE TSS* HalGetTSSTableAddr()
+{
+    return &TSSTable;
+}
+
 public void __attribute__((optnone)) HalDead(UInt count);
 public Addr HalVAddrToPAddr(Addr kvaddr);
 public Addr HalPAddrToVAddr(Addr kpaddr);
