@@ -203,3 +203,40 @@ private Bool KrlExThreadAddToThreadBoxHead(Executor* executor, ThreadBox* box, T
     thread->Affiliation.ExecutorPtr = executor;
     return FALSE;
 }
+
+private Bool KrlExThreadAddToExecutorRealizeCore(Executor* executor, Thread* thread)
+{
+    ThreadBox* box = NULL;
+    Bool rets = FALSE;
+
+    box = &executor->ExThreadBox;
+    KrlExLocked(&executor->Lock);
+    KrlExLocked(&box->Lock);
+    switch(thread->RunStatus)
+    {
+    case THREAD_NEW_STATUS:
+        rets = KrlExThreadAddToThreadBoxHead(executor, box, &box->NewHead, thread);
+        break;
+    case THREAD_RUN_STATUS:
+        rets = KrlExThreadAddToThreadBoxHead(executor, box, &box->RunHead, thread);
+        break;
+    case THREAD_SLEEP_STATUS:
+        rets = KrlExThreadAddToThreadBoxHead(executor, box, &box->SleepHead, thread);
+        break;
+    case THREAD_BLOCK_STATUS:
+        rets = KrlExThreadAddToThreadBoxHead(executor, box, &box->BlockHead, thread);
+        break;
+    case THREAD_WAIT_STATUS:
+        rets = KrlExThreadAddToThreadBoxHead(executor, box, &box->WaitHead, thread);
+        break;
+    case THREAD_DEAD_STATUS:
+        rets = KrlExThreadAddToThreadBoxHead(executor, box, &box->DeadHead, thread);  
+        break;
+    default:
+        rets = FALSE;
+        break;
+    }
+    KrlExUnLock(&box->Lock);
+    KrlExUnLock(&executor->Lock);
+    return rets;
+}
