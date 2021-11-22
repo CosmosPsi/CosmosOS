@@ -96,4 +96,5 @@ public Bool KrlExSetCurrentRunExecutor(Executor* executor);
 private Bool KrlExThreadAddToThreadBoxHead(Executor* executor, ThreadBox* box, ThreadHead* head, Thread* thread);
 private Bool KrlExThreadAddToExecutorRealizeCore(Executor* executor, Thread* thread);
 private Bool KrlExThreadAddToExecutorRealize(Executor* executor, Thread* thread);
+public Bool KrlExThreadAddToExecutor(Executor* executor, Thread* thread);
 #endif

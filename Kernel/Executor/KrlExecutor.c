@@ -245,3 +245,10 @@ private Bool KrlExThreadAddToExecutorRealize(Executor* executor, Thread* thread)
 {
     return KrlExThreadAddToExecutorRealizeCore(executor, thread);
 }
+
+public Bool KrlExThreadAddToExecutor(Executor* executor, Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(executor);
+    IF_NULL_RETURN_FALSE(thread);
+    return KrlExThreadAddToExecutorRealize(executor, thread);
+}
