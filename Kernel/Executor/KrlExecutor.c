@@ -240,3 +240,8 @@ private Bool KrlExThreadAddToExecutorRealizeCore(Executor* executor, Thread* thr
     KrlExUnLock(&executor->Lock);
     return rets;
 }
+
+private Bool KrlExThreadAddToExecutorRealize(Executor* executor, Thread* thread)
+{
+    return KrlExThreadAddToExecutorRealizeCore(executor, thread);
+}
