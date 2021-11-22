@@ -12,6 +12,7 @@
 #include "KrlExecutorManage.h"
 #include "KrlExecutorRes.h"
 #include "KrlExecutor.h"
+#include "KrlThread.h"
 
 private void ExNameInit(ExName* init)
 {
@@ -188,4 +189,17 @@ public Bool KrlExSetCurrentRunExecutor(Executor* executor)
     KrlExUnLock(&exnode->Lock);
 
     return TRUE;
+}
+
+private Bool KrlExThreadAddToThreadBoxHead(Executor* executor, ThreadBox* box, ThreadHead* head, Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(executor);
+    IF_NULL_RETURN_FALSE(box);
+    IF_NULL_RETURN_FALSE(head);
+    IF_NULL_RETURN_FALSE(thread);
+    ListAdd(&thread->Lists, &head->ThreadLists);
+    head->ThreadNR++;
+    box->ThreadSumNR++;
+    thread->Affiliation.ExecutorPtr = executor;
+    return FALSE;
 }
