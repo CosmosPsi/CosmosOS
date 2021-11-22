@@ -265,7 +265,7 @@ private void KrlExAfterThreadDoTransfer(Thread* curr, Thread* next)
     next->ThreadContext.Tss->RSP0 = next->ThreadContext.KrlStackTop;
 
     HalMMULoad(&(next->Affiliation.ExecutorPtr->ExVMS.Mmu));
-    if (next->RunStatus == THREAD_NEW_STATUS)
+    if(next->RunStatus == THREAD_NEW_STATUS)
     {
         next->RunStatus = THREAD_RUN_STATUS;
         HalCPULoadContextRegisterToRun(next);
