@@ -336,3 +336,8 @@ private Bool KrlExSetThreadStatusAndTransfer(Thread* thread, UInt status)
     KrlTransfer();
     return TRUE;   
 }
+
+private Bool KrlExThreadWaitRealizeCore(Thread* thread)
+{
+    return KrlExSetThreadStatusAndTransfer(thread, THREAD_WAIT_STATUS);
+}

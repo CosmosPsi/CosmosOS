@@ -97,5 +97,6 @@ private Bool KrlExThreadSetRunStatusRealizeCore(Thread* thread, UInt status);
 private Bool KrlExThreadSetRunStatusRealize(Thread* thread, UInt status);
 public Bool KrlExThreadSetRunStatus(Thread* thread, UInt status);
 private Bool KrlExSetThreadStatusAndTransfer(Thread* thread, UInt status);
+private Bool KrlExThreadWaitRealizeCore(Thread* thread);
 
 #endif
