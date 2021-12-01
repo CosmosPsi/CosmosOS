@@ -302,3 +302,10 @@ private Bool KrlExThreadSetRunStatusRealizeCore(Thread* thread, UInt status)
     KrlExUnLock(&thread->Lock);
     return TRUE;
 }
+
+private Bool KrlExThreadSetRunStatusRealize(Thread* thread, UInt status)
+{
+    IF_LTN_RETURN(status, THREAD_INIT_STATUS, FALSE);
+    IF_GTN_RETURN(status, THREAD_DEAD_STATUS, FALSE);
+    return KrlExThreadSetRunStatusRealizeCore(thread, status);
+}
