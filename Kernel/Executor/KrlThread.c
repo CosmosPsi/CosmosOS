@@ -384,3 +384,9 @@ public Bool KrlExThreadBlock(Thread* thread)
     IF_NULL_RETURN_FALSE(thread);
     return KrlExThreadBlockRealize(thread);
 }
+
+private Bool KrlExThreadDeadRealizeCore(Thread* thread)
+{
+    return KrlExSetThreadStatusAndTransfer(thread, THREAD_DEAD_STATUS);
+}
+
