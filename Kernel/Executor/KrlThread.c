@@ -352,3 +352,8 @@ public Bool KrlExThreadWait(Thread* thread)
     IF_NULL_RETURN_FALSE(thread);
     return KrlExThreadWaitRealize(thread);
 }
+
+private Bool KrlExThreadSleepRealizeCore(Thread* thread)
+{
+    return KrlExSetThreadStatusAndTransfer(thread, THREAD_SLEEP_STATUS);
+}
