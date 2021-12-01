@@ -217,6 +217,43 @@ private Bool KrlExThreadDelOnThreadBoxHead(Executor* executor, ThreadBox* box, T
     return FALSE;
 }
 
+private Bool KrlExThreadDelOnExecutorRealizeCore(Executor* executor, Thread* thread)
+{
+    ThreadBox* box = NULL;
+    Bool rets = FALSE;
+
+    box = &executor->ExThreadBox;
+    KrlExLocked(&executor->Lock);
+    KrlExLocked(&box->Lock);
+    switch(thread->RunStatus)
+    {
+    case THREAD_NEW_STATUS:
+        rets = KrlExThreadDelOnThreadBoxHead(executor, box, &box->NewHead, thread);
+        break;
+    case THREAD_RUN_STATUS:
+        rets = KrlExThreadDelOnThreadBoxHead(executor, box, &box->RunHead, thread);
+        break;
+    case THREAD_SLEEP_STATUS:
+        rets = KrlExThreadDelOnThreadBoxHead(executor, box, &box->SleepHead, thread);
+        break;
+    case THREAD_BLOCK_STATUS:
+        rets = KrlExThreadDelOnThreadBoxHead(executor, box, &box->BlockHead, thread);
+        break;
+    case THREAD_WAIT_STATUS:
+        rets = KrlExThreadDelOnThreadBoxHead(executor, box, &box->WaitHead, thread);
+        break;
+    case THREAD_DEAD_STATUS:
+        rets = KrlExThreadDelOnThreadBoxHead(executor, box, &box->DeadHead, thread);  
+        break;
+    default:
+        rets = FALSE;
+        break;
+    }
+    KrlExUnLock(&box->Lock);
+    KrlExUnLock(&executor->Lock);
+    return rets;
+}
+
 private Bool KrlExThreadAddToExecutorRealizeCore(Executor* executor, Thread* thread)
 {
     ThreadBox* box = NULL;
