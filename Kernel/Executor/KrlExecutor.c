@@ -204,6 +204,19 @@ private Bool KrlExThreadAddToThreadBoxHead(Executor* executor, ThreadBox* box, T
     return FALSE;
 }
 
+private Bool KrlExThreadDelOnThreadBoxHead(Executor* executor, ThreadBox* box, ThreadHead* head, Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(executor);
+    IF_NULL_RETURN_FALSE(box);
+    IF_NULL_RETURN_FALSE(head);
+    IF_NULL_RETURN_FALSE(thread);
+    ListDel(&thread->Lists);
+    head->ThreadNR--;
+    box->ThreadSumNR--;
+    thread->Affiliation.ExecutorPtr = NULL;
+    return FALSE;
+}
+
 private Bool KrlExThreadAddToExecutorRealizeCore(Executor* executor, Thread* thread)
 {
     ThreadBox* box = NULL;
