@@ -93,5 +93,6 @@ private void KrlExAfterThreadDoTransfer(Thread* curr, Thread* next);
 private Bool KrlExThreadDoTransferRealizeCore(Thread* curr, Thread* next);
 private Bool KrlExThreadDoTransferRealize(Thread* curr, Thread* next);
 public Bool KrlExThreadDoTransfer(Thread* curr, Thread* next);
+private Bool KrlExThreadSetRunStatusRealizeCore(Thread* thread, UInt status);
 
 #endif

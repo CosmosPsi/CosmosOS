@@ -294,3 +294,11 @@ public Bool KrlExThreadDoTransfer(Thread* curr, Thread* next)
     IF_NULL_RETURN_FALSE(next);
     return KrlExThreadDoTransferRealize(curr, next);
 }
+
+private Bool KrlExThreadSetRunStatusRealizeCore(Thread* thread, UInt status)
+{
+    KrlExLocked(&thread->Lock);
+    thread->RunStatus = status;
+    KrlExUnLock(&thread->Lock);
+    return TRUE;
+}
