@@ -301,6 +301,13 @@ private Bool KrlExThreadDelOnExecutorRealize(Executor* executor, Thread* thread)
     return KrlExThreadDelOnExecutorRealizeCore(executor, thread);
 }
 
+public Bool KrlExThreadDelOnExecutor(Executor* executor, Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(executor);
+    IF_NULL_RETURN_FALSE(thread);
+    return KrlExThreadDelOnExecutorRealize(executor, thread);
+}
+
 public Bool KrlExThreadAddToExecutor(Executor* executor, Thread* thread)
 {
     IF_NULL_RETURN_FALSE(executor);

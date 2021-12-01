@@ -99,6 +99,6 @@ private Bool KrlExThreadDelOnExecutorRealizeCore(Executor* executor, Thread* thr
 private Bool KrlExThreadAddToExecutorRealizeCore(Executor* executor, Thread* thread);
 private Bool KrlExThreadAddToExecutorRealize(Executor* executor, Thread* thread);
 private Bool KrlExThreadDelOnExecutorRealize(Executor* executor, Thread* thread);
-
+public Bool KrlExThreadDelOnExecutor(Executor* executor, Thread* thread);
 public Bool KrlExThreadAddToExecutor(Executor* executor, Thread* thread);
 #endif
