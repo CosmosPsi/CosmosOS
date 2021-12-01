@@ -406,3 +406,8 @@ private Bool KrlExThreadRunRealizeCore(Thread* thread)
     return KrlExSetThreadStatusAndTransfer(thread, THREAD_RUN_STATUS);
 }
 
+private Bool KrlExThreadRunRealize(Thread* thread)
+{
+    return KrlExThreadRunRealizeCore(thread);
+}
+
