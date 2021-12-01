@@ -390,3 +390,8 @@ private Bool KrlExThreadDeadRealizeCore(Thread* thread)
     return KrlExSetThreadStatusAndTransfer(thread, THREAD_DEAD_STATUS);
 }
 
+private Bool KrlExThreadDeadRealize(Thread* thread)
+{
+    return KrlExThreadDeadRealizeCore(thread);
+}
+
