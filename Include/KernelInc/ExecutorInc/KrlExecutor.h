@@ -98,5 +98,7 @@ private Bool KrlExThreadDelOnThreadBoxHead(Executor* executor, ThreadBox* box, T
 private Bool KrlExThreadDelOnExecutorRealizeCore(Executor* executor, Thread* thread);
 private Bool KrlExThreadAddToExecutorRealizeCore(Executor* executor, Thread* thread);
 private Bool KrlExThreadAddToExecutorRealize(Executor* executor, Thread* thread);
+private Bool KrlExThreadDelOnExecutorRealize(Executor* executor, Thread* thread);
+
 public Bool KrlExThreadAddToExecutor(Executor* executor, Thread* thread);
 #endif
