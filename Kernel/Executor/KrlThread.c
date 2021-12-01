@@ -378,3 +378,9 @@ private Bool KrlExThreadBlockRealize(Thread* thread)
 {
     return KrlExThreadBlockRealizeCore(thread);
 }
+
+public Bool KrlExThreadBlock(Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(thread);
+    return KrlExThreadBlockRealize(thread);
+}

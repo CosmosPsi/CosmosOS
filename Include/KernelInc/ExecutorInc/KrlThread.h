@@ -105,5 +105,6 @@ private Bool KrlExThreadSleepRealize(Thread* thread);
 public Bool KrlExThreadSleep(Thread* thread);
 private Bool KrlExThreadBlockRealizeCore(Thread* thread);
 private Bool KrlExThreadBlockRealize(Thread* thread);
+public Bool KrlExThreadBlock(Thread* thread);
 
 #endif
