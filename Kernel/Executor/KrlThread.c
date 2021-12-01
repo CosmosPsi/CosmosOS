@@ -411,3 +411,8 @@ private Bool KrlExThreadRunRealize(Thread* thread)
     return KrlExThreadRunRealizeCore(thread);
 }
 
+public Bool KrlExThreadRun(Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(thread);
+    return KrlExThreadRunRealize(thread);
+}
