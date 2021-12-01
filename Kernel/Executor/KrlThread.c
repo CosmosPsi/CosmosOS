@@ -357,3 +357,8 @@ private Bool KrlExThreadSleepRealizeCore(Thread* thread)
 {
     return KrlExSetThreadStatusAndTransfer(thread, THREAD_SLEEP_STATUS);
 }
+
+private Bool KrlExThreadSleepRealize(Thread* thread)
+{
+    return KrlExThreadSleepRealizeCore(thread);
+}
