@@ -341,3 +341,9 @@ private Bool KrlExThreadWaitRealizeCore(Thread* thread)
 {
     return KrlExSetThreadStatusAndTransfer(thread, THREAD_WAIT_STATUS);
 }
+
+private Bool KrlExThreadWaitRealize(Thread* thread)
+{
+    return KrlExThreadWaitRealizeCore(thread);
+}
+
