@@ -362,3 +362,9 @@ private Bool KrlExThreadSleepRealize(Thread* thread)
 {
     return KrlExThreadSleepRealizeCore(thread);
 }
+
+public Bool KrlExThreadSleep(Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(thread);
+    return KrlExThreadSleepRealize(thread);
+}
