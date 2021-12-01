@@ -373,3 +373,8 @@ private Bool KrlExThreadBlockRealizeCore(Thread* thread)
 {
     return KrlExSetThreadStatusAndTransfer(thread, THREAD_BLOCK_STATUS);
 }
+
+private Bool KrlExThreadBlockRealize(Thread* thread)
+{
+    return KrlExThreadBlockRealizeCore(thread);
+}
