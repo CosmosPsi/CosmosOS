@@ -309,3 +309,9 @@ private Bool KrlExThreadSetRunStatusRealize(Thread* thread, UInt status)
     IF_GTN_RETURN(status, THREAD_DEAD_STATUS, FALSE);
     return KrlExThreadSetRunStatusRealizeCore(thread, status);
 }
+
+public Bool KrlExThreadSetRunStatus(Thread* thread, UInt status)
+{
+    IF_NULL_RETURN_FALSE(thread);
+    return KrlExThreadSetRunStatusRealize(thread, status);
+}
