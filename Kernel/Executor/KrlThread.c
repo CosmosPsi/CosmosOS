@@ -347,3 +347,8 @@ private Bool KrlExThreadWaitRealize(Thread* thread)
     return KrlExThreadWaitRealizeCore(thread);
 }
 
+public Bool KrlExThreadWait(Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(thread);
+    return KrlExThreadWaitRealize(thread);
+}
