@@ -315,3 +315,24 @@ public Bool KrlExThreadSetRunStatus(Thread* thread, UInt status)
     IF_NULL_RETURN_FALSE(thread);
     return KrlExThreadSetRunStatusRealize(thread, status);
 }
+
+private Bool KrlExSetThreadStatusAndTransfer(Thread* thread, UInt status)
+{
+    Executor* executor = NULL;
+    IF_NULL_RETURN_FALSE(thread);
+    IF_LTN_RETURN(status, THREAD_INIT_STATUS, FALSE);
+    IF_GTN_RETURN(status, THREAD_DEAD_STATUS, FALSE);
+
+    executor = thread->Affiliation.ExecutorPtr;
+    IF_NULL_RETURN_FALSE(executor);
+
+    IF_NEQ_RETURN(KrlExThreadDelOnExecutor(executor, thread), TRUE, FALSE);
+    if(KrlExThreadSetRunStatus(thread, status) == FALSE)
+    {
+        KrlExThreadAddToExecutor(executor, thread);
+        return FALSE;
+    }
+    KrlExThreadAddToExecutor(executor, thread);
+    KrlTransfer();
+    return TRUE;   
+}
