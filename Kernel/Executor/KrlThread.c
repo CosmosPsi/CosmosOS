@@ -395,3 +395,8 @@ private Bool KrlExThreadDeadRealize(Thread* thread)
     return KrlExThreadDeadRealizeCore(thread);
 }
 
+public Bool KrlExThreadDead(Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(thread);
+    return KrlExThreadDeadRealize(thread);
+}
