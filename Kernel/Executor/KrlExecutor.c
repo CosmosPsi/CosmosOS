@@ -142,6 +142,16 @@ private Bool KrlExDestroyExecutorRealizeCore(Executor* executor)
     return DelExecutor(executor);
 }
 
+private Bool KrlExDestroyExecutorRealize(Executor* executor)
+{
+    if(EXECUTOR_DEAD_STATUS != executor->RunStatus && 
+        EXECUTOR_NEW_STATUS != executor->RunStatus && 
+        EXECUTOR_INIT_STATUS != executor->RunStatus)
+    {
+        return FALSE;
+    }
+    return KrlExDestroyExecutorRealizeCore(executor);
+}
 
 public Bool KrlExSetAffiliationExNode(Executor* executor, ExecutorNode* exnode)
 {

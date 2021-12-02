@@ -90,6 +90,7 @@ private Executor* KrlExCreateExecutorRealizeCore(Executor* executor);
 private Executor* KrlExCreateExecutorRealize();
 public Executor* KrlExCreateExecutor();
 private Bool KrlExDestroyExecutorRealizeCore(Executor* executor);
+private Bool KrlExDestroyExecutorRealize(Executor* executor);
 public Bool KrlExSetAffiliationExNode(Executor* executor, ExecutorNode* exnode);
 public Bool KrlExSetAffiliationExBox(Executor* executor, ExecutorBox* exbox);
 public Executor* KrlExGetCPUIdleExecutor();
