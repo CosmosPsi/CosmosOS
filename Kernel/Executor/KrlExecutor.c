@@ -83,6 +83,12 @@ private Executor* NewExecutor()
     return executor;
 }
 
+private Bool DelExecutor(Executor* executor)
+{
+    IF_NULL_RETURN_FALSE(executor);
+    return KrlMmDel((void*)executor);
+}
+
 private Executor* KrlExCreateExecutorRealizeCore(Executor* executor)
 {
     Bool rets = FALSE;

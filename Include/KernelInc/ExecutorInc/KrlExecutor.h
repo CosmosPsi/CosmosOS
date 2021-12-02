@@ -85,6 +85,7 @@ private void ThreadHeadInit(ThreadHead* init);
 private void ThreadBoxInit(ThreadBox* init);
 private void ExecutorInit(Executor* init);
 private Executor* NewExecutor();
+private Bool DelExecutor(Executor* executor);
 private Executor* KrlExCreateExecutorRealizeCore(Executor* executor);
 private Executor* KrlExCreateExecutorRealize();
 public Executor* KrlExCreateExecutor();
