@@ -115,6 +115,34 @@ public Executor* KrlExCreateExecutor()
     return KrlExCreateExecutorRealize();
 }
 
+private Bool KrlExDestroyExecutorRealizeCore(Executor* executor)
+{
+    IF_NULL_RETURN_FALSE(executor);
+    KrlExLocked(&executor->Lock);
+    
+    if(0 < executor->ExThreadBox.ThreadSumNR)
+    {
+        KrlExUnLock(&executor->Lock);
+        return FALSE;
+    }
+    
+    if(RefCountRead(&executor->ResourceBox.Res->Count) > 0)
+    {
+        KrlExUnLock(&executor->Lock);
+        return FALSE;
+    }
+    
+    if(RefCountRead(&executor->ExVMS.Count) > 0)
+    {
+        KrlExUnLock(&executor->Lock);
+        return FALSE;
+    }
+
+    KrlExUnLock(&executor->Lock);
+    return DelExecutor(executor);
+}
+
+
 public Bool KrlExSetAffiliationExNode(Executor* executor, ExecutorNode* exnode)
 {
     IF_NULL_RETURN_FALSE(executor);
