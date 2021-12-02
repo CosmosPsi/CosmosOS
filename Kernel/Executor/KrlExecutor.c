@@ -153,6 +153,12 @@ private Bool KrlExDestroyExecutorRealize(Executor* executor)
     return KrlExDestroyExecutorRealizeCore(executor);
 }
 
+public Bool KrlExDestroyExecutor(Executor* executor)
+{
+    IF_NULL_RETURN_FALSE(executor);
+    return KrlExDestroyExecutorRealize(executor);
+}
+
 public Bool KrlExSetAffiliationExNode(Executor* executor, ExecutorNode* exnode)
 {
     IF_NULL_RETURN_FALSE(executor);
