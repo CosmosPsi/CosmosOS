@@ -17,6 +17,7 @@ typedef struct SERVICEINFO
 #define SETRUNENV(start, cpumode) start##,##cpumode,0,0
 #define DEFINE_SERVICE(typename, env, sename) \
 __attribute__((section(".service.data"))) ServiceInfo typename = {0,0,0, {0,0,env}, sename}
-public Bool KrlSeManageInit();
 
+public Bool KrlSeCreateServiceOnServiceInfo(ServiceInfo* info);
+public Bool KrlSeManageInit();
 #endif
