@@ -5,5 +5,6 @@
 **********************************************************/
 #ifndef _KRLSESYSTEMIDLEHEAD
 #define _KRLSESYSTEMIDLEHEAD
+public void SystemIdleMain();
 
 #endif
