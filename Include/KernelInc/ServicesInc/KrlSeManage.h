@@ -14,7 +14,9 @@ typedef struct SERVICEINFO
     TRunEnv Env;
     Char* Name;
 }ServiceInfo;
-
+#define SETRUNENV(start, cpumode) start##,##cpumode,0,0
+#define DEFINE_SERVICE(typename, env, sename) \
+__attribute__((section(".service.data"))) ServiceInfo typename = {0,0,0, {0,0,env}, sename}
 public Bool KrlSeManageInit();
 
 #endif
