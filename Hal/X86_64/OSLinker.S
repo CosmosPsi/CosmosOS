@@ -101,7 +101,11 @@ SECTIONS
 	BeginAPBootData = .;
 	.apboot.data ALIGN(4) : AT(ADDR(.apboot.data)-VIRTUAL_ADDRESS) { *(.apboot.data) }
 	EndAPBootData = .;
-
+    
+    BeginServiceData = .;
+	.service.data ALIGN(4) : AT(ADDR(.service.data)-VIRTUAL_ADDRESS) { *(.service.data) }
+	EndServiceData = .;
+    
 	BeginBss = .;
       .bss ALIGN(4) : AT(ADDR(.bss)-VIRTUAL_ADDRESS) { *(.bss) }
 	EndBss = .;
