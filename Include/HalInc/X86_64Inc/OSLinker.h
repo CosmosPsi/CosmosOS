@@ -57,7 +57,7 @@ extern long	EndAPBootText;
 extern long	BeginAPBootData;
 extern long	EndAPBootData;
 extern long BeginServiceData;
-extern long	EndServiceData ;
+extern long	EndServiceData;
 extern long	BeginBss;
 extern long	EndBss;
 extern long	EndKernel;
