@@ -16,9 +16,9 @@ typedef struct SERVICEINFO
 }ServiceInfo;
 
 #define SERVICE_IDLE_FLAG (1)
-#define SETRUNENV(start, cpumode) start##,##cpumode,0,0
+#define SETRUNENV(flags, executor, start, cpumode) 0,flags,executor,start,cpumode,0,0
 #define DEFINE_SERVICE(typename, flags, env, sename) \
-__attribute__((section(".service.data"))) ServiceInfo typename = {0, flags, 0, {0,0,env}, sename}
+__attribute__((section(".service.data"))) ServiceInfo typename = {0, flags, 0, {env}, sename}
 
 public Executor* KrlSeCreateServiceOnServiceInfo(ServiceInfo* info);
 public Executor* KrlSeCreateSystemIdleService(ServiceInfo* info);
