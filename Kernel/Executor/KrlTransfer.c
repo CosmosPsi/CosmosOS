@@ -181,6 +181,18 @@ public Transfer* KrlExGetCPUIdleTransfer(TransferNode* node)
     return node->CPUIdleTransfer;
 }
 
+public Bool KrlExSetCurrentCPUIdleTransfer(Transfer* transfer)
+{
+    TransferNode* currnode = NULL;
+    IF_NULL_RETURN_FALSE(transfer);
+    currnode = KrlExGetCurrentCPUTransferNode();
+    IF_EQT_DEAD(currnode, NULL, "Current CPU TransferNode is NULL\n");
+    KrlExLocked(&currnode->Lock);
+    currnode->CPUIdleTransfer = transfer;
+    KrlExUnLock(&currnode->Lock);
+    return TRUE;
+}
+
 public Transfer* KrlExGetCurrentCPUIdleTransfer()
 {
     TransferNode* currnode = NULL;

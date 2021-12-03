@@ -83,6 +83,7 @@ public Bool KrlExSetCurrentTransfer(Transfer* transfer);
 public Transfer* KrlExGetCurrentTransfer();
 public Transfer* KrlExGetCPUIdleTransfer(TransferNode* node);
 public Transfer* KrlExGetCurrentCPUIdleTransfer();
+public Bool KrlExSetCurrentCPUIdleTransfer(Transfer* transfer);
 private Transfer* PickTransferOnTransferNode(TransferNode* node);
 public Transfer* KrlExGetNextRunTransferOnTransferNode(TransferNode* node);
 private void KrlTransferCurrentToNext(Transfer* curr, Transfer* next);
