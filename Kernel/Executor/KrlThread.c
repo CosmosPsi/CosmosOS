@@ -218,10 +218,21 @@ private Bool KrlExCreateThreadInitRunEnvRealizeCore(TRunEnv* env)
     Thread* thread = NULL;
     Bool rets = FALSE;
 
+    IF_NULL_RETURN_FALSE(env->AffiExecutor);
+
     thread = KrlExCreateThread();
-    IF_NULL_RETURN_NULL(thread);
+    IF_NULL_RETURN_FALSE(thread);
+    
     rets = KrlExThreadInitRunEnv(thread, env);
     if(FALSE == rets)
+    {
+        KrlExDestroyThread(thread);
+        return FALSE;
+    }
+    
+    KrlExThreadSetRunStatus(thread, THREAD_NEW_STATUS);
+
+    if(KrlExThreadAddToExecutor(env->AffiExecutor, thread) == FALSE)
     {
         KrlExDestroyThread(thread);
         return FALSE;
@@ -230,6 +241,7 @@ private Bool KrlExCreateThreadInitRunEnvRealizeCore(TRunEnv* env)
     rets = KrlTransferAddDefault(&thread->ThreadTransfer);
     if(FALSE == rets)
     {
+        KrlExThreadDelOnExecutor(env->AffiExecutor, thread);
         KrlExDestroyThread(thread);
         return FALSE;
     }
@@ -238,6 +250,7 @@ private Bool KrlExCreateThreadInitRunEnvRealizeCore(TRunEnv* env)
 
 private Bool KrlExCreateThreadInitRunEnvRealize(TRunEnv* env)
 {
+    IF_NULL_RETURN_FALSE(env->AffiExecutor);
     IF_ZERO_RETURN_FALSE(env->RunStart);
     IF_ZERO_RETURN_FALSE(env->Flags);
     IF_ZERO_RETURN_FALSE(env->CPUMode);

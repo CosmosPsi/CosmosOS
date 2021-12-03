@@ -59,6 +59,7 @@ typedef struct TRUNENV
 {
     UInt Status;
     UInt Flags;
+    Executor* AffiExecutor;
     Addr RunStart;
     U64 CPUMode;
     UInt Authority;
