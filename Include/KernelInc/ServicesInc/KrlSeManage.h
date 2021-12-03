@@ -18,6 +18,6 @@ typedef struct SERVICEINFO
 #define DEFINE_SERVICE(typename, env, sename) \
 __attribute__((section(".service.data"))) ServiceInfo typename = {0,0,0, {0,0,env}, sename}
 
-public Bool KrlSeCreateServiceOnServiceInfo(ServiceInfo* info);
+public Executor* KrlSeCreateServiceOnServiceInfo(ServiceInfo* info);
 public Bool KrlSeManageInit();
 #endif

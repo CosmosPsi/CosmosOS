@@ -9,26 +9,26 @@
 #include "KrlThread.h"
 #include "KrlSeManage.h"
 
-public Bool KrlSeCreateServiceOnServiceInfo(ServiceInfo* info)
+public Executor* KrlSeCreateServiceOnServiceInfo(ServiceInfo* info)
 {
     Executor* executor = NULL;
     Thread* thread = NULL;
-    IF_NULL_RETURN_FALSE(info);
+    IF_NULL_RETURN_NULL(info);
 
     executor = KrlExCreateExecutor();
-    IF_NULL_RETURN_FALSE(executor);
+    IF_NULL_RETURN_NULL(executor);
     thread = KrlExCreateThread();
     if(NULL == thread)
     {
         IF_NEQ_DEAD(TRUE, KrlExDestroyExecutor(executor), "KrlExDestroyExecutor Is Fail\n");
-        return FALSE;
+        return NULL;
     }
 
     if(KrlExThreadAddToExecutor(executor, thread) == FALSE)
     {
         IF_NEQ_DEAD(TRUE, KrlExDestroyThread(thread), "KrlExDestroyThread Is Fail\n");
         IF_NEQ_DEAD(TRUE, KrlExDestroyExecutor(executor), "KrlExDestroyExecutor Is Fail\n");
-        return FALSE;
+        return NULL;
     }
 
     if(KrlExThreadInitRunEnv(thread, &info->Env) == FALSE)
@@ -36,19 +36,11 @@ public Bool KrlSeCreateServiceOnServiceInfo(ServiceInfo* info)
         IF_NEQ_DEAD(TRUE, KrlExThreadDelOnExecutor(executor, thread), "KrlExThreadDelOnExecutor Is Fail\n");
         IF_NEQ_DEAD(TRUE, KrlExDestroyThread(thread), "KrlExDestroyThread Is Fail\n");
         IF_NEQ_DEAD(TRUE, KrlExDestroyExecutor(executor), "KrlExDestroyExecutor Is Fail\n");
-        return FALSE;
+        return NULL;
     }
 
-    if(KrlExAddCPUIdleExecutor(executor) == FALSE)
-    {
-        IF_NEQ_DEAD(TRUE, KrlExThreadDelOnExecutor(executor, thread), "KrlExThreadDelOnExecutor Is Fail\n");
-        IF_NEQ_DEAD(TRUE, KrlExDestroyThread(thread), "KrlExDestroyThread Is Fail\n");
-        IF_NEQ_DEAD(TRUE, KrlExDestroyExecutor(executor), "KrlExDestroyExecutor Is Fail\n");
-        return FALSE;
-    }
-    
     info->Id = (UInt)executor;
-    return TRUE;
+    return executor;
 }
 
 public Bool KrlSeStartAllRunService()
