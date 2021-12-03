@@ -6,6 +6,7 @@
 #include "BaseType.h"
 #include "List.h"
 #include "HalCPU.h"
+#include "OSLinker.h"
 #include "KrlMmManage.h"
 #include "KrlExecutorManage.h"
 #include "KrlExecutor.h"
@@ -79,11 +80,29 @@ public Bool KrlSeStartAllRunService()
 {
     ServiceInfo* serinfostart = NULL;
     ServiceInfo* serinfoend = NULL;
-
+    serinfostart = (ServiceInfo*)(&BeginServiceData);
+    serinfoend = (ServiceInfo*)(&EndServiceData);
+    IF_NULL_RETURN_FALSE(serinfostart);
+    IF_NULL_RETURN_FALSE(serinfoend);
+    IF_LTN_RETURN((UInt)serinfoend, (UInt)serinfostart, FALSE);
+    for(;serinfostart < serinfoend; serinfostart++)
+    {
+        if(serinfostart->flags == SERVICE_IDLE_FLAG)
+        {
+            IF_NEQ_DEAD(TRUE, KrlSeCreateSystemIdleService(serinfostart), "KrlSeCreateSystemIdleService Is Fail\n");
+            return FALSE;
+        }
+        else
+        {
+            IF_NEQ_DEAD(TRUE, KrlSeCreateServiceOnServiceInfo(serinfostart), "KrlSeCreateServiceOnServiceInfo Is Fail\n");
+            return FALSE;
+        }
+    }
+    return TRUE;
 }
 
 public Bool KrlSeManageInit()
 {
-
+    KrlSeStartAllRunService();
     return TRUE;
 } 

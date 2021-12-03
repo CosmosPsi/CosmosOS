@@ -22,5 +22,6 @@ __attribute__((section(".service.data"))) ServiceInfo typename = {0, flags, 0, {
 
 public Executor* KrlSeCreateServiceOnServiceInfo(ServiceInfo* info);
 public Executor* KrlSeCreateSystemIdleService(ServiceInfo* info);
+public Bool KrlSeStartAllRunService();
 public Bool KrlSeManageInit();
 #endif
