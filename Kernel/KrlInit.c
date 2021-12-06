@@ -4,6 +4,7 @@
                 彭东 
 ****************************************************************/
 #include "BaseType.h"
+#include "List.h"
 #include "KrlMmManage.h"
 #include "KrlMmPool.h"
 #include "KrlMmVmem.h"
