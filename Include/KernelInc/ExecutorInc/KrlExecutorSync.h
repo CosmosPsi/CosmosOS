@@ -30,5 +30,6 @@ typedef struct EMUTEX
 }EMutex;
 
 public void EWaitListInit(EWaitList* init);
+public void ESyncInit(ESync* init);
 
 #endif
