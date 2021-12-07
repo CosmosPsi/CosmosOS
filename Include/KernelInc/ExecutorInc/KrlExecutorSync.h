@@ -19,4 +19,9 @@ typedef struct ESYNC
     EWaitList WaitList;
 }ESync;
 
+typedef struct ESEM
+{
+    ESync Sync;
+}Esem;
+
 #endif
