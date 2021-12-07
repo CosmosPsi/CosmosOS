@@ -34,3 +34,11 @@ public void EsemInit(Esem* init)
     ESyncInit(&init->Sync);
     return;
 }
+
+public void EMutexInit(EMutex* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ESyncInit(&init->Sync);
+    return;
+}
