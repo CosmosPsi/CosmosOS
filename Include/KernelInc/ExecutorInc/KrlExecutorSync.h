@@ -29,7 +29,8 @@ typedef struct EMUTEX
     ESync Sync;
 }EMutex;
 
-public void EWaitListInit(EWaitList* init);
-public void ESyncInit(ESync* init);
+private void EWaitListInit(EWaitList* init);
+private void ESyncInit(ESync* init);
+public void EsemInit(Esem* init);
 
 #endif
