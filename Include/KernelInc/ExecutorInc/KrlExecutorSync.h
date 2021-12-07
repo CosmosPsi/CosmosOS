@@ -12,4 +12,11 @@ typedef struct EWAITLIST
     List Lists;
 }EWaitList;
 
+typedef struct ESYNC
+{
+    SPinLock Lock;
+    RefCount LockCount;
+    EWaitList WaitList;
+}ESync;
+
 #endif
