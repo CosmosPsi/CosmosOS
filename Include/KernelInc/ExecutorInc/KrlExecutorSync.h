@@ -24,4 +24,9 @@ typedef struct ESEM
     ESync Sync;
 }Esem;
 
+typedef struct EMUTEX
+{
+    ESync Sync;
+}EMutex;
+
 #endif
