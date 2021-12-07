@@ -22,7 +22,7 @@ private void ESyncInit(ESync* init)
     IF_NULL_RETURN(init);
     INIT_OBJOFPTR_ZERO(init);
     SPinLockInit(&init->Lock);
-    RefCountInit(&init->LockCount);
+    RefCountInit(&init->SyncCount);
     EWaitListInit(&init->WaitList);
     return;
 }

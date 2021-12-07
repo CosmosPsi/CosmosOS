@@ -15,7 +15,7 @@ typedef struct EWAITLIST
 typedef struct ESYNC
 {
     SPinLock Lock;
-    RefCount LockCount;
+    RefCount SyncCount;
     EWaitList WaitList;
 }ESync;
 
