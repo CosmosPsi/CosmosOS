@@ -42,3 +42,25 @@ public void EMutexInit(EMutex* init)
     ESyncInit(&init->Sync);
     return;
 }
+
+private Bool KrlExEMutexLockedRealizeCore(EMutex* mutex)
+{
+    CPUFlg cpuflags = 0;
+    IF_NULL_RETURN_FALSE(mutex);
+
+    ESyncSelfLockedCli(&mutex->Sync, &cpuflags);
+    if(ESyncCountIsEQTOne(&mutex->Sync) == FALSE)
+    {
+        ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+        return FALSE;
+    }
+    
+    if(ESyncCountDec(&mutex->Sync) == FALSE)
+    {
+        ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+        return FALSE;
+    }
+    
+    ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+    return TRUE;
+}

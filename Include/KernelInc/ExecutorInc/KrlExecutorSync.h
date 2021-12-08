@@ -98,5 +98,6 @@ private void EWaitListInit(EWaitList* init);
 private void ESyncInit(ESync* init);
 public void EsemInit(Esem* init);
 public void EMutexInit(EMutex* init);
+private Bool KrlExEMutexLockedRealizeCore(EMutex* mutex);
 
 #endif
