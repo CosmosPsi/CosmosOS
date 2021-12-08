@@ -29,6 +29,13 @@ typedef struct EMUTEX
     ESync Sync;
 }EMutex;
 
+KLINE Bool ESyncCountIsGTNZero(ESync* sync)
+{
+    IF_NULL_RETURN_FALSE(sync);
+    IF_GTN_RETURN(RefCountRead(&sync->SyncCount), 0, TRUE);
+    return FALSE;
+}
+
 private void EWaitListInit(EWaitList* init);
 private void ESyncInit(ESync* init);
 public void EsemInit(Esem* init);
