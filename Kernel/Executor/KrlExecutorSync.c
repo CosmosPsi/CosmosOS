@@ -97,3 +97,8 @@ private Bool KrlExEMutexUnLockRealizeCore(EMutex* mutex)
     ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
     return TRUE;
 }
+
+private Bool KrlExEMutexUnLockRealize(EMutex* mutex)
+{
+    return KrlExEMutexUnLockRealizeCore(mutex);
+}
