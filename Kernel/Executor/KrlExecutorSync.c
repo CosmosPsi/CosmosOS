@@ -75,3 +75,25 @@ public Bool KrlExEMutexLocked(EMutex* mutex)
     IF_NULL_RETURN_FALSE(mutex);
     return KrlExEMutexLockedRealize(mutex);
 }
+
+private Bool KrlExEMutexUnLockRealizeCore(EMutex* mutex)
+{
+    CPUFlg cpuflags = 0;
+    IF_NULL_RETURN_FALSE(mutex);
+
+    ESyncSelfLockedCli(&mutex->Sync, &cpuflags);
+    if(ESyncCountIsEQTZero(&mutex->Sync) == FALSE)
+    {
+        ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+        return FALSE;
+    }
+    
+    if(ESyncCountInc(&mutex->Sync) == FALSE)
+    {
+        ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+        return FALSE;
+    }
+    
+    ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+    return TRUE;
+}

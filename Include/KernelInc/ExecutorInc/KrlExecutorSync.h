@@ -101,5 +101,6 @@ public void EMutexInit(EMutex* init);
 private Bool KrlExEMutexLockedRealizeCore(EMutex* mutex);
 private Bool KrlExEMutexLockedRealize(EMutex* mutex);
 public Bool KrlExEMutexLocked(EMutex* mutex);
+private Bool KrlExEMutexUnLockRealizeCore(EMutex* mutex);
 
 #endif
