@@ -87,6 +87,13 @@ KLINE Bool ESyncCountInc(ESync* sync)
     return TRUE;
 }
 
+KLINE Bool ESyncCountDec(ESync* sync)
+{
+    IF_NULL_RETURN_FALSE(sync);
+    RefCountDec(&sync->SyncCount);
+    return TRUE;
+}
+
 private void EWaitListInit(EWaitList* init);
 private void ESyncInit(ESync* init);
 public void EsemInit(Esem* init);
