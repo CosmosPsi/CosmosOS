@@ -44,7 +44,6 @@ KLINE void ESyncSelfLockedCli(ESync* sync, CPUFlg* flags)
     return;
 }
 
-
 KLINE void ESyncSelfUnLock(ESync* sync)
 {
     IF_NULL_DEAD(sync);
@@ -52,6 +51,13 @@ KLINE void ESyncSelfUnLock(ESync* sync)
     return;
 }
 
+KLINE void ESyncSelfUnLockSti(ESync* sync, CPUFlg* flags)
+{
+    IF_NULL_DEAD(sync);
+    IF_NULL_DEAD(flags);
+    HalUnSPinLockRestoreFlagsSti(&sync->Lock, flags);
+    return;
+}
 
 KLINE Bool ESyncCountIsGTNZero(ESync* sync)
 {
