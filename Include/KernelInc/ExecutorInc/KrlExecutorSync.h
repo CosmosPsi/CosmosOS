@@ -36,6 +36,13 @@ KLINE Bool ESyncCountIsGTNZero(ESync* sync)
     return FALSE;
 }
 
+KLINE Bool ESyncCountIsEQTZero(ESync* sync)
+{
+    IF_NULL_RETURN_FALSE(sync);
+    IF_EQT_RETURN(RefCountRead(&sync->SyncCount), 0, TRUE);
+    return FALSE;
+}
+
 private void EWaitListInit(EWaitList* init);
 private void ESyncInit(ESync* init);
 public void EsemInit(Esem* init);
