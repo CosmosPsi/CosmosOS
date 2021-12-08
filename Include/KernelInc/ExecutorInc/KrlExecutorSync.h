@@ -36,6 +36,14 @@ KLINE void ESyncSelfLocked(ESync* sync)
     return;
 }
 
+KLINE void ESyncSelfUnLock(ESync* sync)
+{
+    IF_NULL_DEAD(sync);
+    HalUnSPinLock(&sync->Lock);
+    return;
+}
+
+
 KLINE Bool ESyncCountIsGTNZero(ESync* sync)
 {
     IF_NULL_RETURN_FALSE(sync);
