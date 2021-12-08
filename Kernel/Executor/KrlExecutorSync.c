@@ -102,3 +102,9 @@ private Bool KrlExEMutexUnLockRealize(EMutex* mutex)
 {
     return KrlExEMutexUnLockRealizeCore(mutex);
 }
+
+public Bool KrlExEMutexUnLock(EMutex* mutex)
+{
+    IF_NULL_RETURN_FALSE(mutex);
+    return KrlExEMutexUnLockRealize(mutex);
+}
