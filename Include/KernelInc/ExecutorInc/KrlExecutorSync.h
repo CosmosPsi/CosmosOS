@@ -36,6 +36,15 @@ KLINE void ESyncSelfLocked(ESync* sync)
     return;
 }
 
+KLINE void ESyncSelfLockedCli(ESync* sync, CPUFlg* flags)
+{
+    IF_NULL_DEAD(sync);
+    IF_NULL_DEAD(flags);
+    HalSPinLockSaveFlagsCli(&sync->Lock, flags);
+    return;
+}
+
+
 KLINE void ESyncSelfUnLock(ESync* sync)
 {
     IF_NULL_DEAD(sync);
