@@ -100,5 +100,6 @@ public void EsemInit(Esem* init);
 public void EMutexInit(EMutex* init);
 private Bool KrlExEMutexLockedRealizeCore(EMutex* mutex);
 private Bool KrlExEMutexLockedRealize(EMutex* mutex);
+public Bool KrlExEMutexLocked(EMutex* mutex);
 
 #endif

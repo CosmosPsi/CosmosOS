@@ -69,3 +69,9 @@ private Bool KrlExEMutexLockedRealize(EMutex* mutex)
 {
     return KrlExEMutexLockedRealizeCore(mutex);
 }
+
+public Bool KrlExEMutexLocked(EMutex* mutex)
+{
+    IF_NULL_RETURN_FALSE(mutex);
+    return KrlExEMutexLockedRealize(mutex);
+}
