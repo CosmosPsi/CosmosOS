@@ -103,5 +103,6 @@ private Bool KrlExEMutexLockedRealize(EMutex* mutex);
 public Bool KrlExEMutexLocked(EMutex* mutex);
 private Bool KrlExEMutexUnLockRealizeCore(EMutex* mutex);
 private Bool KrlExEMutexUnLockRealize(EMutex* mutex);
+public Bool KrlExEMutexUnLock(EMutex* mutex);
 
 #endif
