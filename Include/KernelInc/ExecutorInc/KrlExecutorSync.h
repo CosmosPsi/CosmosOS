@@ -29,6 +29,13 @@ typedef struct EMUTEX
     ESync Sync;
 }EMutex;
 
+KLINE void ESyncSelfLocked(ESync* sync)
+{
+    IF_NULL_DEAD(sync);
+    HalSPinLock(&sync->Lock);
+    return;
+}
+
 KLINE Bool ESyncCountIsGTNZero(ESync* sync)
 {
     IF_NULL_RETURN_FALSE(sync);
