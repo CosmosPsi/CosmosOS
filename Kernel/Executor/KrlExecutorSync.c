@@ -118,20 +118,19 @@ start:
         goto start;
     }
 
-    if(ESyncCountIsEQTOne(&mutex->Sync) == FALSE)
+    if(ESyncCountIsEQTOne(&mutex->Sync) == TRUE)
     {
+        if(ESyncCountDec(&mutex->Sync) == FALSE)
+        {
+            ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+            return FALSE;
+        }
         ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
-        return FALSE;
-    }
-    
-    if(ESyncCountDec(&mutex->Sync) == FALSE)
-    {
-        ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
-        return FALSE;
+        return TRUE;
     }
     
     ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
-    return TRUE;
+    return FALSE;
 }
 
 private Bool KrlExEMutexLockedRealize(EMutex* mutex, UInt flags)
