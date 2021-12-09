@@ -96,6 +96,42 @@ private Bool KrlExEMutexLockedFailEntryWait(EMutex* mutex, EWaitList* wait, Thre
     return TRUE;
 }
 
+private Bool KrlExEMutexLockedWaitRealizeCore(EMutex* mutex)
+{
+    CPUFlg cpuflags = 0;
+    Thread* thread = NULL;
+    IF_NULL_RETURN_FALSE(mutex);
+
+start:
+    ESyncSelfLockedCli(&mutex->Sync, &cpuflags);
+
+    if(ESyncCountIsEQTZero(&mutex->Sync) == TRUE)
+    {
+        thread = KrlExGetCurrentThread();
+        IF_NULL_RETURN_FALSE(thread);
+        IF_NEQ_DEAD(TRUE, 
+            KrlExEMutexLockedFailEntryWait(mutex, &thread->Affiliation.WaitList, thread), 
+            "KrlExEMutexLockedFailEntryWait Is Fail\n");
+        ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+        KrlExThreadWait(thread);
+        goto start;
+    }
+    
+    if(ESyncCountIsEQTOne(&mutex->Sync) == FALSE)
+    {
+        ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+        return FALSE;
+    }
+    
+    if(ESyncCountDec(&mutex->Sync) == FALSE)
+    {
+        ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+        return FALSE;
+    }
+    
+    ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+    return TRUE;
+}
 
 private Bool KrlExEMutexLockedRealize(EMutex* mutex, UInt flags)
 {
