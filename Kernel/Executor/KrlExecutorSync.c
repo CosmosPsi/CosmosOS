@@ -49,6 +49,7 @@ public void EMutexInit(EMutex* init)
     IF_NULL_RETURN(init);
     INIT_OBJOFPTR_ZERO(init);
     ESyncInit(&init->Sync);
+    RefCountInc(&init->Sync.SyncCount);
     return;
 }
 
@@ -116,7 +117,7 @@ start:
         KrlExThreadWait(thread);
         goto start;
     }
-    
+
     if(ESyncCountIsEQTOne(&mutex->Sync) == FALSE)
     {
         ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
