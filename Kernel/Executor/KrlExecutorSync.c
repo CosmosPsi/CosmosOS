@@ -198,6 +198,28 @@ restart:
     return TRUE;
 }
 
+private Bool KrlExEMutexUnLockAwakenRealizeCore(EMutex* mutex)
+{
+    CPUFlg cpuflags = 0;
+    IF_NULL_RETURN_FALSE(mutex);
+
+    ESyncSelfLockedCli(&mutex->Sync, &cpuflags);
+    if(ESyncCountIsEQTZero(&mutex->Sync) == TRUE)
+    {
+        if(ESyncCountInc(&mutex->Sync) == FALSE)
+        {
+            ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+            return FALSE;
+        }
+        KrlExEMutexUnLockAwakenEntry(mutex);
+        ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+        return TRUE;
+    }
+    
+    ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+    return FALSE;
+}
+
 private Bool KrlExEMutexUnLockRealize(EMutex* mutex, UInt flags)
 {
     if(MUTEX_FLG_NOWAIT == flags)
@@ -208,7 +230,7 @@ private Bool KrlExEMutexUnLockRealize(EMutex* mutex, UInt flags)
     else if(MUTEX_FLG_WAIT == flags)
     {
         IF_NEQ_DEAD(MUTEX_FLG_WAIT, mutex->Flags, "mutex->Flags Is Fail\n");
-        return FALSE;//KrlExEMutexLockedWaitRealizeCore(mutex);
+        return KrlExEMutexUnLockAwakenRealizeCore(mutex);
     }
     return FALSE;
 }

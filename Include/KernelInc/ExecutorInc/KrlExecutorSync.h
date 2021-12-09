@@ -119,6 +119,7 @@ private Bool KrlExEMutexLockedRealize(EMutex* mutex, UInt flags);
 public Bool KrlExEMutexLocked(EMutex* mutex, UInt flags);
 private Bool KrlExEMutexUnLockRealizeCore(EMutex* mutex);
 private Bool KrlExEMutexUnLockAwakenEntry(EMutex* mutex);
+private Bool KrlExEMutexUnLockAwakenRealizeCore(EMutex* mutex);
 private Bool KrlExEMutexUnLockRealize(EMutex* mutex, UInt flags);
 public Bool KrlExEMutexUnLock(EMutex* mutex, UInt flags);
 
