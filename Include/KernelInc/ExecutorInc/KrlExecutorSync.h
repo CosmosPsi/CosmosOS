@@ -6,6 +6,8 @@
 #ifndef _KRLEXECUTORSYNCHEAD
 #define _KRLEXECUTORSYNCHEAD
 
+#define MUTEX_FLG_NOWAIT (0)
+#define MUTEX_FLG_WAIT (1)
 typedef struct EWAITLIST
 {
     UInt WaitNR;
@@ -26,6 +28,7 @@ typedef struct ESEM
 
 typedef struct EMUTEX
 {
+    UInt Flags;
     ESync Sync;
 }EMutex;
 
@@ -99,8 +102,8 @@ private void ESyncInit(ESync* init);
 public void EsemInit(Esem* init);
 public void EMutexInit(EMutex* init);
 private Bool KrlExEMutexLockedRealizeCore(EMutex* mutex);
-private Bool KrlExEMutexLockedRealize(EMutex* mutex);
-public Bool KrlExEMutexLocked(EMutex* mutex);
+private Bool KrlExEMutexLockedRealize(EMutex* mutex, UInt flags);
+public Bool KrlExEMutexLocked(EMutex* mutex, UInt flags);
 private Bool KrlExEMutexUnLockRealizeCore(EMutex* mutex);
 private Bool KrlExEMutexUnLockRealize(EMutex* mutex);
 public Bool KrlExEMutexUnLock(EMutex* mutex);
