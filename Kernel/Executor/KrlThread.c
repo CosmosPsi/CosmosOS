@@ -16,6 +16,7 @@
 #include "KrlExecutorManage.h"
 #include "KrlExecutor.h"
 #include "KrlExecutorRes.h"
+#include "KrlExecutorSync.h"
 #include "KrlTransfer.h"
 #include "KrlThread.h"
 #include "KrlLog.h"
@@ -24,6 +25,7 @@ private void TAffiliationInit(TAffiliation* init)
 {
     IF_NULL_RETURN(init);
     INIT_OBJOFPTR_ZERO(init);
+    EWaitListInit(&init->WaitList);
     return;
 }
 

@@ -22,6 +22,7 @@ typedef struct TAFFILIATION
     UInt CPUID;
     UInt MNodeID;
     Executor* ExecutorPtr;
+    EWaitList WaitList;
     //User
     //Transfer
     //Group
