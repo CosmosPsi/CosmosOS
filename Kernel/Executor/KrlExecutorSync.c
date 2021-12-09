@@ -9,7 +9,15 @@
 #include "HalSync.h"
 #include "KrlExecutorSync.h"
 
-private void EWaitListInit(EWaitList* init)
+private void EWaitListHeadInit(EWaitListHead* init)
+{
+    IF_NULL_RETURN(init);
+    INIT_OBJOFPTR_ZERO(init);
+    ListInit(&init->Lists);
+    return;
+}
+
+public void EWaitListInit(EWaitList* init)
 {
     IF_NULL_RETURN(init);
     INIT_OBJOFPTR_ZERO(init);
@@ -23,7 +31,7 @@ private void ESyncInit(ESync* init)
     INIT_OBJOFPTR_ZERO(init);
     SPinLockInit(&init->Lock);
     RefCountInit(&init->SyncCount);
-    EWaitListInit(&init->WaitList);
+    EWaitListHeadInit(&init->WaitListHead);
     return;
 }
 
@@ -42,6 +50,18 @@ public void EMutexInit(EMutex* init)
     ESyncInit(&init->Sync);
     return;
 }
+
+private Bool EWaitListAddToEWaitListHead(EWaitListHead* head, EWaitList* wait, void* thread)
+{
+    IF_NULL_RETURN_FALSE(head);
+    IF_NULL_RETURN_FALSE(wait);
+    ListAdd(&wait->Lists, &head->Lists);
+    head->WaitNR++;
+    wait->Parent = head;
+    wait->Thread = thread;
+    return TRUE;
+}
+
 
 private Bool KrlExEMutexLockedRealizeCore(EMutex* mutex)
 {
@@ -65,15 +85,25 @@ private Bool KrlExEMutexLockedRealizeCore(EMutex* mutex)
     return TRUE;
 }
 
-private Bool KrlExEMutexLockedRealize(EMutex* mutex)
+private Bool KrlExEMutexLockedRealize(EMutex* mutex, UInt flags)
 {
-    return KrlExEMutexLockedRealizeCore(mutex);
+    if(MUTEX_FLG_NOWAIT == flags)
+    {
+        mutex->Flags = flags;
+        return KrlExEMutexLockedRealizeCore(mutex);
+    }
+    else if(MUTEX_FLG_WAIT == flags)
+    {
+        mutex->Flags = flags;
+        return TRUE;
+    }
+    return FALSE;
 }
 
-public Bool KrlExEMutexLocked(EMutex* mutex)
+public Bool KrlExEMutexLocked(EMutex* mutex, UInt flags)
 {
     IF_NULL_RETURN_FALSE(mutex);
-    return KrlExEMutexLockedRealize(mutex);
+    return KrlExEMutexLockedRealize(mutex, flags);
 }
 
 private Bool KrlExEMutexUnLockRealizeCore(EMutex* mutex)

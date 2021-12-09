@@ -8,17 +8,26 @@
 
 #define MUTEX_FLG_NOWAIT (0)
 #define MUTEX_FLG_WAIT (1)
-typedef struct EWAITLIST
+
+
+typedef struct EWAITLISTHEAD
 {
     UInt WaitNR;
     List Lists;
+}EWaitListHead;
+
+typedef struct EWAITLIST
+{
+    List Lists;
+    EWaitList* Parent;
+    void* Thread;
 }EWaitList;
 
 typedef struct ESYNC
 {
     SPinLock Lock;
     RefCount SyncCount;
-    EWaitList WaitList;
+    EWaitListHead WaitListHead;
 }ESync;
 
 typedef struct ESEM
@@ -97,10 +106,12 @@ KLINE Bool ESyncCountDec(ESync* sync)
     return TRUE;
 }
 
-private void EWaitListInit(EWaitList* init);
+private void EWaitListHeadInit(EWaitListHead* init);
+public void EWaitListInit(EWaitList* init);
 private void ESyncInit(ESync* init);
 public void EsemInit(Esem* init);
 public void EMutexInit(EMutex* init);
+private Bool EWaitListAddToEWaitListHead(EWaitListHead* head, EWaitList* wait, void* thread);
 private Bool KrlExEMutexLockedRealizeCore(EMutex* mutex);
 private Bool KrlExEMutexLockedRealize(EMutex* mutex, UInt flags);
 public Bool KrlExEMutexLocked(EMutex* mutex, UInt flags);
