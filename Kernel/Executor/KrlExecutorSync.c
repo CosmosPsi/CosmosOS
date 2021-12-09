@@ -158,29 +158,63 @@ private Bool KrlExEMutexUnLockRealizeCore(EMutex* mutex)
     IF_NULL_RETURN_FALSE(mutex);
 
     ESyncSelfLockedCli(&mutex->Sync, &cpuflags);
-    if(ESyncCountIsEQTZero(&mutex->Sync) == FALSE)
+    if(ESyncCountIsEQTZero(&mutex->Sync) == TRUE)
     {
+        if(ESyncCountInc(&mutex->Sync) == FALSE)
+        {
+            ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+            return FALSE;
+        }
         ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
-        return FALSE;
-    }
-    
-    if(ESyncCountInc(&mutex->Sync) == FALSE)
-    {
-        ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
-        return FALSE;
+        return TRUE;
     }
     
     ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+    return FALSE;
+}
+
+private Bool KrlExEMutexUnLockAwakenEntry(EMutex* mutex)
+{
+    EWaitListHead* head = NULL;
+    EWaitList* wait = NULL;
+    List* list = NULL;
+    IF_NULL_RETURN_FALSE(mutex);
+    
+    head = &mutex->Sync.WaitListHead;
+
+    IF_LTN_RETURN(head->WaitNR, 1, TRUE);
+restart:
+    ListForEach(list, &head->Lists)
+    {
+        wait = ListEntry(list, EWaitList, Lists);
+        if(NULL != wait->Thread)
+        {
+            ListDel(&wait->Lists);
+            wait->Parent = NULL;
+            KrlExThreadRun((Thread*)wait->Thread);
+            goto restart;
+        }
+    }
     return TRUE;
 }
 
-private Bool KrlExEMutexUnLockRealize(EMutex* mutex)
+private Bool KrlExEMutexUnLockRealize(EMutex* mutex, UInt flags)
 {
-    return KrlExEMutexUnLockRealizeCore(mutex);
+    if(MUTEX_FLG_NOWAIT == flags)
+    {
+        IF_NEQ_DEAD(MUTEX_FLG_NOWAIT, mutex->Flags, "mutex->Flags Is Fail\n");
+        return KrlExEMutexUnLockRealizeCore(mutex);
+    }
+    else if(MUTEX_FLG_WAIT == flags)
+    {
+        IF_NEQ_DEAD(MUTEX_FLG_WAIT, mutex->Flags, "mutex->Flags Is Fail\n");
+        return FALSE;//KrlExEMutexLockedWaitRealizeCore(mutex);
+    }
+    return FALSE;
 }
 
-public Bool KrlExEMutexUnLock(EMutex* mutex)
+public Bool KrlExEMutexUnLock(EMutex* mutex, UInt flags)
 {
     IF_NULL_RETURN_FALSE(mutex);
-    return KrlExEMutexUnLockRealize(mutex);
+    return KrlExEMutexUnLockRealize(mutex, flags);
 }
