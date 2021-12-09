@@ -101,7 +101,7 @@ private Bool KrlExEMutexLockedWaitRealizeCore(EMutex* mutex)
     Thread* thread = NULL;
     IF_NULL_RETURN_FALSE(mutex);
 
-start:
+restart:
     ESyncSelfLockedCli(&mutex->Sync, &cpuflags);
 
     if(ESyncCountIsEQTZero(&mutex->Sync) == TRUE)
@@ -113,7 +113,7 @@ start:
             "KrlExEMutexLockedFailEntryWait Is Fail\n");
         ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
         KrlExThreadWait(thread);
-        goto start;
+        goto restart;
     }
 
     if(ESyncCountIsEQTOne(&mutex->Sync) == TRUE)
