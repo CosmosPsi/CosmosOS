@@ -7,6 +7,7 @@
 #include "Atomic.h"
 #include "List.h"
 #include "HalSync.h"
+#include "KrlThread.h"
 #include "KrlExecutorSync.h"
 
 private void EWaitListHeadInit(EWaitListHead* init)
@@ -85,6 +86,17 @@ private Bool KrlExEMutexLockedRealizeCore(EMutex* mutex)
     return TRUE;
 }
 
+private Bool KrlExEMutexLockedFailEntryWait(EMutex* mutex, EWaitList* wait, Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(mutex);
+    IF_NULL_RETURN_FALSE(wait);
+    IF_NULL_RETURN_FALSE(thread);
+    
+    IF_NEQ_RETURN(TRUE, EWaitListAddToEWaitListHead(&mutex->Sync.WaitListHead, wait, (void*)thread), FALSE);
+    return TRUE;
+}
+
+
 private Bool KrlExEMutexLockedRealize(EMutex* mutex, UInt flags)
 {
     if(MUTEX_FLG_NOWAIT == flags)
@@ -95,7 +107,7 @@ private Bool KrlExEMutexLockedRealize(EMutex* mutex, UInt flags)
     else if(MUTEX_FLG_WAIT == flags)
     {
         mutex->Flags = flags;
-        return TRUE;
+        return KrlExEMutexLockedWaitRealizeCore(mutex);
     }
     return FALSE;
 }

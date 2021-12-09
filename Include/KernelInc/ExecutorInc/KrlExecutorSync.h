@@ -113,6 +113,7 @@ public void EsemInit(Esem* init);
 public void EMutexInit(EMutex* init);
 private Bool EWaitListAddToEWaitListHead(EWaitListHead* head, EWaitList* wait, void* thread);
 private Bool KrlExEMutexLockedRealizeCore(EMutex* mutex);
+private Bool KrlExEMutexLockedFailEntryWait(EMutex* mutex, EWaitList* wait, Thread* thread);
 private Bool KrlExEMutexLockedRealize(EMutex* mutex, UInt flags);
 public Bool KrlExEMutexLocked(EMutex* mutex, UInt flags);
 private Bool KrlExEMutexUnLockRealizeCore(EMutex* mutex);
