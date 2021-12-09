@@ -71,20 +71,18 @@ private Bool KrlExEMutexLockedRealizeCore(EMutex* mutex)
     IF_NULL_RETURN_FALSE(mutex);
 
     ESyncSelfLockedCli(&mutex->Sync, &cpuflags);
-    if(ESyncCountIsEQTOne(&mutex->Sync) == FALSE)
+    if(ESyncCountIsEQTOne(&mutex->Sync) == TRUE)
     {
+        if(ESyncCountDec(&mutex->Sync) == FALSE)
+        {
+            ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
+            return FALSE;
+        }
         ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
-        return FALSE;
+        return TRUE;
     }
-    
-    if(ESyncCountDec(&mutex->Sync) == FALSE)
-    {
-        ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
-        return FALSE;
-    }
-    
     ESyncSelfUnLockSti(&mutex->Sync, &cpuflags);
-    return TRUE;
+    return FALSE;
 }
 
 private Bool KrlExEMutexLockedFailEntryWait(EMutex* mutex, EWaitList* wait, Thread* thread)
