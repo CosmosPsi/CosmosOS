@@ -114,5 +114,6 @@ public Bool KrlExThreadDead(Thread* thread);
 private Bool KrlExThreadRunRealizeCore(Thread* thread);
 private Bool KrlExThreadRunRealize(Thread* thread);
 public Bool KrlExThreadRun(Thread* thread);
+private Bool KrlExThreadAwakenRealizeCore(Thread* thread);
 
 #endif

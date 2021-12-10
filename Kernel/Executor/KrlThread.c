@@ -431,3 +431,20 @@ public Bool KrlExThreadRun(Thread* thread)
     IF_NULL_RETURN_FALSE(thread);
     return KrlExThreadRunRealize(thread);
 }
+
+private Bool KrlExThreadAwakenRealizeCore(Thread* thread)
+{
+    Executor* executor = NULL;
+    IF_NULL_RETURN_FALSE(thread);
+    executor = thread->Affiliation.ExecutorPtr;
+    IF_NULL_RETURN_FALSE(executor);
+
+    IF_NEQ_RETURN(KrlExThreadDelOnExecutor(executor, thread), TRUE, FALSE);
+    if(KrlExThreadSetRunStatus(thread, THREAD_RUN_STATUS) == FALSE)
+    {
+        KrlExThreadAddToExecutor(executor, thread);
+        return FALSE;
+    }
+    KrlExThreadAddToExecutor(executor, thread);
+    return TRUE;
+}
