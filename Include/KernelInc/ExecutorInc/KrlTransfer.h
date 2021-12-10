@@ -8,6 +8,9 @@
 
 #define TRANSFER_NR_MAX (64)
 
+#define NEED_TRANSFER_STATUS (1)
+#define NONEED_TRANSFER_STATUS (0)
+
 typedef struct TRANSFERNODE{}TransferNode;
 
 typedef struct TRANSFER
@@ -84,6 +87,7 @@ public Transfer* KrlExGetCurrentTransfer();
 public Transfer* KrlExGetCPUIdleTransfer(TransferNode* node);
 public Transfer* KrlExGetCurrentCPUIdleTransfer();
 public Bool KrlExSetCurrentCPUIdleTransfer(Transfer* transfer);
+public Bool KrlExSetNeedTransferStatus();
 private Transfer* PickTransferOnTransferNode(TransferNode* node);
 public Transfer* KrlExGetNextRunTransferOnTransferNode(TransferNode* node);
 private void KrlTransferCurrentToNext(Transfer* curr, Transfer* next);
