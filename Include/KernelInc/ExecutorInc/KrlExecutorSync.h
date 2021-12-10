@@ -129,5 +129,6 @@ private Bool KrlExESemObtainFailEntryWait(ESem* sem, EWaitList* wait, Thread* th
 private Bool KrlExESemObtainRealizeCore(ESem* sem);
 private Bool KrlExESemObtainWaitRealizeCore(ESem* sem);
 private Bool KrlExESemObtainRealize(ESem* sem, UInt flags);
+public Bool KrlExESemObtain(ESem* sem, UInt flags);
 
 #endif

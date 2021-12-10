@@ -320,3 +320,9 @@ private Bool KrlExESemObtainRealize(ESem* sem, UInt flags)
     }
     return FALSE;
 }
+
+public Bool KrlExESemObtain(ESem* sem, UInt flags)
+{
+    IF_NULL_RETURN_FALSE(sem);
+    return KrlExESemObtainRealize(sem, flags);
+}
