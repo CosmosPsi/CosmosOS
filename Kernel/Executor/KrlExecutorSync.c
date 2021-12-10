@@ -394,7 +394,12 @@ private Bool KrlExESemReleaseRealize(ESem* sem, UInt flags)
     else if(SEM_FLG_WAIT == flags)
     {
         IF_NEQ_DEAD(SEM_FLG_WAIT, sem->Flags, "sem->Flags Is Fail\n");
-        return FALSE;
+        return KrlExESemReleaseAwakenRealizeCore(sem);
     }
     return FALSE;
+}
+
+public Bool KrlExESemRelease(ESem* sem, UInt flags)
+{
+    return KrlExESemReleaseRealize(sem, flags);
 }

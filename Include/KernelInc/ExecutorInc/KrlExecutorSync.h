@@ -134,5 +134,6 @@ private Bool KrlExESemReleaseAwakenEntry(ESem* sem);
 private Bool KrlExESemReleaseAwakenRealizeCore(ESem* sem);
 private Bool KrlExESemReleaseRealizeCore(ESem* sem);
 private Bool KrlExESemReleaseRealize(ESem* sem, UInt flags);
+public Bool KrlExESemRelease(ESem* sem, UInt flags);
 
 #endif
