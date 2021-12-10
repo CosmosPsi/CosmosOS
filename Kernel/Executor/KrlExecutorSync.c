@@ -191,7 +191,7 @@ restart:
         {
             ListDel(&wait->Lists);
             wait->Parent = NULL;
-            KrlExThreadRun((Thread*)wait->Thread);
+            KrlExThreadAwaken((Thread*)wait->Thread);
             goto restart;
         }
     }
