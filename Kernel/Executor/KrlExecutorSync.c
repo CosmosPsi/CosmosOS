@@ -383,3 +383,18 @@ private Bool KrlExESemReleaseRealizeCore(ESem* sem)
     ESyncSelfUnLockSti(&sem->Sync, &cpuflags);
     return TRUE;
 }
+
+private Bool KrlExESemReleaseRealize(ESem* sem, UInt flags)
+{
+    if(SEM_FLG_NOWAIT == flags)
+    {
+        IF_NEQ_DEAD(SEM_FLG_NOWAIT, sem->Flags, "sem->Flags Is Fail\n");
+        return KrlExESemReleaseRealizeCore(sem);
+    }
+    else if(SEM_FLG_WAIT == flags)
+    {
+        IF_NEQ_DEAD(SEM_FLG_WAIT, sem->Flags, "sem->Flags Is Fail\n");
+        return FALSE;
+    }
+    return FALSE;
+}
