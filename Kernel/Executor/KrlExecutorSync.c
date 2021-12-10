@@ -351,3 +351,19 @@ restart:
     }
     return TRUE;
 }
+
+private Bool KrlExESemReleaseAwakenRealizeCore(ESem* sem)
+{
+    CPUFlg cpuflags = 0;
+    IF_NULL_RETURN_FALSE(sem);
+
+    ESyncSelfLockedCli(&sem->Sync, &cpuflags);
+    if(ESyncCountInc(&sem->Sync) == FALSE)
+    {
+        ESyncSelfUnLockSti(&sem->Sync, &cpuflags);
+        return FALSE;
+    }
+    KrlExESemReleaseAwakenEntry(sem);
+    ESyncSelfUnLockSti(&sem->Sync, &cpuflags);
+    return TRUE;
+}

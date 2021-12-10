@@ -131,5 +131,6 @@ private Bool KrlExESemObtainWaitRealizeCore(ESem* sem);
 private Bool KrlExESemObtainRealize(ESem* sem, UInt flags);
 public Bool KrlExESemObtain(ESem* sem, UInt flags);
 private Bool KrlExESemReleaseAwakenEntry(ESem* sem);
+private Bool KrlExESemReleaseAwakenRealizeCore(ESem* sem);
 
 #endif
