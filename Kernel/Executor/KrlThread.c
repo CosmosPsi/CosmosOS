@@ -448,3 +448,8 @@ private Bool KrlExThreadAwakenRealizeCore(Thread* thread)
     KrlExThreadAddToExecutor(executor, thread);
     return TRUE;
 }
+
+private Bool KrlExThreadAwakenRealize(Thread* thread)
+{
+    return KrlExThreadAwakenRealizeCore(thread);
+}
