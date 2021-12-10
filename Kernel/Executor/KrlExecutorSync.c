@@ -240,3 +240,14 @@ public Bool KrlExEMutexUnLock(EMutex* mutex, UInt flags)
     IF_NULL_RETURN_FALSE(mutex);
     return KrlExEMutexUnLockRealize(mutex, flags);
 }
+
+private Bool KrlExESemObtainFailEntryWait(ESem* sem, EWaitList* wait, Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(sem);
+    IF_NULL_RETURN_FALSE(wait);
+    IF_NULL_RETURN_FALSE(thread);
+    
+    IF_NEQ_RETURN(TRUE, EWaitListAddToEWaitListHead(&sem->Sync.WaitListHead, wait, (void*)thread), FALSE);
+    return TRUE;
+}
+

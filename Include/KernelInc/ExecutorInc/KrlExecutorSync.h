@@ -9,6 +9,8 @@
 #define MUTEX_FLG_NOWAIT (0)
 #define MUTEX_FLG_WAIT (1)
 
+#define SEM_FLG_NOWAIT (0)
+#define SEM_FLG_WAIT (1)
 
 typedef struct EWAITLISTHEAD
 {
@@ -123,5 +125,6 @@ private Bool KrlExEMutexUnLockAwakenEntry(EMutex* mutex);
 private Bool KrlExEMutexUnLockAwakenRealizeCore(EMutex* mutex);
 private Bool KrlExEMutexUnLockRealize(EMutex* mutex, UInt flags);
 public Bool KrlExEMutexUnLock(EMutex* mutex, UInt flags);
+private Bool KrlExESemObtainFailEntryWait(ESem* sem, EWaitList* wait, Thread* thread);
 
 #endif
