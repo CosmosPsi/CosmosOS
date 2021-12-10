@@ -270,3 +270,38 @@ private Bool KrlExESemObtainRealizeCore(ESem* sem)
     ESyncSelfUnLockSti(&sem->Sync, &cpuflags);
     return FALSE;
 }
+
+private Bool KrlExESemObtainWaitRealizeCore(ESem* sem)
+{
+    CPUFlg cpuflags = 0;
+    Thread* thread = NULL;
+    IF_NULL_RETURN_FALSE(sem);
+
+restart:
+    ESyncSelfLockedCli(&sem->Sync, &cpuflags);
+
+    if(ESyncCountIsEQTZero(&sem->Sync) == TRUE)
+    {
+        thread = KrlExGetCurrentThread();
+        IF_NULL_RETURN_FALSE(thread);
+        IF_NEQ_DEAD(TRUE, 
+            KrlExESemObtainFailEntryWait(sem, &thread->Affiliation.WaitList, thread), 
+            "KrlExESemObtainFailEntryWait Is Fail\n");
+        ESyncSelfUnLockSti(&sem->Sync, &cpuflags);
+        KrlExThreadWait(thread);
+        goto restart;
+    }
+
+    if(ESyncCountIsGTNZero(&sem->Sync) == TRUE)
+    {
+        if(ESyncCountDec(&sem->Sync) == FALSE)
+        {
+            ESyncSelfUnLockSti(&sem->Sync, &cpuflags);
+            return FALSE;
+        }
+        ESyncSelfUnLockSti(&sem->Sync, &cpuflags);
+        return TRUE;
+    }
+    ESyncSelfUnLockSti(&sem->Sync, &cpuflags);
+    return FALSE;
+}
