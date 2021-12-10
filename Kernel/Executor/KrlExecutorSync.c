@@ -36,7 +36,7 @@ private void ESyncInit(ESync* init)
     return;
 }
 
-public void EsemInit(Esem* init)
+public void ESemInit(ESem* init)
 {
     IF_NULL_RETURN(init);
     INIT_OBJOFPTR_ZERO(init);

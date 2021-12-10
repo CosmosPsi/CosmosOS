@@ -32,8 +32,9 @@ typedef struct ESYNC
 
 typedef struct ESEM
 {
+    UInt Flags;
     ESync Sync;
-}Esem;
+}ESem;
 
 typedef struct EMUTEX
 {
@@ -109,7 +110,7 @@ KLINE Bool ESyncCountDec(ESync* sync)
 private void EWaitListHeadInit(EWaitListHead* init);
 public void EWaitListInit(EWaitList* init);
 private void ESyncInit(ESync* init);
-public void EsemInit(Esem* init);
+public void ESemInit(ESem* init);
 public void EMutexInit(EMutex* init);
 private Bool EWaitListAddToEWaitListHead(EWaitListHead* head, EWaitList* wait, void* thread);
 private Bool KrlExEMutexLockedRealizeCore(EMutex* mutex);
