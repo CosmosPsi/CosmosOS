@@ -251,3 +251,22 @@ private Bool KrlExESemObtainFailEntryWait(ESem* sem, EWaitList* wait, Thread* th
     return TRUE;
 }
 
+private Bool KrlExESemObtainRealizeCore(ESem* sem)
+{
+    CPUFlg cpuflags = 0;
+    IF_NULL_RETURN_FALSE(sem);
+
+    ESyncSelfLockedCli(&sem->Sync, &cpuflags);
+    if(ESyncCountIsGTNZero(&sem->Sync) == TRUE)
+    {
+        if(ESyncCountDec(&sem->Sync) == FALSE)
+        {
+            ESyncSelfUnLockSti(&sem->Sync, &cpuflags);
+            return FALSE;
+        }
+        ESyncSelfUnLockSti(&sem->Sync, &cpuflags);
+        return TRUE;
+    }
+    ESyncSelfUnLockSti(&sem->Sync, &cpuflags);
+    return FALSE;
+}
