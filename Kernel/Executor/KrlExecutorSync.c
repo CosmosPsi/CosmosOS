@@ -326,3 +326,28 @@ public Bool KrlExESemObtain(ESem* sem, UInt flags)
     IF_NULL_RETURN_FALSE(sem);
     return KrlExESemObtainRealize(sem, flags);
 }
+
+private Bool KrlExESemReleaseAwakenEntry(ESem* sem)
+{
+    EWaitListHead* head = NULL;
+    EWaitList* wait = NULL;
+    List* list = NULL;
+    IF_NULL_RETURN_FALSE(sem);
+    
+    head = &sem->Sync.WaitListHead;
+
+    IF_LTN_RETURN(head->WaitNR, 1, TRUE);
+restart:
+    ListForEach(list, &head->Lists)
+    {
+        wait = ListEntry(list, EWaitList, Lists);
+        if(NULL != wait->Thread)
+        {
+            ListDel(&wait->Lists);
+            wait->Parent = NULL;
+            KrlExThreadAwaken((Thread*)wait->Thread);
+            goto restart;
+        }
+    }
+    return TRUE;
+}
