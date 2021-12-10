@@ -305,3 +305,18 @@ restart:
     ESyncSelfUnLockSti(&sem->Sync, &cpuflags);
     return FALSE;
 }
+
+private Bool KrlExESemObtainRealize(ESem* sem, UInt flags)
+{
+    if(MUTEX_FLG_NOWAIT == flags)
+    {
+        sem->Flags = flags;
+        return KrlExESemObtainRealizeCore(sem);
+    }
+    else if(MUTEX_FLG_WAIT == flags)
+    {
+        sem->Flags = flags;
+        return KrlExESemObtainWaitRealizeCore(sem);
+    }
+    return FALSE;
+}

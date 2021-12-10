@@ -128,5 +128,6 @@ public Bool KrlExEMutexUnLock(EMutex* mutex, UInt flags);
 private Bool KrlExESemObtainFailEntryWait(ESem* sem, EWaitList* wait, Thread* thread);
 private Bool KrlExESemObtainRealizeCore(ESem* sem);
 private Bool KrlExESemObtainWaitRealizeCore(ESem* sem);
+private Bool KrlExESemObtainRealize(ESem* sem, UInt flags);
 
 #endif
