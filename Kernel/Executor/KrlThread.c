@@ -453,3 +453,9 @@ private Bool KrlExThreadAwakenRealize(Thread* thread)
 {
     return KrlExThreadAwakenRealizeCore(thread);
 }
+
+public Bool KrlExThreadAwaken(Thread* thread)
+{
+    IF_NULL_RETURN_FALSE(thread);
+    return KrlExThreadAwakenRealize(thread);
+}

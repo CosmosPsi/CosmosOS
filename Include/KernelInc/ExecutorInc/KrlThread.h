@@ -116,5 +116,6 @@ private Bool KrlExThreadRunRealize(Thread* thread);
 public Bool KrlExThreadRun(Thread* thread);
 private Bool KrlExThreadAwakenRealizeCore(Thread* thread);
 private Bool KrlExThreadAwakenRealize(Thread* thread);
+public Bool KrlExThreadAwaken(Thread* thread);
 
 #endif
