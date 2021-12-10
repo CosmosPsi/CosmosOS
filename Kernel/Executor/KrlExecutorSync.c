@@ -367,3 +367,19 @@ private Bool KrlExESemReleaseAwakenRealizeCore(ESem* sem)
     ESyncSelfUnLockSti(&sem->Sync, &cpuflags);
     return TRUE;
 }
+
+private Bool KrlExESemReleaseRealizeCore(ESem* sem)
+{
+    CPUFlg cpuflags = 0;
+    IF_NULL_RETURN_FALSE(sem);
+
+    ESyncSelfLockedCli(&sem->Sync, &cpuflags);
+    if(ESyncCountInc(&sem->Sync) == FALSE)
+    {
+        ESyncSelfUnLockSti(&sem->Sync, &cpuflags);
+        return FALSE;
+    }
+    
+    ESyncSelfUnLockSti(&sem->Sync, &cpuflags);
+    return TRUE;
+}
