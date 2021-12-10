@@ -446,6 +446,7 @@ private Bool KrlExThreadAwakenRealizeCore(Thread* thread)
         return FALSE;
     }
     KrlExThreadAddToExecutor(executor, thread);
+    KrlExSetNeedTransferStatus();
     return TRUE;
 }
 
