@@ -6,52 +6,61 @@
 #ifndef _KRLTRANSFERHEAD
 #define _KRLTRANSFERHEAD
 
+// TODO
 #define TRANSFER_NR_MAX (64)
 
+// 需要调度
 #define NEED_TRANSFER_STATUS (1)
+// 不需要调度
 #define NONEED_TRANSFER_STATUS (0)
 
+// 全局调度节点
 typedef struct TRANSFERNODE{}TransferNode;
 
+// 调度转移关系
 typedef struct TRANSFER
 {
-    List Lists;
-	UInt Status;
-	UInt Flags;
-    RBTree Node;
-    TransferNode* ParentNode;
-    Thread* Thread;
+    List Lists;                 // 列表
+	UInt Status;                // 状态
+	UInt Flags;                 // 标志位
+    RBTree Node;                // 红黑树节点
+    TransferNode* ParentNode;   // 父节点
+    Thread* Thread;             // 线程
 }Transfer;
 
+// 转移节点
 typedef struct TRANSFERNODE
 {
-    List Lists;
-    ELock Lock;
-	UInt Status;
-	UInt Flags;
-    UInt TransferNR;
-    List TransferLists;
-    RBRoot Root;
-    Transfer* CurrTransfer;
-    Transfer* CPUIdleTransfer;
-    void* Priv; 
-    void* Ext;
+    List Lists;                // 列表
+    ELock Lock;                // 锁
+	UInt Status;               // 状态
+	UInt Flags;                // 标志位
+    UInt TransferNR;           // TODO
+    List TransferLists;        // 转移列表
+    RBRoot Root;               // 根节点
+    Transfer* CurrTransfer;    // 当前转移
+    Transfer* CPUIdleTransfer; // CPU空闲转移
+    void* Priv;                // 上一个
+    void* Ext;                 // 下一个
 }TransferNode;
 
+// 调度转移管理
 typedef struct TRANSFERMANAGE
 {
-    ELock Lock;
-    UInt Status;
-	UInt Flags;
-    TransferNode DefaultTransferNode;
-    TransferNode* TransferNodeArr[TRANSFER_NR_MAX];
+    ELock Lock;                                     // 锁
+    UInt Status;                                    // 状态
+	UInt Flags;                                     // 标志位
+    TransferNode DefaultTransferNode;               // 默认转移节点
+    TransferNode* TransferNodeArr[TRANSFER_NR_MAX]; // 转移节点数组
 }TransferManage;
 
+// 返回默认调度转移管理器
 KLINE TransferManage* KrlTrGetTransferManageDataAddr()
 {
     return &TransferManageData;
 }
 
+// 返回默认转移节点
 KLINE TransferNode* KrlTrGetDefaultTransferNodeAddr()
 {
     TransferManage* tmd = NULL;
@@ -60,6 +69,9 @@ KLINE TransferNode* KrlTrGetDefaultTransferNodeAddr()
     return &tmd->DefaultTransferNode;
 }
 
+// 返回调度转移线程
+// @param transfer 调度转移
+// @return 线程 
 KLINE Thread* KrlTrGetThreadForTransfer(Transfer* transfer)
 {
     IF_NULL_RETURN_NULL(transfer);
@@ -67,9 +79,18 @@ KLINE Thread* KrlTrGetThreadForTransfer(Transfer* transfer)
     return transfer->Thread;
 }
 
+// 调度转移初始化
+// @param init 实例
 private void TransferInit(Transfer* init);
+
+// 调度转移节点初始化
+// @param init 实例
 private void TransferNodeInit(TransferNode* init);
+
+// 调度转移管理器初始化
+// @param init 实例
 private void TransferManageInit(TransferManage* init);
+
 private Bool KrlTransferDelRealizeCore(TransferNode* node, Transfer* transfer);
 private Bool KrlTransferAddRealizeCore(TransferNode* node, Transfer* transfer);
 private Bool KrlTransferDelDefaultRealize(Transfer* transfer);
