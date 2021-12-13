@@ -33,7 +33,7 @@ private void CacheEnable()
         :
         :
         :"eax", "memory"
-    )
+    );
     return;
 }
 
@@ -47,7 +47,7 @@ private void CacheDisable()
         :
         :
         :"eax", "memory"
-    )
+    );
     return;
 }
 
