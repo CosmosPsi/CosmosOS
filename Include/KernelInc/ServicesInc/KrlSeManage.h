@@ -9,7 +9,7 @@
 typedef struct SERVICEINFO
 {
     UInt  Status;
-    UInt  flags;
+    UInt  Flags;
     UInt  Id;
     TRunEnv Env;
     Char* Name;

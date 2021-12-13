@@ -41,7 +41,7 @@ public Executor* KrlSeCreateSystemIdleService(ServiceInfo* info)
     Executor* executor = NULL;
     Thread* thread = NULL;
     IF_NULL_RETURN_NULL(info);
-    IF_NEQ_RETURN(SERVICE_IDLE_FLAG, info->flags, NULL);
+    IF_NEQ_RETURN(SERVICE_IDLE_FLAG, info->Flags, NULL);
 
     executor = KrlExCreateExecutor();
     IF_NULL_RETURN_NULL(executor);
@@ -87,7 +87,7 @@ public Bool KrlSeStartAllRunService()
     IF_LTN_RETURN((UInt)serinfoend, (UInt)serinfostart, FALSE);
     for(;serinfostart < serinfoend; serinfostart++)
     {
-        if(serinfostart->flags == SERVICE_IDLE_FLAG)
+        if(serinfostart->Flags == SERVICE_IDLE_FLAG)
         {
             IF_NEQ_DEAD(TRUE, KrlSeCreateSystemIdleService(serinfostart), "KrlSeCreateSystemIdleService Is Fail\n");
             return FALSE;
