@@ -33,13 +33,13 @@ typedef struct EXNAME
 {
     Char *NamePtr;                  // 名称指针
     Char NameArr[EXNAME_CHARS_MAX]; // 名称字符数组
-} ExName;
+}ExName;
 
 // 执行体资源集合
 typedef struct EXRESOURCEBOX
 {
     ExecutorRes *Res;
-} ExResourceBox;
+}ExResourceBox;
 
 // 执行体隶属关系
 typedef struct EXAFFILIATION
@@ -51,14 +51,14 @@ typedef struct EXAFFILIATION
     //User
     //Transfer
     //Group
-} ExAffiliation;
+}ExAffiliation;
 
 // 线程头
 typedef struct THREADHEAD
 {
     UInt ThreadNR;
     List ThreadLists;
-} ThreadHead;
+}ThreadHead;
 
 // 线程集合
 typedef struct THREADBOX
@@ -74,7 +74,7 @@ typedef struct THREADBOX
     ThreadHead WaitHead;
     ThreadHead DeadHead;
     ThreadHead CacheHead;
-} ThreadBox;
+}ThreadBox;
 
 // 执行体
 typedef struct EXECUTOR
@@ -92,104 +92,77 @@ typedef struct EXECUTOR
     ExResourceBox ResourceBox; // 资源集合
     void *Priv;                // 上一个
     void *Ext;                 // 下一个
-} Executor;
+}Executor;
 
 // 执行体名称初始化
 // param@init 名称实例
-private
-void ExNameInit(ExName *init);
+private void ExNameInit(ExName *init);
 
 // 执行体资源集合初始化
 // param@init 实例
-private
-void ExResourceBoxInit(ExResourceBox *init);
+private void ExResourceBoxInit(ExResourceBox *init);
 
 // 执行隶属关系初始化
 // param@init 实例
-private
-void ExAffiliationInit(ExAffiliation *init);
+private void ExAffiliationInit(ExAffiliation *init);
 
 // 线程头初始化
 // param@init 实例
-private
-void ThreadHeadInit(ThreadHead *init);
+private void ThreadHeadInit(ThreadHead *init);
 
 // 线程集合初始化
 // param@init 实例
-private
-void ThreadBoxInit(ThreadBox *init);
+private void ThreadBoxInit(ThreadBox *init);
 
 // 执行体初始化
 // param@init 实例
-private
-void ExecutorInit(Executor *init);
+private void ExecutorInit(Executor *init);
 
 // 新建执行体
 // @return 执行体实例
-private
-Executor *NewExecutor();
+private Executor *NewExecutor();
 
 // 删除执行体
 // @param executor 执行体
 // @return 是否删除成功
-private
-Bool DelExecutor(Executor *executor);
+private Bool DelExecutor(Executor *executor);
 
 // TODO
-private
-Executor *KrlExCreateExecutorRealizeCore(Executor *executor);
+private Executor *KrlExCreateExecutorRealizeCore(Executor *executor);
 
-private
-Executor *KrlExCreateExecutorRealize();
+private Executor *KrlExCreateExecutorRealize();
 
-public
-Executor *KrlExCreateExecutor();
+public Executor *KrlExCreateExecutor();
 
-private
-Bool KrlExDestroyExecutorRealizeCore(Executor *executor);
+private Bool KrlExDestroyExecutorRealizeCore(Executor *executor);
 
-private
-Bool KrlExDestroyExecutorRealize(Executor *executor);
+private Bool KrlExDestroyExecutorRealize(Executor *executor);
 
-public
-Bool KrlExDestroyExecutor(Executor *executor);
+public Bool KrlExDestroyExecutor(Executor *executor);
 
-public
-Bool KrlExSetAffiliationExNode(Executor *executor, ExecutorNode *exnode);
+public Bool KrlExSetAffiliationExNode(Executor *executor, ExecutorNode *exnode);
 
-public
-Bool KrlExSetAffiliationExBox(Executor *executor, ExecutorBox *exbox);
+public Bool KrlExSetAffiliationExBox(Executor *executor, ExecutorBox *exbox);
 
-public
-Executor *KrlExGetCPUIdleExecutor();
+public Executor *KrlExGetCPUIdleExecutor();
 
-public
-Executor *KrlExGetCurrentRunExecutor();
+public Executor *KrlExGetCurrentRunExecutor();
 
-public
-Bool KrlExSetCurrentRunExecutor(Executor *executor);
+public Bool KrlExSetCurrentRunExecutor(Executor *executor);
 
-private
-Bool KrlExThreadAddToThreadBoxHead(Executor *executor, ThreadBox *box, ThreadHead *head, Thread *thread);
+private Bool KrlExThreadAddToThreadBoxHead(Executor *executor, ThreadBox *box, ThreadHead *head, Thread *thread);
 
-private
-Bool KrlExThreadDelOnThreadBoxHead(Executor *executor, ThreadBox *box, ThreadHead *head, Thread *thread);
+private Bool KrlExThreadDelOnThreadBoxHead(Executor *executor, ThreadBox *box, ThreadHead *head, Thread *thread);
 
-private
-Bool KrlExThreadDelOnExecutorRealizeCore(Executor *executor, Thread *thread);
+private Bool KrlExThreadDelOnExecutorRealizeCore(Executor *executor, Thread *thread);
 
-private
-Bool KrlExThreadAddToExecutorRealizeCore(Executor *executor, Thread *thread);
+private Bool KrlExThreadAddToExecutorRealizeCore(Executor *executor, Thread *thread);
 
-private
-Bool KrlExThreadAddToExecutorRealize(Executor *executor, Thread *thread);
+private Bool KrlExThreadAddToExecutorRealize(Executor *executor, Thread *thread);
 
-private
-Bool KrlExThreadDelOnExecutorRealize(Executor *executor, Thread *thread);
+private Bool KrlExThreadDelOnExecutorRealize(Executor *executor, Thread *thread);
 
-public
-Bool KrlExThreadDelOnExecutor(Executor *executor, Thread *thread);
+public Bool KrlExThreadDelOnExecutor(Executor *executor, Thread *thread);
 
-public
-Bool KrlExThreadAddToExecutor(Executor *executor, Thread *thread);
+public Bool KrlExThreadAddToExecutor(Executor *executor, Thread *thread);
 #endif
