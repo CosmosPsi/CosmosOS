@@ -23,4 +23,4 @@ public void SystemIdleMain()
     return;
 }
 
-DEFINE_SERVICE(SystemIdle, SERVICE_IDLE_FLAG, SETRUNENV(0, NULL, SystemIdleMain, KERNEL_CPU_MODE), "SystemIdleService");
+DEFINE_SYSIDLE_SERVICE(SystemIdleMain, SystemIdleService);
