@@ -8,14 +8,16 @@
 #include "KrlMmManage.h"
 #include "HalBoot.h"
 #include "HalInterface.h"
+#include "KrlMmAlloc.h"
 public PMSAD* HalExPGetKrlOnePMSAD()
 {
-    return NULL;
+    return KrlMmAllocKernPMSADs(1);
 }
 
 public Bool HalExPPutKrlOnePMSAD(PMSAD* msad)
 {
-    return FALSE;
+    IF_NULL_RETURN_FALSE(msad);
+    return KrlMmFreeKernPMSADs(msad);
 }
 
 public MachStartInfo* HalExPGetMachStartInfoAddr()
