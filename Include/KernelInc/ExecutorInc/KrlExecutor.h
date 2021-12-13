@@ -90,8 +90,8 @@ typedef struct EXECUTOR
     ThreadBox ExThreadBox;     // 线程集合
     VMS ExVMS;                 // VMS
     ExResourceBox ResourceBox; // 资源集合
-    void *Priv;                // 上一个
-    void *Ext;                 // 下一个
+    void *Priv;                // 私有信息
+    void *Ext;                 // 扩展信息
 }Executor;
 
 // 执行体名称初始化

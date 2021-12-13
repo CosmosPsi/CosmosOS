@@ -40,8 +40,8 @@ typedef struct TRANSFERNODE
     RBRoot Root;               // 根节点
     Transfer* CurrTransfer;    // 当前转移
     Transfer* CPUIdleTransfer; // CPU空闲转移
-    void* Priv;                // 上一个
-    void* Ext;                 // 下一个
+    void* Priv;                // 私有信息
+    void* Ext;                 // 扩展信息
 }TransferNode;
 
 // 调度转移管理
